@@ -1,0 +1,12 @@
+.navCont{
+    background-color: red;
+    height: 70vh;
+    width: 100%;
+
+}
+
+.buscador{
+    height: 30vh;
+    width: 90%;
+    background-color: #0066ff;
+}
