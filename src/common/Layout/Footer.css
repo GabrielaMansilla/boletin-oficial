@@ -1,0 +1,12 @@
+.footerCont {
+    /* background-color: red; */
+    /* background-color: #0066ff; */
+    background-color: #ffff;
+
+    height: 70vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border: solid 1px;
+    border-color: #0066ff;
+}
