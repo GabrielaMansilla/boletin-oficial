@@ -4,7 +4,7 @@ export const NavBar = () => {
   return (
     <>
     <div className='navCont '>
-        <div className="buscador container">
+        <div className="buscador     ">
 
         </div>
 

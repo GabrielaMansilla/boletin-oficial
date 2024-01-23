@@ -1,12 +1,23 @@
-.navCont{
-    background-color: red;
+.navCont {
+    /* background-color: red; */
+    /* background-color: #0066ff; */
+    background-color: #ffff;
+
     height: 70vh;
     width: 100%;
-
+    display: flex;
+    justify-content: center;
+    border: solid 1px;
+    border-color: #0066ff;
 }
 
-.buscador{
-    height: 30vh;
-    width: 90%;
+.buscador {
+    align-self: flex-end;
+    margin-bottom: 25px !important;
+    height: 33vh;
+    width: 98%;
+    padding: 0;
+    border-radius: 20px;
+    background-color: #ffff;
     background-color: #0066ff;
 }
