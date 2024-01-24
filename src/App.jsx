@@ -1,19 +1,19 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import ListarBoletines from './components/ListarBoletines/ListarBoletines';
 
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { NavBar } from './common/Layout/NavBar';
-import { Footer } from './common/Layout/Footer';
+
 const App = () => {
   return (
     <Router>
-      <Routes>
-        {/* Definir rutas aquí */}
-        <Route path="/" component={NavBar} /> 
-        <Route path="/" component={Footer} />
-      </Routes>
-      <NavBar />
-      <Footer />
+      <Layout>
+        {/* <Routes> */}
+          <ListarBoletines />
+        {/* </Routes> */}
+      </Layout>
     </Router>
-  )
-}
+  );
+};
+
 export default App;
