@@ -18,6 +18,38 @@
     width: 98%;
     padding: 0;
     border-radius: 20px;
-    background-color: #ffff;
+    /* background-color: #ffff; */
     background-color: #0066ff;
+}
+
+.tituloBuscador{
+    margin-left: 50px;
+    padding-top: 40px;
+    margin-bottom: 30px;
+    font-family: "Poppinsm,";
+}
+.inputCont {
+    display: flex;
+    align-items: center;
+}
+
+.MuiOutlinedInput-notchedOutline {
+    border-color: #ffff !important;
+}
+
+.MuiInputLabel-root {
+    color: #fff !important
+}
+
+.MuiInputLabel-root.Mui-focused {
+    color: #ffff !important
+}
+
+.MuiOutlinedInput-input {
+    color: #ffff !important
+}
+
+.btnBuscador {
+
+    height: 50px;
 }
