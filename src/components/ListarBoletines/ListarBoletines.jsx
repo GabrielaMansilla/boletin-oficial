@@ -8,7 +8,7 @@ const ListarBoletines = () => {
     return (
         <div className='d-flex flex-row mt-4'>
             <Grid container spacing={2} className='d-flex asdasd'>
-                <Grid className='contBoletines ps-5  pe-4 ' item xs={12} md={6}>
+                <Grid className='contBoletines ps-5  pe-4 ' item xs={12} md={7}>
                 <div className='boletin mb-2 ' >
                             <img className='logoMuniBlanco' src={logoMuniBlanco} alt=" logo Muni" />
                             <div className='boletinText container mt-3' >
@@ -77,8 +77,8 @@ const ListarBoletines = () => {
                         </div>
                         
                 </Grid>
-                <Grid item xs={12} md={6}>
-                    <aside className='calendarioBoletines'>
+                <Grid item xs={12} md={5}>
+                    <aside className='calendarioBoletines me-4'>
 
                     </aside>
                 </Grid>

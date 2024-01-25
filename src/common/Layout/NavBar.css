@@ -142,11 +142,13 @@ h1 {
     .logoNav {
         height: 90px !important;
     }
-    .contLogo h4{
+
+    .contLogo h4 {
         font-size: 90% !important;
-height: fit-content;
+        height: fit-content;
     }
-    .contLogo h1{
+
+    .contLogo h1 {
         font-size: 150% !important;
     }
 }
