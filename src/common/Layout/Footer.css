@@ -1,13 +1,18 @@
 .footerCont {
-    /* background-color: red; */
-    /* background-color: #0066ff; */
     background-color: #ffff;
-  
-    height: 70vh;
+    height: 100px;
     width: 100%;
     display: flex;
     justify-content: center;
-    border: solid 1px;
-    border-color: #0066ff;
+    bottom:0;
+    left: 0px;
+    font-family: 13px MavenPro_Regular;
   }
   
+.redesSociales{
+    background-color: #ffff;
+
+}
+.logo{
+
+}
