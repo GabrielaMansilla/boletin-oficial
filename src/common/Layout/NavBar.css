@@ -3,24 +3,44 @@
     /* background-color: #0066ff; */
     background-color: #ffff;
     flex-direction: column;
-    height: 70vh;
+    height: 65vh;
     width: 100%;
     max-width: 100% !important;
     display: flex;
-    justify-content: center;
+    justify-content: center !important;
+    align-items: center;
     border-bottom: solid 1px;
     border-color: #3333;
 }
 
-.contLogo{
+.contLogo {
     display: flex;
     flex-direction: row;
     align-items: center;
-    }
+    justify-content: center;
+}
 
-.contLogo h4,h1{
+.textMuni {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.contLogo h4,
+h1 {
     font-weight: 600 !important;
-    color: #333 !important
+    color: #333 !important;
+    margin-top: 0 !important;
+}
+
+.contLogo h4 {
+    font-size: 23px !important;
+    margin-bottom: 0 !important;
+    height: 25px;
+}
+
+.contLogo h1 {
+    font-size: 40px !important;
 
 }
 
@@ -33,14 +53,13 @@
     align-items: center;
     justify-content: center;
     align-self: center;
-    padding-bottom: 25px !important;
     height: 33vh;
-    width: 98%;
+    width: 100%;
     padding: 0;
     border-radius: 20px;
     /* background-color: #ffff; */
     background-color: #0066ff;
-    box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 
 }
 
@@ -54,6 +73,7 @@
 
 .inputCont {
     display: flex;
+    flex-direction: row !important;
     align-items: center;
 }
 
@@ -73,6 +93,60 @@
     background-color: #2eb1ff !important;
 }
 
+.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+    background-color: #0066ff !important;
+    color: #fff !important;
+    width: 20% !important;
+}
+
 .css-sghohy-MuiButtonBase-root-MuiButton-root:hover {
     background-color: rgb(43, 169, 241) !important;
+}
+
+@media (max-width: 730px) {
+    .textMuni {
+        flex-direction: column;
+    }
+
+    .textMuni h1 {
+        margin: 0 !important;
+
+    }
+
+    .navCont {
+        height: auto;
+        padding-bottom: 20px;
+
+    }
+
+    .buscador {
+        height: auto;
+        align-items: center !important;
+    }
+
+    .inputCont {
+        flex-direction: column !important;
+        padding-bottom: 15px;
+    }
+
+    .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+        width: fit-content !important;
+
+    }
+
+
+}
+
+@media (max-width: 500px) {
+
+    .logoNav {
+        height: 90px !important;
+    }
+    .contLogo h4{
+        font-size: 90% !important;
+height: fit-content;
+    }
+    .contLogo h1{
+        font-size: 150% !important;
+    }
 }

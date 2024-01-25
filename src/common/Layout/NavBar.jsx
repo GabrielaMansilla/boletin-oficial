@@ -1,26 +1,40 @@
 import React, { useState } from 'react'
 import './NavBar.css'
-import { Box, Button, TextField } from '@mui/material'
+import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import logoMuni from '../../assets/logo-SMT.png'
 
 
 export const NavBar = () => {
-    const [fecha, setFecha] = useState(' ');
-    const [nroBoletin, setNroBoletin] = useState('');
+
+    const initialState = {
+        fecha: '',
+        nroBoletin: '',
+        tipo: '',
+    };
+    const [state, setState] = useState(initialState);
+    const { fecha, nroBoletin, tipo } = state;
+
+    const handleChange = (e) => {
+        setState({ ...state, tipo: e.target.value });
+    };
+
 
     return (
         <>
-            <div className='navCont container align-items-center'>
+            <Container div className='navCont mt-4'>
                 <div className='contLogo mb-3'>
                     <img src={logoMuni} alt="logo Muni" className='logoNav' />
-                    <div>
+                    <div className='ms-2'>
                         <h4 className='mb-0'>CIUDAD</h4>
-                        <h1>San Miguel de Tucumán</h1>
+                        <div className='textMuni'>
+
+                            <h1>San Miguel </h1> <h1 className='ms-2'>de Tucumán</h1>
+                        </div>
                     </div>
                 </div>
 
 
-                <div className="buscador     ">
+                <Box className="buscador ">
                     <h3 className='tituloBuscador'>BUSCAR BOLETINES ANTERIORES</h3>
                     <Box
                         component="form"
@@ -28,16 +42,16 @@ export const NavBar = () => {
                         noValidate
                         autoComplete="off"
                         className='inputCont container'
-                    >
+                        >
                         <TextField
                             label="Nro de Boletín"
                             variant="outlined"
                             className='inputBuscador'
                             type='number'
                             value={nroBoletin}
-                            onChange={(e) => setNroBoletin(e.target.value)}
+                            onChange={handleChange}
                             inputProps={{ min: "0" }}
-                        />
+                            />
 
                         <TextField
                             label="Fecha"
@@ -45,14 +59,33 @@ export const NavBar = () => {
                             name="fecha"
                             type="date"
                             className='inputBuscador'
-                            value={fecha}
-                            onChange={(e) => setFecha(e.target.value)}
-                        />
+                            value=" "
+                            onChange={handleChange}
+                            />
+                        <FormControl sx={{ m: 1, minWidth: 80 }} >
+
+                            <InputLabel id="demo-simple-select-autowidth-label">Tipo</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-autowidth-label"
+                                id="demo-simple-select-autowidth"
+                                value={tipo}
+                                onChange={handleChange}
+                                autoWidth
+                                label="Tipo"
+                                >
+                                <MenuItem value="">
+                                    <em>---- Seleccione el tipo ----</em>
+                                </MenuItem>
+                                <MenuItem value={10}>Decreto</MenuItem>
+                                <MenuItem value={21}>Resolución</MenuItem>
+                                <MenuItem value={22}>Ordenanza</MenuItem>
+                            </Select>
+                        </FormControl>
                         <Button variant="contained" className='btnBuscador' type='submit'>Buscar</Button>
                     </Box>
-                </div>
+                </Box>
 
-            </div>
+            </Container >
         </>
     )
 }
