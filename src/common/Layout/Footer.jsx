@@ -23,7 +23,7 @@ export const Footer = () => {
             </div>
           </div>
           {/* <ul className="list-unstyled"> */}
-          <div className="col-md-6 mb-md-0 mb-3 ">
+          <div className="col-md-6 mb-md-0 mb-3">
             <div className='d-flex mt-3 me-5 seguinos' >
               <h5 className="px-2">Seguinos en </h5>
               <div className='iconosRedes'>

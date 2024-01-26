@@ -17,6 +17,7 @@ const ListarBoletines = () => {
                             <div className='boletinText container mt-4' >
                                 <div className='d-flex flex-row justify-content-between'>
 
+                                    <h2>Ultima Edicion | Boletin Nº 22334 </h2>
                                     <h2>Ultima Edición| Boletín Nº 5430 </h2>
                                     <div className='contBtn'>
 
@@ -34,8 +35,58 @@ const ListarBoletines = () => {
                             </div>
 
                         </div>
+                        <div className='boletin mb-2 ' >
+                            <img className='logoMuniBlanco' src={logoMuniBlanco} alt=" logo Muni" />
+                            <div className='boletinText container mt-3' >
+                                <div className='d-flex flex-row justify-content-between'>
+
+                                    <h2> Boletin Nº 22333 </h2>
+                                    <div className='contBtn'>
+
+                                        <Button variant="contained" className='btnPdf' >
+                                            <DownloadForOfflineIcon />
+                                        </Button>
+                                    </div>
+
+                                </div>
+                                <div className=' d-flex flex-row'>
+
+                                    <h6>23/01/2024</h6> <h6 className='ms-2'>| Tucumán, Argentina</h6>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className='boletin mb-2 ' >
+                            <img className='logoMuniBlanco' src={logoMuniBlanco} alt=" logo Muni" />
+                            <div className='boletinText container mt-3' >
+                                <div className='d-flex flex-row justify-content-between'>
+
+                                    <h2> Boletin Nº 22332 </h2>
+                                    <div className='contBtn'>
+
+                                        <Button variant="contained" className='btnPdf' >
+                                            <DownloadForOfflineIcon />
+                                        </Button>
+                                    </div>
+
+                                </div>
+                                <div className=' d-flex flex-row'>
+
+                                    <h6>22/01/2024</h6> <h6 className='ms-2'>| Tucumán, Argentina</h6>
+
+                                </div>
+                            </div>
+
+                        </div>
 
               </Grid>
+                <Grid item xs={12} md={6}>
+                    <aside className='calendarioBoletines'>
+
+                    </aside>
+                </Grid>
+
               </Grid>
 
       </div>
