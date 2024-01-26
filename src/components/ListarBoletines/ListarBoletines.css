@@ -7,6 +7,8 @@
 .calendarioBoletines {
     width: none;
 
+
+
 }
 
 .asdasd {
@@ -18,7 +20,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 150px;
+    height: 130px;
     min-width: 0px;
     background: #0066ff;
     border-radius: 10px;
@@ -27,15 +29,14 @@
 }
 
 .logoMuniBlanco {
-    margin-left: -40px !important;
-    padding-left: -10px !important;
+    padding-left: -20px !important;
     width: auto;
-    height: 100px;
+    height: 95px;
 }
 
 .logoMuniBlanco2 {
     width: auto;
-    height: 100px;
+    height: 95px;
 }
 
 .boletinText {
@@ -48,6 +49,11 @@
     font-weight: 400 !important;
     color: #fff !important
 }
+.boletin h3 {
+    font-size:130%;
+    font-weight: 350 !important;
+    color: #fff !important
+}
 
 .contBtn {
     display: flex;
@@ -58,7 +64,7 @@
     width: fit-content;
     height: fit-content;
     background-color: #2eb1ff !important;
-    margin-right: 25px !important;
+    margin-right: 30px !important;
     border-radius: 50px !important;
 }
 
@@ -78,3 +84,4 @@
         color: #fff !important
     }
 }
+

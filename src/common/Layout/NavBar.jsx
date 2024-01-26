@@ -32,8 +32,10 @@ export const NavBar = () => {
                         </div>
                     </div>
                 </div>
-
-
+                <div className='ms-4'>
+                        <h3 className='mb-2 pb-4 text-center'>BOLETÍN OFICIAL MUNICIPAL</h3>
+                    
+                        </div>
                 <Box className="buscador ">
                     <h3 className='tituloBuscador'>BUSCAR BOLETINES ANTERIORES</h3>
                     <Box

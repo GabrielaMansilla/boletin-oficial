@@ -25,18 +25,21 @@ export const Footer = () => {
           {/* <ul className="list-unstyled"> */}
           <div className="col-md-6 mb-md-0 mb-3 ">
             <div className='d-flex mt-3 me-5 seguinos' >
-              <h5 className="px-2  ">Seguinos en </h5>
+              <h5 className="px-2">Seguinos en </h5>
               <div className='iconosRedes'>
                 <a className='p-2' href="https://www.facebook.com/MuniSMTucuman/"><i className="bi bi-facebook"></i></a>
                 <a className='p-2' href="https://www.instagram.com/munismtucuman/"><i className="bi bi-instagram"></i></a>
                 <a className='p-2' href="https://twitter.com/muniSMT"><i className="bi bi-twitter"></i></a>
                 <a className='p-2' href="https://www.youtube.com/munismtucuman"><i className="bi bi-youtube"></i></a>
+                <a className='p-2' href="https://smt.gob.ar/"><i className="smt.gob.ar"><img className
+                = 'p-2' src= {logo} width="33"  alt="logo municipalidad de Tucumán" /></i></a>
               </div>
             </div>
             <div className='pt-1 '>
               <p className='text-center text-md-end my-2 me-0 me-md-5  ' >Municipalidad de San Miguel de Tucumán</p>
               <p className='text-center text-md-end my-2 me-0  me-md-5 '>9 de Julio 598, Tucumán. República Argentina</p>
               <p className='text-center text-md-end my-2 me-0 me-md-5'>(0381)- 4516500</p>
+            
             </div>
           </div>
           {/* </ul> */}
