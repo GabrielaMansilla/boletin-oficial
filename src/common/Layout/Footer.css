@@ -12,6 +12,8 @@
 }
 
 .iconosRedes {
+  align-self: center;
+  font-size: 20px;
 }
 
 .logoFooter {
@@ -39,6 +41,7 @@
 .seguinos {
   display: flex;
   justify-content: end;
+  align-items: center !important;
   
 }
 
