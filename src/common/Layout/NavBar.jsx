@@ -1,38 +1,36 @@
-import React, { useState } from 'react'
 import './NavBar.css'
-import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
+import { Container } from '@mui/material'
 import logoMuni from '../../assets/logo-SMT.png'
+import LogIcono from '@mui/icons-material/AccountCircleOutlined';
+import { useNavigate } from 'react-router-dom';
 
 
 export const NavBar = () => {
 
-    const initialState = {
-        fecha: '',
-        nroBoletin: '',
-        tipo: '',
-    };
-    const [state, setState] = useState(initialState);
-    const { fecha, nroBoletin, tipo } = state;
+    const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        setState({ ...state, tipo: e.target.value });
-    };
-
+    const handleNavigate = () => {
+        navigate("/login");
+    }
 
     return (
         <>
-            <Container div className='navCont mt-4'>
+            <Container div className='navCont mt-4 mb-4'>
+                <div onClick={()=>handleNavigate()}  className=' contIcono'>
+                    <LogIcono className='iconoLogin' />
+                </div>
+
                 <div className='contLogo mb-3'>
                     <img src={logoMuni} alt="logo Muni" className='logoNav' />
                     <div className='ms-2'>
                         <h4 className='mb-0'>CIUDAD</h4>
                         <div className='textMuni'>
-
                             <h1>San Miguel </h1> <h1 className='ms-2'>de Tucumán</h1>
                         </div>
                     </div>
                 </div>
 
+<<<<<<< HEAD
 
                 
                 <div className='ms-4'>
@@ -90,6 +88,8 @@ export const NavBar = () => {
                     </Box>
                 </Box>
 
+=======
+>>>>>>> 52a1b429a4c983af56cd6f610cfc9bcc6a6a695a
             </Container >
         </>
     )

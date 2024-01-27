@@ -23,9 +23,15 @@ export const Footer = () => {
             </div>
           </div>
           {/* <ul className="list-unstyled"> */}
+<<<<<<< HEAD
           <div className="col-md-6 mb-md-0 mb-3">
             <div className='d-flex mt-3 me-5 seguinos' >
               <h5 className="px-2">Seguinos en </h5>
+=======
+          <div className="col-md-6 mb-md-0 mb-3  ">
+            <div className='d-flex mt-3 me-5 seguinos ' >
+              <h5 className="pe-2 mb-0  ">Seguinos en </h5>
+>>>>>>> 52a1b429a4c983af56cd6f610cfc9bcc6a6a695a
               <div className='iconosRedes'>
                 <a className='p-2' href="https://www.facebook.com/MuniSMTucuman/"><i className="bi bi-facebook"></i></a>
                 <a className='p-2' href="https://www.instagram.com/munismtucuman/"><i className="bi bi-instagram"></i></a>

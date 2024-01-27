@@ -5,9 +5,15 @@
 }
 
 .calendarioBoletines {
+<<<<<<< HEAD
     width: 40%;
 
 
+=======
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+>>>>>>> 52a1b429a4c983af56cd6f610cfc9bcc6a6a695a
 
 }
 
@@ -73,11 +79,7 @@
     background-color: rgb(43, 169, 241) !important;
 }
 
-.calendarioBoletines {
-    width: auto;
-    height: 500px;
-    background-color: red !important;
-}
+
 
 @media (max-width: 546px) {
     .boletin h2 {
