@@ -1,0 +1,63 @@
+.navCont {
+    /* background-color: red; */
+    /* background-color: #0066ff; */
+    background-color: #ffff;
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+    max-width: 100% !important;
+    display: flex;
+    justify-content: center !important;
+    align-items: center;
+    border-bottom: solid 1px;
+    border-color: #3333;
+    padding-bottom: 25px;
+}
+
+.contIcono{
+    position: absolute;
+    right: 25px;
+    justify-content: end;
+    height: 30px;
+}
+.iconoLogin{
+    width: 35px !important;
+    height: 35px !important;
+    cursor: pointer;
+}
+
+.contLogo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.textMuni {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.contLogo h4,
+h1 {
+    font-weight: 600 !important;
+    color: #333 !important;
+    margin-top: 0 !important;
+}
+
+.contLogo h4 {
+    font-size: 23px !important;
+    margin-bottom: 0 !important;
+    height: 25px;
+}
+
+.contLogo h1 {
+    font-size: 40px !important;
+
+}
+
+.logoNav {
+    width: auto;
+    height: 160px;
+}
