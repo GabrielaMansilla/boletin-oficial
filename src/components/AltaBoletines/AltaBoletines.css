@@ -1,0 +1,59 @@
+.contAltaBoletines {
+    background-color: #0066ff;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    align-items: center;
+
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 30px;
+
+}
+
+.inputAltaBoletin, .inputFileAltaBoletin {
+    width: 100% !important;
+    align-content: center !important;
+}
+
+.textAreaBoletines {
+    height:100vh;
+    width: 80%;
+    border-radius: 25px;
+    padding-top: 7px;
+    padding-left: 10px;
+    margin-bottom: 30px;
+    resize: none
+}
+
+  
+::-webkit-file-upload-button {
+      cursor: pointer !important;
+  }
+  .inputFileAltaBoletin input {
+    opacity: 0;
+    cursor: pointer !important;
+
+    position: absolute;
+  }
+  
+  .fileNameDisplay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer !important;
+    height: 100%;
+    width: 100%;
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+  }
+  
