@@ -3,7 +3,7 @@ import { Container } from '@mui/material'
 import logoMuni from '../../assets/logo-SMT.png'
 import LogIcono from '@mui/icons-material/AccountCircleOutlined';
 import { useNavigate } from 'react-router-dom';
-
+import React, { useState } from 'react';
 
 export const NavBar = () => {
 

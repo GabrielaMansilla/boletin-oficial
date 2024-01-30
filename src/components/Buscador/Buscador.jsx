@@ -1,17 +1,23 @@
 import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Buscador.css'
 import { BUSCADOR_VALUES } from '../../helpers/constantes'
+import Form from '../Form/Form.jsx';
+
+
+
 
 const Buscador = () => {
+    const formRef = useRef(null);
 
-    const [values, setValues] = useState(BUSCADOR_VALUES)
+
+    
+const [values, setValues] = useState(BUSCADOR_VALUES)
 
     const handleChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
       };
-      
-
 
     return (
         <div className='d-flex justify-content-center'>
@@ -67,12 +73,12 @@ const Buscador = () => {
                         </Select>
                     </FormControl>
                     <Button variant="contained" className='btnBuscador' type='submit'>Buscar</Button>
-                    <Button variant="contained" className='btnBuscadorAvanzada' >Busqueda Avanzada</Button>
+                     <Form ref={formRef} />
                 </Box>
-            </Box>
+            </Box> 
         </div>
 
     )
 }
 
-export default Buscador
+export default Buscador;

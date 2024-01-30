@@ -8,3 +8,8 @@ export const LOGIN_VALUES = {
     nroBoletin: '',
     tipo: '',
 };
+export const BUSCADOR_AVANZADA_VALUES = {
+  fecha: '',
+  nroNorma: '',
+  tipo: '',
+};
