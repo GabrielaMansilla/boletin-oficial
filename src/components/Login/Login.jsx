@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import React from 'react';
 
 const Login = () => {
-//   const { authenticated, botonState, login } = useStore();
+  //   const { authenticated, botonState, login } = useStore();
   const [showPassword, setShowPassword] = useState(false);
   const [values, setValues] = useState(LOGIN_VALUES);
   const navigate = useNavigate();
@@ -23,25 +23,25 @@ const Login = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-//   const handleLogin = (e) => {
-//     // Realizar el login con el estado y funciones proporcionadas por el store
-//     e.preventDefault();
-//     login(values);
-//   };
+  //   const handleLogin = (e) => {
+  //     // Realizar el login con el estado y funciones proporcionadas por el store
+  //     e.preventDefault();
+  //     login(values);
+  //   };
 
-  useEffect(() => {
-//     if (authenticated) {
-      navigate("/altaBoletines");
-    }
-//   // eslint-disable-next-line react-hooks/exhaustive-deps
-);
-//, [authenticated]}
+  // useEffect(() => {
+  //     if (authenticated) {
+  //   navigate("/altaBoletines");
+  // }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // );
+  //, [authenticated]}
 
   return (
     <div className="d-flex justify-content-center align-items-center layoutHeight">
       <div className="box">
         <span className="borderLine"></span>
-        <form 
+        <form
         // onSubmit={handleLogin}
         >
           <img src={logoMuni} alt="logo Municipalidad" className="logoMuni" />
@@ -79,6 +79,7 @@ const Login = () => {
             variant="contained"
             className="btn-light mt-4 buttonLoginColor"
             // disabled={botonState}
+            href="/altaBoletines"
             type="submit"
           >
             Ingresar

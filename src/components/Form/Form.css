@@ -1,1 +1,8 @@
 
+
+.btnBuscadorAvanzada {
+    height: 50px;
+    background-color: #2eb1ff !important;
+    width: fit-content !important;
+    width: 200px !important;
+}

@@ -32,6 +32,7 @@ export const Footer = () => {
                 <a className='p-2' href="https://www.instagram.com/munismtucuman/"><i className="bi bi-instagram"></i></a>
                 <a className='p-2' href="https://twitter.com/muniSMT"><i className="bi bi-twitter"></i></a>
                 <a className='p-2' href="https://www.youtube.com/munismtucuman"><i className="bi bi-youtube"></i></a>
+                <a className='p-2' href="https://smt.gob.ar/"><img src={logo} className="logoRedesFooter" alt="logo muni" /></a>
               </div>
             </div>
             <div className='pt-1 '>
