@@ -10,10 +10,10 @@ export const BUSCADOR_VALUES = {
 };
 export const ALTA_BOLETIN_VALUES = {
   nroBoletin: '',
+  archivoBoletin: '',
   nroDecretoInicial: '',
   nroDecretoFinal: '',
-  nroResolucionInicial: '',
-  nroResolucionFinal: '',
-  nroLicitacionInicial: '',
-  nroLicitacionFinal: '',
+  nroOrdenanzaInicial: '',
+  nroOrdenanzaFinal: '',
+  nroResolucion: '',
 }
