@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import { BUSCADOR_AVANZADA_VALUES } from "../../helpers/constantes";
+import "./FormAvanzada.css"
 
 export default function FormAvanzada(algo) {
   const [open, setOpen] = React.useState(false);
@@ -20,25 +21,25 @@ export default function FormAvanzada(algo) {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
+  
   return (
     <div>
-      <Button className="buscadorAvanzada text-light" onClick={handleOpen}>
+      <Button className="text-light" onClick={handleOpen}>
         Busqueda Avanzada
       </Button>
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+       
       >
-        <Box>
-          <h3 className="tituloBuscador">BUSQUEDA AVANZADA</h3>
-          <Box
+        <Box className="modal-busqueda-avanzada">
+          <h3 className="tituloBuscador">Búsqueda Avanzada</h3>
+          <Box className="modal-content"
             component="form"
             sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
             noValidate
             autoComplete="off"
-            className="inputCont container"
+           
           >
             <FormControl sx={{ m: 1, minWidth: 80 }}>
               <InputLabel id="demo-simple-select-autowidth-label">
@@ -50,11 +51,11 @@ export default function FormAvanzada(algo) {
                 value={values.tipo}
                 onChange={handleChange}
                 autoWidth
-                label="Tipo"
+                label="Tipo de Norma"
                 name="tipo"
               >
                 <MenuItem value="">
-                  <em>-- Seleccione el tipo de Norma --</em>
+                  <em>--Seleccione--</em>
                 </MenuItem>
                 <MenuItem value={10}>Decreto</MenuItem>
                 <MenuItem value={21}>Resolución</MenuItem>
@@ -83,10 +84,10 @@ export default function FormAvanzada(algo) {
               InputLabelProps={{ shrink: true }}
             />
 
-            <Button variant="contained" className="btnBuscador" type="submit">
+            <Button variant="contained" className="btnAvanzada" type="submit">
               Limpiar
             </Button>
-            <Button variant="contained" className="btnBuscador" type="submit">
+            <Button variant="contained" className="btnAvanzada" type="submit">
               Buscar
             </Button>
           </Box>
