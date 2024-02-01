@@ -16,10 +16,14 @@ export const BUSCADOR_AVANZADA_VALUES = {
 
 export const ALTA_BOLETIN_VALUES = {
   nroBoletin: '',
+  archivoBoletin: '',
   nroDecretoInicial: '',
   nroDecretoFinal: '',
+
   nroResolucionInicial: '',
   nroResolucionFinal: '',
   nroLicitacionInicial: '',
   nroLicitacionFinal: '',
 }
+
+

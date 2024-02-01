@@ -1,0 +1,20 @@
+
+    .buscadorAvanzada {
+        height: 50px;
+        background-color: red !important;
+        color: red !important;
+        width: 200px !important;
+      
+    }
+    .tituloBuscador {
+        color: #fff;
+        margin-left: 50px;
+        padding-top: 40px;
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
+    .inputCont {
+        display: flex;
+        flex-direction: row !important;
+        align-items: center;
+    }

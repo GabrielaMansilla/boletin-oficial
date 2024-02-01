@@ -5,7 +5,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    border-color: #3333;
+    border-color: #3333 !important;
     padding-bottom: 25px;
     flex-direction: column;
     border-bottom: solid 1px;
