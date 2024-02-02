@@ -1,30 +1,52 @@
 .buscador {
-    align-items: center;
-    justify-content: center;
-    align-self: center;
-    height: auto;
-    width: 98%;
-    padding-bottom: 20px !important;
     padding: 0;
+    width: 98%;
+    height: auto;
+    align-self: center;
+    align-items: center;
     border-radius: 20px;
-    /* background-color: #ffff; */
+    justify-content: center;
     background-color: #0066ff;
+    /* background-color: #ffff; */
+    padding-bottom: 20px !important;
     box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 
 }
 
 .tituloBuscador {
     color: #fff;
+    font-weight: 600;
     margin-left: 50px;
     padding-top: 40px;
     margin-bottom: 30px;
-    font-weight: 600;
 }
 
 .inputCont {
     display: flex;
-    flex-direction: row !important;
     align-items: center;
+    width: 100% !important;
+    flex-direction: row !important;
+}
+
+.inputsBuscadores {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 50% !important;
+    justify-content: center;
+}
+
+.inputBuscador {
+    width: 100%;
+    margin-left: 15px !important;
+}
+
+.botonesBuscadores {
+    display: flex;
+    flex-direction: row;
+    width: 50% !important;
+    align-items: center;
+    justify-content: end;
 }
 
 .MuiOutlinedInput-notchedOutline {
@@ -40,18 +62,15 @@
 .btnBuscador,
 .btnBuscadorAvanzada {
     height: 50px;
-    background-color: #2eb1ff !important;
+    margin-left: 20px !important;
     width: fit-content !important;
-}
-
-.btnBuscadorAvanzada {
-    width: 200px !important;
+    background-color: #2eb1ff !important;
 }
 
 .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
-    background-color: #0066ff !important;
-    color: #fff !important;
     width: 20% !important;
+    color: #fff !important;
+    background-color: #0066ff !important;
 }
 
 .css-sghohy-MuiButtonBase-root-MuiButton-root:hover {
@@ -61,6 +80,12 @@
 .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
     width: fit-content !important;
 
+}
+
+@media (min-width: 730px) and (max-width: 770px) {
+    .btnBuscador {
+        width: 140px !important;
+    }
 }
 
 @media (max-width: 730px) {
@@ -85,9 +110,9 @@
     }
 
     .inputCont {
-        flex-direction: column !important;
         padding-bottom: 15px;
-    } 
+        flex-direction: column !important;
+    }
 
 }
 
@@ -98,8 +123,8 @@
     }
 
     .contLogo h4 {
-        font-size: 90% !important;
         height: fit-content;
+        font-size: 90% !important;
     }
 
     .contLogo h1 {

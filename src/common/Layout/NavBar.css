@@ -1,16 +1,16 @@
 .navCont {
     /* background-color: red; */
     /* background-color: #0066ff; */
-    height: auto;
     width: 100%;
+    height: auto;
     display: flex;
     align-items: center;
-    border-color: #3333 !important;
     padding-bottom: 25px;
     flex-direction: column;
     border-bottom: solid 1px;
     background-color: #ffff;
     max-width: 100% !important;
+    border-color: #3333 !important;
     justify-content: center !important;
 }
 
@@ -40,21 +40,18 @@
 
 .boletinNavCont  {
     width: 100%;
-    display: flex !important;
     font-size: 40px;
     margin-bottom: 0;
-    display: flex;
     align-items:  center;
     justify-content: center;
+    display: flex !important;
     /* font-weight: 300 !important; */
 }
 
 .boletinNav {
-    
     width: fit-content;
     border-bottom: solid 1px;
     border-color: #333;
-
 }
 
 .contLogo h4,
@@ -72,7 +69,6 @@ h1 {
 
 .contLogo h1 {
     font-size: 40px !important;
-
 }
 
 .logoNav {

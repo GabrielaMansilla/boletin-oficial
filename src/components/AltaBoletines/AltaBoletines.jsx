@@ -15,6 +15,7 @@ const AltaBoletines = () => {
   const [selectedFileName, setSelectedFileName] = useState('Seleccione un Archivo');
 
 
+
   const obternerLista = (inicio, fin) => {
     const inicioNum = parseInt(inicio, 10)
     const finNum = parseInt(fin, 10)
@@ -45,7 +46,10 @@ const AltaBoletines = () => {
     return obternerLista(values.nroOrdenanzaInicial, values.nroOrdenanzaFinal)
   };
   const obtenerResoluciones = () => {
-    return listarResoluciones(formattedValue)
+
+    return obternerLista(values.nroResolucionInicial)
+
+   
   };
 
   const handleGuardarBoletin = () => {
@@ -53,7 +57,11 @@ const AltaBoletines = () => {
     const boletin = {
       decretos: obtenerDecretos(),
       ordenanzas: obtenerOrdenanzas(),
+
+      resoluciones: values.nroResolucion,
+
       resoluciones: obtenerResoluciones(),
+
     };
 
     setOpen(true)
@@ -63,7 +71,9 @@ const AltaBoletines = () => {
     console.log('Boletín a guardar:', boletin);
     setValues(ALTA_BOLETIN_VALUES)
     setSelectedFileName('Seleccione un Archivo')
+
     setFormattedValue("")
+
   };
 
   const handleChange = (e) => {
@@ -82,7 +92,7 @@ const AltaBoletines = () => {
       setOpen(false); // Cerrar la advertencia si el archivo es un PDF
     }
   };
-  // Actualizar el formattedValue cuando cambia values.nroResolucion
+
   useEffect(() => {
     setFormattedValue(formatNroResolucion(values.nroResolucion));
   }, [values.nroResolucion]);
@@ -234,8 +244,11 @@ const AltaBoletines = () => {
                 label="Nº de Resolución"
                 className='inputAltaBoletin'
                 type='text'
+
+
                 // value={values.nroResolucion}
                 value={formattedValue}
+
                 onChange={handleResolucionChange}
                 name="nroResolucion"
               />
@@ -279,6 +292,7 @@ const AltaBoletines = () => {
               <Button type="button" variant="contained" onClick={handleMensaje}>
                 Guardar Boletín
               </Button>
+
             </>
           )
         ) : (
@@ -303,6 +317,6 @@ const AltaBoletines = () => {
       </Snackbar>
     </Box >
   )
-}
 
-export default AltaBoletines
+}
+export default AltaBoletines;

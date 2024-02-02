@@ -3,11 +3,17 @@ export const LOGIN_VALUES = {
   password: "",
 };
 
-export const BUSCADOR_VALUES = {
+  export const BUSCADOR_VALUES = {
+    fecha: '',
+    nroBoletin: '',
+    tipo: '',
+};
+export const BUSCADOR_AVANZADA_VALUES = {
   fecha: '',
-  nroBoletin: '',
+  nroNorma: '',
   tipo: '',
 };
+
 export const ALTA_BOLETIN_VALUES = {
   nroBoletin: '',
   archivoBoletin: '',

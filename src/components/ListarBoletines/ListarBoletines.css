@@ -1,12 +1,12 @@
 .contBoletines {
-    /* background-color: red; */
     height: auto;
     /* width: 60%; */
+    /* background-color: red; */
 }
 
 .calendarioBoletines {
-    padding-top: 20px;
     display: flex;
+    padding-top: 20px;
     justify-content: center;
 
 }
@@ -18,21 +18,21 @@
 
 .boletin {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
     height: 150px;
     min-width: 0px;
-    background: #0066ff;
-    border-radius: 10px;
     overflow: hidden;
+    align-items: center;
+    border-radius: 10px;
+    background: #0066ff;
+    justify-content: space-around;
     box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
 
 .logoMuniBlanco {
-    margin-left: -40px !important;
-    padding-left: -10px !important;
     width: auto;
     height: 100px;
+    margin-left: -40px !important;
+    padding-left: -10px !important;
 }
 
 .logoMuniBlanco2 {
@@ -46,7 +46,7 @@
 }
 
 .boletin h2 {
-    font-size:160%;
+    font-size: 160%;
     font-weight: 400 !important;
     color: #fff !important
 }
@@ -59,9 +59,9 @@
 .btnPdf {
     width: fit-content;
     height: fit-content;
-    background-color: #2eb1ff !important;
     margin-right: 25px !important;
     border-radius: 50px !important;
+    background-color: #2eb1ff !important;
 }
 
 .css-sghohy-MuiButtonBase-root-MuiButton-root:hover {
@@ -72,7 +72,7 @@
 
 @media (max-width: 546px) {
     .boletin h2 {
+        color: #fff !important;
         font-size: 120% !important;
-        color: #fff !important
     }
 }
