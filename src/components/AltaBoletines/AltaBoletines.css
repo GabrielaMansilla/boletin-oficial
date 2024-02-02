@@ -1,18 +1,18 @@
 .contBoxAltaBoletines {
-    background-color: #0066ff;
-    border-radius: 25px;
     display: flex;
-    flex-direction: column;
     padding: 20px;
+    border-radius: 25px;
     align-items: center;
+    flex-direction: column;
+    background-color: #0066ff;
     box-Shadow: 0 5px 8px rgba(0, 0, 0, 0.5)
 }
 
 .contAltaBoletines {
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    width: 100%;
 }
 
 /* INPUTFILE*/
@@ -21,30 +21,28 @@
 }
 
 .formGroup {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
     width: 50%;
+    display: flex;
+    align-items: start;
     margin-bottom: 30px;
+    flex-direction: column;
 
 }
 
 .nroBoletin {
-    display: flex;
-    align-items: start;
     width: 100;
-    color: #ffffff
+    display: flex;
+    color: #ffffff;
+    align-items: start;
 }
 
 .contRango {
     width: 100%;
-
     margin-top: 10px;
 }
 
 .contRango div {
     width: 100%;
-
     display: flex;
     flex-direction: row;
 }
@@ -65,13 +63,13 @@
 }
 
 .textAreaBoletines {
-    height: 100vh;
     width: 80%;
-    border-radius: 25px;
+    resize: none;
+    height: 100vh;
     padding-top: 7px;
     padding-left: 10px;
+    border-radius: 25px;
     margin-bottom: 30px;
-    resize: none
 }
 
 
@@ -81,22 +79,21 @@
 
 .inputFileAltaBoletin input {
     opacity: 0;
-    cursor: pointer !important;
-
     position: absolute;
+    cursor: pointer !important;
 }
 
 .fileNameDisplay {
+    width: 100%;
+    height: 100%;
+    padding: 8px;
     display: flex;
+    border-radius: 4px;
+    text-align: center;
     align-items: center;
     justify-content: center;
-    cursor: pointer !important;
-    height: 100%;
-    width: 100%;
-    padding: 8px;
-    text-align: center;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    cursor: pointer !important;
     background-color: rgba(255, 255, 255, 0.288);
 }
 
@@ -112,8 +109,8 @@
     }
 
     .css-1x51dt5-MuiInputBase-input-MuiInput-input {
-        margin-bottom: 2px !important;
         height: 25vh !important;
+        margin-bottom: 2px !important;
     }
 
     .contInputFileBoletin {

@@ -7,18 +7,17 @@ import File from '@mui/icons-material/UploadFileRounded';
 
 const AltaBoletines = () => {
 
-  const [values, setValues] = useState(ALTA_BOLETIN_VALUES)
-  const [selectedFileName, setSelectedFileName] = useState('Seleccione un Archivo');
   const [open, setOpen] = useState(false);
-  const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [error, setError] = useState("error");
   const [formattedValue, setFormattedValue] = useState('');
+  const [values, setValues] = useState(ALTA_BOLETIN_VALUES)
+  const [mensaje, setMensaje] = useState("Algo Explotó :/");
+  const [selectedFileName, setSelectedFileName] = useState('Seleccione un Archivo');
 
 
   const obternerLista = (inicio, fin) => {
     const inicioNum = parseInt(inicio, 10)
     const finNum = parseInt(fin, 10)
-
 
     if (!isNaN(inicioNum) && !isNaN(finNum)) {
       return Array.from({ length: finNum - inicioNum + 1 }, (_, index) => inicioNum + index)
@@ -83,26 +82,22 @@ const AltaBoletines = () => {
       setOpen(false); // Cerrar la advertencia si el archivo es un PDF
     }
   };
-
   // Actualizar el formattedValue cuando cambia values.nroResolucion
   useEffect(() => {
     setFormattedValue(formatNroResolucion(values.nroResolucion));
   }, [values.nroResolucion]);
 
   const formatNroResolucion = (inputValue) => {
-
     const formatted = inputValue
       .replace(/[^\d]/g, '') // Elimina caracteres no numéricos
       .replace(/(\d{4})(?!$)/g, '$1-'); // Inserta un guion después de cada grupo de 4 dígitos, excepto al final
     return formatted;
-
   }
 
   const handleResolucionChange = (e) => {
     const inputValue = e.target.value;
     if (inputValue?.length < 150) {
       setFormattedValue(formatNroResolucion(inputValue));
-
     };
   };
 
@@ -112,21 +107,38 @@ const AltaBoletines = () => {
 
   const puedeEnviarFormulario =
     selectedFileName !== 'Seleccione un Archivo' &&
-    (
-      (values.nroDecretoInicial !== "" || values.nroDecretoFinal !== "" || values.nroOrdenanzaInicial !== "" || values.nroOrdenanzaFinal !== "" || values.formattedValue !== "") &&
+    ((
+      values.nroDecretoInicial !== "" ||
+      values.nroDecretoFinal !== "" ||
+      values.nroOrdenanzaInicial !== "" ||
+      values.nroOrdenanzaFinal !== "" ||
+      formattedValue !== ""
+    ) &&
       esNumeroDeResolucionValido()
     );
 
   const handleMensaje = () => {
-    if ((1 < formattedValue.length < 4 || !((/\d{4}$/).test(formattedValue)) && ) ) {
-      setOpen(true);
-      setMensaje("El último número de resolución debe tener 4 dígitos");
-      setError("warning");
-    } 
+    if ((formattedValue.length >= 1 && formattedValue.length < 4)) {
+      if (!((/\d{4}$/).test(formattedValue))) {
+
+        setOpen(true);
+        setMensaje("El último número de resolución debe tener 4 dígitos");
+        setError("warning");
+
+      } else {
+
+        setOpen(true);
+        setMensaje("El número de resolución debe tener 4 dígitos");
+        setError("warning");
+      }
+
+    } else {
+
       setOpen(true)
       setMensaje("Debe llenar al menos un campo y adjuntar un archivo .pdf")
       setError("error")
-    
+
+    }
   }
 
   const handleClose = (event, reason) => {
@@ -246,7 +258,6 @@ const AltaBoletines = () => {
               required
             />
             {selectedFileName === 'Seleccione un Archivo' ? (
-
               <FileUp />
             ) : (
               <File />
@@ -263,7 +274,6 @@ const AltaBoletines = () => {
                 Guardar Boletín
               </Button>
             </>
-
           ) : (
             <>
               <Button type="button" variant="contained" onClick={handleMensaje}>
@@ -275,16 +285,12 @@ const AltaBoletines = () => {
           <Button type="button" variant="contained" onClick={handleMensaje}>
             Guardar Boletín
           </Button>
-
         )
-
-
       }
       <Snackbar
         open={open}
         autoHideDuration={6000}
         onClose={() => setOpen(false)}
-
       >
         <Alert
           onClose={handleClose}
