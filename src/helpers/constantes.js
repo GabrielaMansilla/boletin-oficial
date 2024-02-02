@@ -19,11 +19,7 @@ export const ALTA_BOLETIN_VALUES = {
   archivoBoletin: '',
   nroDecretoInicial: '',
   nroDecretoFinal: '',
-
-  nroResolucionInicial: '',
-  nroResolucionFinal: '',
-  nroLicitacionInicial: '',
-  nroLicitacionFinal: '',
+  nroOrdenanzaInicial: '',
+  nroOrdenanzaFinal: '',
+  nroResolucion: '',
 }
-
-

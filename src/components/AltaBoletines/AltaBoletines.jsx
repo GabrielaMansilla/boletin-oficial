@@ -13,9 +13,14 @@ const AltaBoletines = () => {
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [error, setError] = useState("error");
 
+  const [formattedValue, setFormattedValue] = useState('');
+
+
+
   const obternerLista = (inicio, fin) => {
     const inicioNum = parseInt(inicio, 10)
     const finNum = parseInt(fin, 10)
+
 
     if (!isNaN(inicioNum) && !isNaN(finNum)) {
       return Array.from({ length: finNum - inicioNum + 1 }, (_, index) => inicioNum + index)
@@ -23,6 +28,15 @@ const AltaBoletines = () => {
       return [inicioNum]
     } else {
       return []
+    }
+  }
+
+  const listarResoluciones = (inputString) => {
+    if (typeof inputString === 'string') {
+      const array = inputString.split('-').map(Number);
+      return array
+    } else {
+      console.error('inputString no es una cadena');
     }
   }
 
@@ -34,7 +48,10 @@ const AltaBoletines = () => {
     return obternerLista(values.nroOrdenanzaInicial, values.nroOrdenanzaFinal)
   };
   const obtenerResoluciones = () => {
+
     return obternerLista(values.nroResolucionInicial)
+
+    return listarResoluciones(formattedValue)
   };
 
   const handleGuardarBoletin = () => {
@@ -42,7 +59,11 @@ const AltaBoletines = () => {
     const boletin = {
       decretos: obtenerDecretos(),
       ordenanzas: obtenerOrdenanzas(),
+
       resoluciones: values.nroResolucion,
+
+      resoluciones: obtenerResoluciones(),
+
     };
 
     setOpen(true)
@@ -52,6 +73,9 @@ const AltaBoletines = () => {
     console.log('Boletín a guardar:', boletin);
     setValues(ALTA_BOLETIN_VALUES)
     setSelectedFileName('Seleccione un Archivo')
+
+    setFormattedValue("")
+
   };
 
   const handleChange = (e) => {
@@ -70,7 +94,6 @@ const AltaBoletines = () => {
       setOpen(false); // Cerrar la advertencia si el archivo es un PDF
     }
   };
-
   const handleResolucionChange = (e) => {
     const inputValue = e.target.value;
 
@@ -99,6 +122,49 @@ const AltaBoletines = () => {
     setOpen(true)
     setMensaje("Debe llenar al menos un campo y adjuntar un archivo .pdf")
     setError("error")
+  // Actualizar el formattedValue cuando cambia values.nroResolucion
+  useEffect(() => {
+    setFormattedValue(formatNroResolucion(values.nroResolucion));
+  }, [values.nroResolucion]);
+
+  const formatNroResolucion = (inputValue) => {
+
+    const formatted = inputValue
+      .replace(/[^\d]/g, '') // Elimina caracteres no numéricos
+      .replace(/(\d{4})(?!$)/g, '$1-'); // Inserta un guion después de cada grupo de 4 dígitos, excepto al final
+    return formatted;
+
+  }
+
+  const handleResolucionChange = (e) => {
+    const inputValue = e.target.value;
+    if (inputValue?.length < 150) {
+      setFormattedValue(formatNroResolucion(inputValue));
+
+    };
+  };
+
+  const esNumeroDeResolucionValido = () => {
+    return formattedValue === '' || ((/\d{4}$/).test(formattedValue) !== false);
+  };
+
+  const puedeEnviarFormulario =
+    selectedFileName !== 'Seleccione un Archivo' &&
+    (
+      (values.nroDecretoInicial !== "" || values.nroDecretoFinal !== "" || values.nroOrdenanzaInicial !== "" || values.nroOrdenanzaFinal !== "" || values.formattedValue !== "") &&
+      esNumeroDeResolucionValido()
+    );
+
+  const handleMensaje = () => {
+    if ((1 < formattedValue.length < 4 || !((/\d{4}$/).test(formattedValue)) && ) ) {
+      setOpen(true);
+      setMensaje("El último número de resolución debe tener 4 dígitos");
+      setError("warning");
+    } 
+      setOpen(true)
+      setMensaje("Debe llenar al menos un campo y adjuntar un archivo .pdf")
+      setError("error")
+
   }
 
   const handleClose = (event, reason) => {
@@ -194,7 +260,12 @@ const AltaBoletines = () => {
                 label="Nº de Resolución"
                 className='inputAltaBoletin'
                 type='text'
+
                 value={values.nroResolucion}
+
+                // value={values.nroResolucion}
+                value={formattedValue}
+
                 onChange={handleResolucionChange}
                 name="nroResolucion"
               />
@@ -216,7 +287,7 @@ const AltaBoletines = () => {
               accept="application/pdf"
               required
             />
-            {selectedFileName == 'Seleccione un Archivo' ? (
+            {selectedFileName === 'Seleccione un Archivo' ? (
 
               <FileUp />
             ) : (
@@ -226,12 +297,23 @@ const AltaBoletines = () => {
           </label>
         </Box>
       </div>
+
       {((selectedFileName !== 'Seleccione un Archivo') && (values.nroDecretoInicial !== "" || values.nroDecretoFinal !== "" || values.nroResolucionInicial !== "" || values.nroResolucionFinal !== "" || values.nroLicitacionInicial !== "" || values.nroLicitacionFinal !== "")) ?
         (
           (selectedFileName !== '' && (selectedFileName.toLowerCase().endsWith('.pdf'))) ? (
             <Button type="button" variant="contained" onClick={handleGuardarBoletin}>
               Guardar Boletín
             </Button>
+      {puedeEnviarFormulario ?
+        (
+          (selectedFileName !== '' && (selectedFileName.toLowerCase().endsWith('.pdf'))) ? (
+            <>
+              <Button type="button" variant="contained" onClick={handleGuardarBoletin}>
+                Guardar Boletín
+              </Button>
+            </>
+
+
           ) : (
             <>
               <Button type="button" variant="contained" onClick={handleMensaje}>
@@ -265,6 +347,6 @@ const AltaBoletines = () => {
       </Snackbar>
     </Box >
   )
-}
 
-export default AltaBoletines
+}
+export default AltaBoletines;
