@@ -12,7 +12,6 @@ const AltaBoletines = () => {
   const [open, setOpen] = useState(false);
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [error, setError] = useState("error");
-
   const [formattedValue, setFormattedValue] = useState('');
 
 
@@ -51,7 +50,7 @@ const AltaBoletines = () => {
 
     return obternerLista(values.nroResolucionInicial)
 
-    return listarResoluciones(formattedValue)
+   
   };
 
   const handleGuardarBoletin = () => {
@@ -94,35 +93,8 @@ const AltaBoletines = () => {
       setOpen(false); // Cerrar la advertencia si el archivo es un PDF
     }
   };
-  const handleResolucionChange = (e) => {
-    const inputValue = e.target.value;
-
-    // Evita que el usuario ingrese guiones manualmente
-    if (inputValue.includes('-')) {
-      // Puedes mostrar un mensaje de advertencia o simplemente ignorar la entrada del usuario
-      return;
-    } else {
-
-
-      // Lógica para manejar el formato "1023-1024-1026-1027"
-      const formattedValue = inputValue
-        .replace(/[^\d-]/g, '')  // Elimina caracteres no numéricos ni guiones
-        .replace(/-{2,}/g, '-')  // Reemplaza dos o más guiones consecutivos con solo uno
-        .replace(/(\d{4})(?=\d)/g, '$1-')  // Inserta un guion solo antes de cada grupo de 4 dígitos, excepto al final
-
-        const maxLength = 200;  // Longitud máxima del número total
-        
-        // Limita la longitud total
-        const truncatedValue = formattedValue.slice(0, maxLength);
-        handleChange({ target: { name: "nroResolucion", value: truncatedValue } });
-      }
-  }
-
-  const handleMensaje = () => {
-    setOpen(true)
-    setMensaje("Debe llenar al menos un campo y adjuntar un archivo .pdf")
-    setError("error")
-  // Actualizar el formattedValue cuando cambia values.nroResolucion
+  
+    // Actualizar el formattedValue cuando cambia values.nroResolucion
   useEffect(() => {
     setFormattedValue(formatNroResolucion(values.nroResolucion));
   }, [values.nroResolucion]);
@@ -156,7 +128,7 @@ const AltaBoletines = () => {
     );
 
   const handleMensaje = () => {
-    if ((1 < formattedValue.length < 4 || !((/\d{4}$/).test(formattedValue)) && ) ) {
+    if ((1 < formattedValue.length < 4 || !((/\d{4}$/).test(formattedValue)) ) ) {
       setOpen(true);
       setMensaje("El último número de resolución debe tener 4 dígitos");
       setError("warning");
@@ -261,7 +233,6 @@ const AltaBoletines = () => {
                 className='inputAltaBoletin'
                 type='text'
 
-                value={values.nroResolucion}
 
                 // value={values.nroResolucion}
                 value={formattedValue}
@@ -297,13 +268,6 @@ const AltaBoletines = () => {
           </label>
         </Box>
       </div>
-
-      {((selectedFileName !== 'Seleccione un Archivo') && (values.nroDecretoInicial !== "" || values.nroDecretoFinal !== "" || values.nroResolucionInicial !== "" || values.nroResolucionFinal !== "" || values.nroLicitacionInicial !== "" || values.nroLicitacionFinal !== "")) ?
-        (
-          (selectedFileName !== '' && (selectedFileName.toLowerCase().endsWith('.pdf'))) ? (
-            <Button type="button" variant="contained" onClick={handleGuardarBoletin}>
-              Guardar Boletín
-            </Button>
       {puedeEnviarFormulario ?
         (
           (selectedFileName !== '' && (selectedFileName.toLowerCase().endsWith('.pdf'))) ? (
