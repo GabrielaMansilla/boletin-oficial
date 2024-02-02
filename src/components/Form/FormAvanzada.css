@@ -55,8 +55,13 @@
       }
       
 .btnAvanzada{
- height: 50px;
+height: 50px;
 background-color: #2eb1ff !important;
 width: fit-content !important;
+margin-bottom: 10px;
+flex-direction:column;
+padding-bottom: 20px !important;
+align-items: center;
+border-radius: 20px;
 }
     

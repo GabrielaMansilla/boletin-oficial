@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import { BUSCADOR_AVANZADA_VALUES } from "../../helpers/constantes";
-import "./FormAvanzada.css"
+import "./FormAvanzada.css";
 
 export default function FormAvanzada(algo) {
   const [open, setOpen] = React.useState(false);
@@ -21,7 +21,19 @@ export default function FormAvanzada(algo) {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  
+  const handleClear = () => {
+    setValues(BUSCADOR_AVANZADA_VALUES);
+    handleClose(); 
+  };
+
+  const handleBuscarNorma = () => {
+
+    console.log('Valores de búsqueda:', values);
+
+    setValues(BUSCADOR_AVANZADA_VALUES);
+    handleClose(); 
+};
+
   return (
     <div>
       <Button className="text-light" onClick={handleOpen}>
@@ -83,11 +95,11 @@ export default function FormAvanzada(algo) {
               onChange={handleChange}
               InputLabelProps={{ shrink: true }}
             />
-
-            <Button variant="contained" className="btnAvanzada" type="submit">
+  
+            <Button variant="contained" className="btnAvanzada" type="submit" onClick={handleClear}>
               Limpiar
             </Button>
-            <Button variant="contained" className="btnAvanzada" type="submit">
+            <Button variant="contained" className="btnAvanzada" type="submit" onClick={handleBuscarNorma}>
               Buscar
             </Button>
           </Box>
