@@ -1,36 +1,36 @@
 .navCont {
     /* background-color: red; */
     /* background-color: #0066ff; */
-    background-color: #ffff;
-    flex-direction: column;
-    height: auto;
     width: 100%;
-    max-width: 100% !important;
+    height: auto;
     display: flex;
-    justify-content: center !important;
     align-items: center;
-    border-bottom: solid 1px;
-    border-color: #3333;
     padding-bottom: 25px;
+    flex-direction: column;
+    border-bottom: solid 1px;
+    background-color: #ffff;
+    max-width: 100% !important;
+    border-color: #3333 !important;
+    justify-content: center !important;
 }
 
-.contIcono{
-    position: absolute;
+.contIcono {
     right: 25px;
-    justify-content: end;
     height: 30px;
+    position: absolute;
+    justify-content: end;
 }
-.iconoLogin{
+
+.iconoLogin {
+    cursor: pointer;
     width: 35px !important;
     height: 35px !important;
-    cursor: pointer;
 }
 
 .contLogo {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
 }
 
 .textMuni {
@@ -38,23 +38,37 @@
     flex-direction: row;
 }
 
+.boletinNavCont  {
+    width: 100%;
+    font-size: 40px;
+    margin-bottom: 0;
+    align-items:  center;
+    justify-content: center;
+    display: flex !important;
+    /* font-weight: 300 !important; */
+}
+
+.boletinNav {
+    width: fit-content;
+    border-bottom: solid 1px;
+    border-color: #333;
+}
 
 .contLogo h4,
 h1 {
-    font-weight: 600 !important;
-    color: #333 !important;
     margin-top: 0 !important;
+    color: #333 !important;
+    font-weight: 600 !important;
 }
 
 .contLogo h4 {
+    height: 25px;
     font-size: 23px !important;
     margin-bottom: 0 !important;
-    height: 25px;
 }
 
 .contLogo h1 {
     font-size: 40px !important;
-
 }
 
 .logoNav {
