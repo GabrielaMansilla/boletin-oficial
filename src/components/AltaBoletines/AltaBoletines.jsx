@@ -57,11 +57,7 @@ const AltaBoletines = () => {
     const boletin = {
       decretos: obtenerDecretos(),
       ordenanzas: obtenerOrdenanzas(),
-
-      resoluciones: values.nroResolucion,
-
       resoluciones: obtenerResoluciones(),
-
     };
 
     setOpen(true)
@@ -71,9 +67,7 @@ const AltaBoletines = () => {
     console.log('Boletín a guardar:', boletin);
     setValues(ALTA_BOLETIN_VALUES)
     setSelectedFileName('Seleccione un Archivo')
-
     setFormattedValue("")
-
   };
 
   const handleChange = (e) => {
@@ -168,23 +162,40 @@ const AltaBoletines = () => {
     >
       <div className='contAltaBoletines'>
         <Box className="formGroup flex-col ">
+            <div className='contRango'>
 
-          <h3 className='nroBoletin'>Nro de Boletin: 4465
-            {/* ´ {values.nroBoletin}´ */}
-          </h3>
-          {/* <TextField
-          label="Nro de Boletín"
-          className='inputAltaBoletin'
-          type='number'
-          value={values.nroBoletin}
-          onChange={handleChange}
-          inputProps={{ min: "10000", max: "99999" }}
-          name="nroBoletin"
-        /> */}
+            <h5>Boletines:</h5>
+            <div>
+               <TextField
+                        label="Nro de Boletín"
+                        variant="outlined"
+                        className="iputAltaBoletin"
+                        type="number"
+                        value={values.nroBoletin}
+                        onChange={handleChange}
+                        inputProps={{ min: "0" }}
+                        name="nroBoletin"
+                    />
+
+                       <TextField
+                        label="Fecha"
+                        variant="outlined"
+                        name="fecha"
+                        type="date"
+                        className="iputAltaBoletin ms-3"
+                        value={values.fecha}
+                        onChange={handleChange}
+                        InputLabelProps={{ shrink: true }}
+                                  />           
+                           </div>
+        
+                        </div>
+                      
+  
 
           <div className='contRango'>
 
-            <h5>Decreto:</h5>
+            <h5>Decretos:</h5>
 
             <div >
               <TextField
@@ -244,11 +255,8 @@ const AltaBoletines = () => {
                 label="Nº de Resolución"
                 className='inputAltaBoletin'
                 type='text'
-
-
                 // value={values.nroResolucion}
                 value={formattedValue}
-
                 onChange={handleResolucionChange}
                 name="nroResolucion"
               />
