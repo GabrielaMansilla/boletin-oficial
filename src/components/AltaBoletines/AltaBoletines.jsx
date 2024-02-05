@@ -15,7 +15,6 @@ const AltaBoletines = () => {
   const [selectedFileName, setSelectedFileName] = useState('Seleccione un Archivo');
 
 
-
   const obternerLista = (inicio, fin) => {
     const inicioNum = parseInt(inicio, 10)
     const finNum = parseInt(fin, 10)
@@ -29,14 +28,14 @@ const AltaBoletines = () => {
     }
   }
 
-  const listarResoluciones = (inputString) => {
-    if (typeof inputString === 'string') {
-      const array = inputString.split('-').map(Number);
-      return array
-    } else {
-      console.error('inputString no es una cadena');
-    }
-  }
+  // const listarResoluciones = (inputString) => {
+  //   if (typeof inputString === 'string') {
+  //     const array = inputString.split('-').map(Number);
+  //     return array
+  //   } else {
+  //     console.error('inputString no es una cadena');
+  //   }
+  // }
 
   const obtenerDecretos = () => {
     return obternerLista(values.nroDecretoInicial, values.nroDecretoFinal)
@@ -45,11 +44,9 @@ const AltaBoletines = () => {
   const obtenerOrdenanzas = () => {
     return obternerLista(values.nroOrdenanzaInicial, values.nroOrdenanzaFinal)
   };
+
   const obtenerResoluciones = () => {
-
     return obternerLista(values.nroResolucionInicial)
-
-   
   };
 
   const handleGuardarBoletin = () => {
@@ -118,7 +115,7 @@ const AltaBoletines = () => {
       values.nroOrdenanzaFinal !== "" ||
       formattedValue !== ""
     ) &&
-      esNumeroDeResolucionValido()
+      esNumeroDeResolucionValido() && values.fechaBoletin !== "" && values.nroBoletin !== ""
     );
 
   const handleMensaje = () => {
@@ -136,195 +133,205 @@ const AltaBoletines = () => {
         setError("warning");
       }
 
-    } else {
+    } else if(values.nroBoletin === "") {
+      
+        setOpen(true)
+        setMensaje("Debe ingresar el Nº de Boletín")
+        setError("error")
 
-      setOpen(true)
-      setMensaje("Debe llenar al menos un campo y adjuntar un archivo .pdf")
-      setError("error")
+      }else if(values.fechaBoletin === ""){
+        setOpen(true)
+        setMensaje("Debe ingresar la fehca del Boletín")
+        setError("warning")
 
+      }else{
+        setOpen(true)
+        setMensaje("Debe llenar al menos un campo y adjuntar un archivo .pdf")
+        setError("error")
+
+      }
     }
-  }
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
-
-  return (
-    <Box
-      component="form"
-      // sx={{ '& > :not(style)': { m: 1, width: '25ch' }, }}
-      noValidate
-      autoComplete="off"
-      className='contBoxAltaBoletines container'
-    >
-      <div className='contAltaBoletines'>
-        <Box className="formGroup flex-col ">
-            <div className='contRango'>
-
-            <h5>Boletines:</h5>
-            <div>
-               <TextField
-                        label="Nro de Boletín"
-                        variant="outlined"
-                        className="iputAltaBoletin"
-                        type="number"
-                        value={values.nroBoletin}
-                        onChange={handleChange}
-                        inputProps={{ min: "0" }}
-                        name="nroBoletin"
-                    />
-
-                       <TextField
-                        label="Fecha"
-                        variant="outlined"
-                        name="fecha"
-                        type="date"
-                        className="iputAltaBoletin ms-3"
-                        value={values.fecha}
-                        onChange={handleChange}
-                        InputLabelProps={{ shrink: true }}
-                                  />           
-                           </div>
-        
-                        </div>
-                      
   
 
-          <div className='contRango'>
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setOpen(false);
+    };
 
-            <h5>Decretos:</h5>
+    return (
+      <Box
+        component="form"
+        // sx={{ '& > :not(style)': { m: 1, width: '25ch' }, }}
+        noValidate
+        autoComplete="off"
+        className='contBoxAltaBoletines container'
+      >
+        <div className='contAltaBoletines'>
+          <Box className="formGroup flex-col ">
+           
+            <div className='contRango'>
 
-            <div >
-              <TextField
-                label="Nº de Decreto inicial"
-                className='inputAltaBoletin'
-                type='number'
-                value={values.nroDecretoInicial}
-                onChange={handleChange}
-                inputProps={{ min: "1000", max: "999999", minLength: 4, maxLength: 6 }}
-                name="nroDecretoInicial"
-              />
-              <TextField
-                label="Nº de Decreto Final"
-                className='inputAltaBoletin ms-3'
-                type='number'
-                value={values.nroDecretoFinal}
-                onChange={handleChange}
-                inputProps={{ min: "1000", max: "999999", minLength: 4, maxLength: 6 }}
-                name="nroDecretoFinal"
-              />
-            </div>
-          </div>
+              <h5>Boletin:</h5>
+              <div>
+                <TextField
+                  label="Nro de Boletín"
+                  variant="outlined"
+                  className="inputAltaBoletin"
+                  type="number"
+                  value={values.nroBoletin}
+                  onChange={handleChange}
+                  inputProps={{ min: "0" }}
+                  name="nroBoletin"
+                />
 
-          <div className='contRango'>
-
-            <h5>Ordenanza:</h5>
-
-            <div>
-              <TextField
-                label="Nº de Ordenanza Inicial"
-                className='inputAltaBoletin'
-                type='number'
-                value={values.nroOrdenanzaInicial}
-                onChange={handleChange}
-                inputProps={{ min: "1000", max: "999999", minLength: 4, maxLength: 6 }}
-                name="nroOrdenanzaInicial"
-              />
-              <TextField
-                label="Nº de Ordenanza Final"
-                className='inputAltaBoletin ms-3'
-                type='number'
-                value={values.nroOrdenanzaFinal}
-                onChange={handleChange}
-                inputProps={{ min: "1000", max: "999999", minLength: 4, maxLength: 6 }}
-                name="nroOrdenanzaFinal"
-              />
+                <TextField
+                  label="Fecha Boletin"
+                  variant="outlined"
+                  name="fechaBoletin"
+                  type="date"
+                  className="inputAltaBoletin ms-3"
+                  value={values.fechaBoletin}
+                  onChange={handleChange}
+                  InputLabelProps={{ shrink: true }}
+                />
+              </div>
 
             </div>
-          </div>
 
-          <div className='contRango'>
+            <div className='contRango'>
 
-            <h5>Resolución:</h5>
+              <h5>Decretos:</h5>
 
-            <div >
-              <TextField
-                label="Nº de Resolución"
-                className='inputAltaBoletin'
-                type='text'
-                // value={values.nroResolucion}
-                value={formattedValue}
-                onChange={handleResolucionChange}
-                name="nroResolucion"
-              />
+              <div >
+                <TextField
+                  label="Nº de Decreto inicial"
+                  className='inputAltaBoletin'
+                  type='number'
+                  value={values.nroDecretoInicial}
+                  onChange={handleChange}
+                  inputProps={{ min: "1000", max: "999999", minLength: 4, maxLength: 6 }}
+                  name="nroDecretoInicial"
+                />
+                <TextField
+                  label="Nº de Decreto Final"
+                  className='inputAltaBoletin ms-3'
+                  type='number'
+                  value={values.nroDecretoFinal}
+                  onChange={handleChange}
+                  inputProps={{ min: "1000", max: "999999", minLength: 4, maxLength: 6 }}
+                  name="nroDecretoFinal"
+                />
+              </div>
             </div>
-          </div>
-        </Box>
 
-        {/* <TextareaAutosize
+            <div className='contRango'>
+
+              <h5>Ordenanza:</h5>
+
+              <div>
+                <TextField
+                  label="Nº de Ordenanza Inicial"
+                  className='inputAltaBoletin'
+                  type='number'
+                  value={values.nroOrdenanzaInicial}
+                  onChange={handleChange}
+                  inputProps={{ min: "1000", max: "999999", minLength: 4, maxLength: 6 }}
+                  name="nroOrdenanzaInicial"
+                />
+                <TextField
+                  label="Nº de Ordenanza Final"
+                  className='inputAltaBoletin ms-3'
+                  type='number'
+                  value={values.nroOrdenanzaFinal}
+                  onChange={handleChange}
+                  inputProps={{ min: "1000", max: "999999", minLength: 4, maxLength: 6 }}
+                  name="nroOrdenanzaFinal"
+                />
+
+              </div>
+            </div>
+
+            <div className='contRango'>
+
+              <h5>Resolución:</h5>
+
+              <div >
+                <TextField
+                  label="Nº de Resolución"
+                  className='inputAltaBoletin'
+                  type='text'
+                  // value={values.nroResolucion}
+                  value={formattedValue}
+                  onChange={handleResolucionChange}
+                  name="nroResolucion"
+                />
+              </div>
+            </div>
+          </Box>
+
+          {/* <TextareaAutosize
         minRows={10} className='textAreaBoletines' /> */}
 
-        <Box className="contInputFileBoletin col-4 W-100 pt-5 pb-4">
-          <label className='fileNameDisplay flex-column'>{selectedFileName}
-            <Input
-              className="inputFileAltaBoletin"
-              type='file'
-              name="fileBoletin"
-              value={values.archivoBoletin}
-              onChange={handleChangeFile}
-              accept="application/pdf"
-              required
-            />
-            {selectedFileName === 'Seleccione un Archivo' ? (
-              <FileUp />
+          <Box className="contInputFileBoletin col-4 W-100 pt-5 pb-4">
+            <label className='fileNameDisplay flex-column'>{selectedFileName}
+              <Input
+                className="inputFileAltaBoletin"
+                type='file'
+                name="fileBoletin"
+                value={values.archivoBoletin}
+                onChange={handleChangeFile}
+                accept="application/pdf"
+                required
+              />
+              {selectedFileName === 'Seleccione un Archivo' ? (
+                <FileUp />
+              ) : (
+                <File />
+              )
+              }
+            </label>
+          </Box>
+        </div>
+        {puedeEnviarFormulario ?
+          (
+            (selectedFileName !== '' && (selectedFileName.toLowerCase().endsWith('.pdf'))) ? (
+              <>
+                <Button type="button" variant="contained" onClick={handleGuardarBoletin}>
+                  Guardar Boletín
+                </Button>
+              </>
             ) : (
-              <File />
+              <>
+                <Button type="button" variant="contained" onClick={handleMensaje}>
+                  Guardar Boletín
+                </Button>
+
+              </>
             )
-            }
-          </label>
-        </Box>
-      </div>
-      {puedeEnviarFormulario ?
-        (
-          (selectedFileName !== '' && (selectedFileName.toLowerCase().endsWith('.pdf'))) ? (
-            <>
-              <Button type="button" variant="contained" onClick={handleGuardarBoletin}>
-                Guardar Boletín
-              </Button>
-            </>
           ) : (
-            <>
-              <Button type="button" variant="contained" onClick={handleMensaje}>
-                Guardar Boletín
-              </Button>
-
-            </>
+            <Button type="button" variant="contained" onClick={handleMensaje}>
+              Guardar Boletín
+            </Button>
           )
-        ) : (
-          <Button type="button" variant="contained" onClick={handleMensaje}>
-            Guardar Boletín
-          </Button>
-        )
-      }
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={() => setOpen(false)}
-      >
-        <Alert
-          onClose={handleClose}
-          severity={error}
-          variant="filled"
-          sx={{ width: '100%' }}
+        }
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={() => setOpen(false)}
         >
-          {mensaje}
-        </Alert>
-      </Snackbar>
-    </Box >
-  )
+          <Alert
+            onClose={handleClose}
+            severity={error}
+            variant="filled"
+            sx={{ width: '100%' }}
+          >
+            {mensaje}
+          </Alert>
+        </Snackbar>
+      </Box >
+    )
 
-}
-export default AltaBoletines;
+  }
+  export default AltaBoletines;

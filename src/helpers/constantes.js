@@ -4,18 +4,18 @@ export const LOGIN_VALUES = {
 };
 
   export const BUSCADOR_VALUES = {
-    fecha: '',
-    nroBoletin: '',
-    tipo: '',
+    fechaBusqueda: '',
+    nroBoletinBusqueda: '',
 };
 export const BUSCADOR_AVANZADA_VALUES = {
-  fecha: '',
-  nroNorma: '',
-  tipo: '',
+  fechaBusquedaAvanzada: '',
+  nroNormaBusquedaAvanzada: '',
+  tipoBusquedaAvanzada: '',
 };
 
 export const ALTA_BOLETIN_VALUES = {
   nroBoletin: '',
+  fechaBoletin: '',
   archivoBoletin: '',
   nroDecretoInicial: '',
   nroDecretoFinal: '',

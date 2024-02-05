@@ -46,7 +46,8 @@
     flex-direction: row;
     width: 50% !important;
     align-items: center;
-    justify-content: end;
+    flex: end;
+    /* justify-content: end; */
 }
 
 .MuiOutlinedInput-notchedOutline {
@@ -62,8 +63,8 @@
 .btnBuscador,
 .btnBuscadorAvanzada {
     height: 50px;
-    margin-left: 20px !important;
-    width: fit-content !important;
+    margin-left: 15px !important;
+    width: 50% !important;
     background-color: #2eb1ff !important;
 }
 
@@ -82,9 +83,26 @@
 
 }
 
+@media (max-width: 775px) {
+    .inputCont{
+        width: 100% !important;
+        flex-direction: column !important;
+    }
+    .inputsBuscadores, .botonesBuscadores{
+        width: 100% !important;
+
+    }
+    .btnBuscador, .btnBuscadorAvanzada {
+        width: 50% !important;
+        
+    }
+    
+}
+
+
 @media (min-width: 730px) and (max-width: 770px) {
     .btnBuscador {
-        width: 140px !important;
+        width: 50% !important;
     }
 }
 
@@ -111,6 +129,7 @@
 
     .inputCont {
         padding-bottom: 15px;
+        width: 100% !important ;
         flex-direction: column !important;
     }
 

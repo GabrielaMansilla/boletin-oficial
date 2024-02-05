@@ -17,13 +17,14 @@
 
 /* INPUTFILE*/
 .css-1x51dt5-MuiInputBase-input-MuiInput-input {
-    height: 280px !important;
+    height: 365px !important;
 }
 
 .formGroup {
     width: 50%;
     display: flex;
-    align-items: start;
+    /* align-items: start; */
+    flex: start;
     margin-bottom: 30px;
     flex-direction: column;
 
@@ -33,7 +34,8 @@
     width: 100;
     display: flex;
     color: #ffffff;
-    align-items: start;
+    /* align-items: start; */
+    flex:start
 }
 
 .contRango {
@@ -45,6 +47,12 @@
     width: 100%;
     display: flex;
     flex-direction: row;
+    margin-top: 5px;
+
+}
+
+label {
+    margin-top: 4px !important;
 }
 
 .contRango {
@@ -97,7 +105,7 @@
     background-color: rgba(255, 255, 255, 0.288);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     .contAltaBoletines {
         align-items: center;
         flex-direction: column;
@@ -116,6 +124,18 @@
     .contInputFileBoletin {
         width: 80vw !important;
         height: 40vh !important;
+    }
+}
+
+@media (min-width: 660px) and (max-width: 767px) {
+    .css-1x51dt5-MuiInputBase-input-MuiInput-input {
+        height: 25vh !important;
+        margin-bottom: 2px !important;
+    }
+
+    .fileNameDisplay {
+        width: 60vw;
+        align-self: center;
     }
 
 }

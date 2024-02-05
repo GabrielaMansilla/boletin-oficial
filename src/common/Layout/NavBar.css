@@ -50,6 +50,7 @@
 
 .boletinNav {
     width: fit-content;
+    text-align: center;
     border-bottom: solid 1px;
     border-color: #333;
 }
