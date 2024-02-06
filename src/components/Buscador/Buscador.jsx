@@ -42,7 +42,7 @@ const Buscador = () => {
     if (values.nroBoletinBusqueda === "" && values.fechaBusqueda === "") {
 
       setOpen(true)
-      setMensaje("Debe ingresar el Nº de Boletín o la Fecha de Publicación")
+      setMensaje("Debe ingresar el Nº de Boletín o Fecha de Publicación")
       setError("error")
 
     } else {
@@ -87,12 +87,12 @@ const Buscador = () => {
             <TextField
               label="Fecha"
               variant="outlined"
-              name="fechaBusqueda"
               type="date"
               className="inputBuscador"
               value={values.fechaBusqueda}
               onChange={handleChange}
               InputLabelProps={{ shrink: true }}
+              name="fechaBusqueda"
             />
           </div>
           <div className="botonesBuscadores">

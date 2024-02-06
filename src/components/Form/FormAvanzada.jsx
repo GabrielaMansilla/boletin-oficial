@@ -116,18 +116,18 @@ export default function FormAvanzada() {
               value={values.nroNormaBusquedaAvanzada}
               onChange={handleChange}
               inputProps={{ min: "0" }}
-              name="nroNorma"
+              name="nroNormaBusquedaAvanzada"
             />
 
             <TextField
               label="Fecha"
               variant="outlined"
-              name="fecha"
               type="date"
               className="inputBuscador"
               value={values.fechaBusquedaAvanzada}
               onChange={handleChange}
               InputLabelProps={{ shrink: true }}
+              name="fechaBusquedaAvanzada"
             />
 
             {values.tipoBusquedaAvanzada !== "" ? (
