@@ -47,7 +47,7 @@
 
 .seguinos {
   display: flex;
-  /* justify-content: end; */
+  /* justify-c ontent: end; */
   flex:end;
   align-items: center !important;
 

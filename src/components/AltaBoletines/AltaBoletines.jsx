@@ -13,6 +13,7 @@ import { ALTA_BOLETIN_VALUES } from "../../helpers/constantes";
 import FileUp from "@mui/icons-material/FileUpload";
 import File from "@mui/icons-material/UploadFileRounded";
 import axios from "../../config/axios";
+import { ModalAltaBoletines } from "../ModalAltaBoletines/ModalAltaBoletines";
 
 const AltaBoletines = () => {
   const [open, setOpen] = useState(false);
@@ -110,6 +111,8 @@ const AltaBoletines = () => {
     values.nroBoletin !== "";
 
   const handleMensaje = () => {
+    <ModalAltaBoletines />;
+
     if (formattedValue.length >= 1 && formattedValue.length < 4) {
       if (!/\d{4}$/.test(formattedValue)) {
         setOpen(true);
@@ -144,7 +147,7 @@ const AltaBoletines = () => {
 
   const handleGuardarBoletin = async () => {
     // const enviarDatos = async () => {
-
+    <ModalAltaBoletines />;
     try {
       const resolucionSinGuiones = resolucionArray.map((item) =>
         parseInt(item)
