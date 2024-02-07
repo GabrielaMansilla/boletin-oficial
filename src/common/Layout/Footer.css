@@ -1,0 +1,60 @@
+.footerCont {
+  left: 0px;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  border-color: #3333 !important;
+  border-top: solid 1px;
+  justify-content: center;
+  margin-top: 20px !important;
+  font-family: 13px MavenPro_Regular;
+}
+
+.iconosRedes {
+  display: flex;
+  font-size: 20px;
+  align-self: center;
+  justify-content: center;
+}
+
+.logoFooter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoFooter h1 {
+  font-size: 45px !important;
+
+}
+
+.logoFooter h4 {
+  height: 20px;
+  text-align: left;
+  color: #333 !important;
+  margin-top: 0 !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  margin-bottom: 0 !important;
+}
+
+.logoRedesFooter {
+  height: 20px;
+  margin-top: -5px !important;
+}
+
+.seguinos {
+  display: flex;
+  /* justify-content: end; */
+  flex:end;
+  align-items: center !important;
+
+}
+
+@media (max-width: 770px) {
+  .seguinos {
+    justify-content: center !important;
+  }
+}
