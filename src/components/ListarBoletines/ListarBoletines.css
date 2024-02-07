@@ -11,10 +11,11 @@
 
 }
 
-.asdasd {
+/* .contGrid {
+    background-color: RED;
     display: flex;
     justify-content: left !important;
-}
+} */
 
 .boletin {
     display: flex;

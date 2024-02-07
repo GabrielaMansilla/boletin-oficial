@@ -24,5 +24,4 @@ export const ALTA_BOLETIN_VALUES = {
   nroResolucion: "",
   nroDecreto: "",
   nroOrdenanza: "",
-  nroResolucion: "",
 };

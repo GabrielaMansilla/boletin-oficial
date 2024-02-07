@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./AltaBoletines.css";
 import {
   Alert,
@@ -23,6 +23,7 @@ const AltaBoletines = () => {
   const [selectedFileName, setSelectedFileName] = useState(
     "Seleccione un Archivo"
   );
+  const [resolucionArray, setResolucionArray] = useState([]);
 
   const obternerLista = (inicio, fin) => {
     const inicioNum = parseInt(inicio, 10);
@@ -38,25 +39,6 @@ const AltaBoletines = () => {
     } else {
       return [];
     }
-  };
-
-  const handleGuardarBoletin = async () => {
-    // const enviarDatos = async () => {
-
-    try {
-      values.nroDecreto = obtenerDecretos();
-      values.nroOrdenanza = obtenerOrdenanzas();
-      values.nroResolucion = obtenerResoluciones();
-
-      const respuesta = await axios.post("/boletin/alta", values);
-      console.log(respuesta);
-      setValues(ALTA_BOLETIN_VALUES);
-      setSelectedFileName("Seleccione un Archivo");
-      setFormattedValue("");
-      setOpen(true);
-      setMensaje("Boletin generado con éxito!");
-      setError("success");
-    } catch (error) {}
   };
 
   const obtenerDecretos = () => {
@@ -106,7 +88,9 @@ const AltaBoletines = () => {
   const handleResolucionChange = (e) => {
     const inputValue = e.target.value;
     if (inputValue?.length < 150) {
-      setFormattedValue(formatNroResolucion(inputValue));
+      const formatted = formatNroResolucion(inputValue);
+      setFormattedValue(formatted);
+      setResolucionArray(formatted.split("-").filter(Boolean));
     }
   };
 
@@ -156,6 +140,29 @@ const AltaBoletines = () => {
       return;
     }
     setOpen(false);
+  };
+
+  const handleGuardarBoletin = async () => {
+    // const enviarDatos = async () => {
+
+    try {
+      const resolucionSinGuiones = resolucionArray.map((item) =>
+        parseInt(item)
+      );
+      values.nroDecreto = obtenerDecretos();
+      values.nroOrdenanza = obtenerOrdenanzas();
+      values.nroResolucion = resolucionSinGuiones;
+      console.log(resolucionSinGuiones);
+
+      const respuesta = await axios.post("/boletin/alta", values);
+      console.log(respuesta);
+      setValues(ALTA_BOLETIN_VALUES);
+      setSelectedFileName("Seleccione un Archivo");
+      setFormattedValue("");
+      setOpen(true);
+      setMensaje("Boletin generado con éxito!");
+      setError("success");
+    } catch (error) {}
   };
 
   return (
@@ -291,7 +298,7 @@ const AltaBoletines = () => {
             <Input
               className="inputFileAltaBoletin"
               type="file"
-              name="fileBoletin"
+              name="archivoBoletin"
               value={values.archivoBoletin}
               onChange={handleChangeFile}
               accept="application/pdf"
