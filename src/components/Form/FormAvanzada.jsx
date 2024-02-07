@@ -1,48 +1,82 @@
 import React, { useState } from "react";
 import {
+  Alert,
   Box,
   Button,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
+  Snackbar,
   TextField,
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import { BUSCADOR_AVANZADA_VALUES } from "../../helpers/constantes";
 import "./FormAvanzada.css";
 
-export default function FormAvanzada(algo) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export default function FormAvanzada() {
+
   const [values, setValues] = useState(BUSCADOR_AVANZADA_VALUES);
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState("error");
+  const [mensajeAlert, setMensajeAlert] = useState("Algo Explotó :/");
+
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const handleClear = () => {
-    setValues(BUSCADOR_AVANZADA_VALUES);
-    handleClose(); 
-  };
+  // const handleClear = () => {
+  //   setValues(BUSCADOR_AVANZADA_VALUES);
+  //   handleClose(); 
+  // };
 
   const handleBuscarNorma = () => {
 
     console.log('Valores de búsqueda:', values);
-
+    setOpen(true)
+    setMensajeAlert("Busqueda realizada con éxito!")
+    setError("success")
     setValues(BUSCADOR_AVANZADA_VALUES);
-    handleClose(); 
-};
+    handleCloseModal();
+    console.log("hola")
+  };
+
+
+  const handleMensaje = () => {
+    if (values.tipoBusquedaAvanzada === "") {
+
+      setOpen(true)
+      setMensajeAlert("Debe Seleccionar el Tipo de Norma")
+      setError("error")
+
+    } else {
+      setOpen(true)
+      setMensajeAlert("Debe llenar al menos un campo")
+      setError("error")
+
+    }
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   return (
     <div>
-      <Button className="text-light" onClick={handleOpen}>
+      <Button className="text-light" onClick={handleOpenModal}>
         Busqueda Avanzada
       </Button>
       <Modal
-        open={open}
-        onClose={handleClose}
-       
+        open={openModal}
+        onClose={handleCloseModal}
+
       >
         <Box className="modal-busqueda-avanzada">
           <h3 className="tituloBusquedaAvanzada">Búsqueda Avanzada</h3>
@@ -51,20 +85,20 @@ export default function FormAvanzada(algo) {
             sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
             noValidate
             autoComplete="off"
-           
+
           >
-            <FormControl sx={{ m: 1, minWidth: 80 }}>
-              <InputLabel id="demo-simple-select-autowidth-label">
+            <FormControl sx={{ m: 1, minWidth: 80 }} className="ms-3">
+              <InputLabel id="demo-simple-select-autowidth-label" >
                 Tipo de Norma
               </InputLabel>
               <Select
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
-                value={values.tipo}
+                value={values.tipoBusquedaAvanzada}
                 onChange={handleChange}
                 autoWidth
                 label="Tipo de Norma"
-                name="tipo"
+                name="tipoBusquedaAvanzada"
               >
                 <MenuItem value="">
                   <em>--Seleccione--</em>
@@ -79,28 +113,51 @@ export default function FormAvanzada(algo) {
               variant="outlined"
               className="inputBuscador"
               type="number"
-              value={values.nroNorma}
+              value={values.nroNormaBusquedaAvanzada}
               onChange={handleChange}
               inputProps={{ min: "0" }}
-              name="nroNorma"
+              name="nroNormaBusquedaAvanzada"
             />
 
             <TextField
               label="Fecha"
               variant="outlined"
-              name="fecha"
               type="date"
               className="inputBuscador"
-              value={values.fecha}
+              value={values.fechaBusquedaAvanzada}
               onChange={handleChange}
               InputLabelProps={{ shrink: true }}
+              name="fechaBusquedaAvanzada"
             />
-              <Button variant="contained" className="btnAvanzada" type="submit" onClick={handleBuscarNorma}>
-              Buscar
-            </Button>
+
+            {values.tipoBusquedaAvanzada !== "" ? (
+              <Button variant="contained" className="btnAvanzada"  onClick={handleBuscarNorma}>
+                Buscar
+              </Button>
+            ) : (
+              <Button variant="contained" className="btnAvanzada" onClick={handleMensaje}>
+                Buscar
+              </Button>
+            )
+
+            }
           </Box>
         </Box>
       </Modal>
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={() => setOpen(false)}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={error}
+            variant="filled"
+            sx={{ width: '100%' }}
+          >
+            {mensajeAlert}
+          </Alert>
+        </Snackbar>
     </div>
   );
 }

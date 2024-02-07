@@ -3,23 +3,25 @@ export const LOGIN_VALUES = {
   password: "",
 };
 
-  export const BUSCADOR_VALUES = {
-    fecha: '',
-    nroBoletin: '',
-    tipo: '',
+export const BUSCADOR_VALUES = {
+  fechaBusqueda: "",
+  nroBoletinBusqueda: "",
 };
 export const BUSCADOR_AVANZADA_VALUES = {
-  fecha: '',
-  nroNorma: '',
-  tipo: '',
+  fechaBusquedaAvanzada: "",
+  nroNormaBusquedaAvanzada: "",
+  tipoBusquedaAvanzada: "",
 };
 
 export const ALTA_BOLETIN_VALUES = {
-  nroBoletin: '',
-  archivoBoletin: '',
-  nroDecretoInicial: '',
-  nroDecretoFinal: '',
-  nroOrdenanzaInicial: '',
-  nroOrdenanzaFinal: '',
-  nroResolucion: '',
-}
+  nroBoletin: "",
+  fechaBoletin: "",
+  archivoBoletin: "",
+  nroDecretoInicial: "",
+  nroDecretoFinal: "",
+  nroOrdenanzaInicial: "",
+  nroOrdenanzaFinal: "",
+  nroResolucion: "",
+  nroDecreto: "",
+  nroOrdenanza: "",
+};
