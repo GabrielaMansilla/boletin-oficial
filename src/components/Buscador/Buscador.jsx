@@ -9,9 +9,11 @@ import React, { useState } from "react";
 import "./Buscador.css";
 import { BUSCADOR_VALUES } from "../../helpers/constantes";
 import FormAvanzada from "../Form/FormAvanzada.jsx";
+import axios from "../../config/axios";
+import useGet from "../../hook/useGet";
 
 const Buscador = () => {
-
+  
   const [values, setValues] = useState(BUSCADOR_VALUES);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
@@ -28,15 +30,17 @@ const Buscador = () => {
       nroBoletinBusqueda: values.nroBoletinBusqueda,
       fechaBusqueda: values.fechaBusqueda,
     };
-
+  
     setOpen(true)
     setMensaje("Busqueda realizada con éxito!")
     setError("success")
     // Aquí deberías manejar el guardado del boletín en tu backend o donde corresponda
-    console.log('Boletín a buscar:', boletin);
+     
+      console.log('Boletín a buscar:', boletin);
     setValues(BUSCADOR_VALUES)
-  };
 
+   
+  };
 
   const handleMensaje = () => {
     if (values.nroBoletinBusqueda === "" && values.fechaBusqueda === "") {
@@ -59,6 +63,8 @@ const Buscador = () => {
     }
     setOpen(false);
   };
+ const [boletines, loading, getbuscar] = useGet ("/boletin/buscar", axios);
+      const boletinesInvertidos = boletines.slice().reverse();
 
   return (
     <div className="d-flex justify-content-center">

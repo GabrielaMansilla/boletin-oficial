@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./AltaBoletines.css";
-import {
-  Alert,
-  Box,
-  Button,
-  Input,
-  Snackbar,
-  TextField,
-  TextareaAutosize,
-} from "@mui/material";
+import { Alert,Box,Button,Input,Snackbar,TextField,TextareaAutosize,} from "@mui/material";
 import { ALTA_BOLETIN_VALUES } from "../../helpers/constantes";
 import FileUp from "@mui/icons-material/FileUpload";
 import File from "@mui/icons-material/UploadFileRounded";
@@ -155,6 +147,7 @@ const AltaBoletines = () => {
       console.log(resolucionSinGuiones);
 
       const respuesta = await axios.post("/boletin/alta", values);
+     
       console.log(respuesta);
       setValues(ALTA_BOLETIN_VALUES);
       setSelectedFileName("Seleccione un Archivo");
