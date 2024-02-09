@@ -1,32 +1,23 @@
 import React, { useEffect, useState } from "react";
 import {
-  Alert,
   Box,
   Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Snackbar,
   TextField,
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import "./ModalAltaBoletines.css";
 
 export const ModalAltaBoletines = ({ abrir, datosBoletin, onConfirm }) => {
+
   const [openModal, setOpenModal] = useState(abrir);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setOpenModal(abrir);
   }, [abrir]);
-
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
-
-  const [open, setOpen] = useState(false);
-  const [error, setError] = useState("error");
-  const [mensajeAlert, setMensajeAlert] = useState("Algo Explotó :/");
-
+  
   const handleAcept = () => {
     console.log([datosBoletin]);
     setOpen(false);
@@ -40,6 +31,8 @@ export const ModalAltaBoletines = ({ abrir, datosBoletin, onConfirm }) => {
     }
     setOpen(false);
   };
+
+const mondongo = datosBoletin.nroResolucion.join("-");
 
   return (
     <div>
@@ -130,17 +123,17 @@ export const ModalAltaBoletines = ({ abrir, datosBoletin, onConfirm }) => {
                 <div className="contRangoModal">
                   <h5>Resolución:</h5>
 
-                  <div>
+                  {/* <div>
                     <TextField
                       label="Nº de Resolución"
                       className="inputAltaBoletinModal"
                       type="text"
                       // value={values.nroResolucion}
-                      value={datosBoletin.nroResolucion}
+                      value={mondongo}
                       name="nroResolucion"
                       disabled
                     />
-                  </div>
+                  </div> */}
                 </div>
               </Box>
 

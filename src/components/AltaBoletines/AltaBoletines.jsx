@@ -7,28 +7,30 @@ import {
   Input,
   Snackbar,
   TextField,
-  TextareaAutosize,
+  // TextareaAutosize,
 } from "@mui/material";
 import { ALTA_BOLETIN_VALUES } from "../../helpers/constantes";
 import FileUp from "@mui/icons-material/FileUpload";
 import File from "@mui/icons-material/UploadFileRounded";
 import axios from "../../config/axios";
-import { ModalAltaBoletines } from "../ModalAltaBoletines/ModalAltaBoletines";
+import { ModalXD } from "../ModalAltaBoletines/ModalXD.jsx";
+import useGet from "../../hook/useGet";
 
 const AltaBoletines = () => {
-  
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
-  const [formattedValue, setFormattedValue] = useState("");
+  const [formattedValue, setFormattedValue] = useState(" ");
   const [values, setValues] = useState(ALTA_BOLETIN_VALUES);
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [selectedFileName, setSelectedFileName] = useState(
     "Seleccione un Archivo"
   );
   const [resolucionArray, setResolucionArray] = useState([]);
-  const [mostrarModal, setMostrarModal] = useState(false);
-  const [bandera, setBandera] = useState(true);
-  const [datosBoletin, setDatosBoletin] = useState({});
+  const [mostrarModal, setMostrarModal] = useState(true);
+  const [bandera, setBandera] = useState(false);
+  // const [datosBoletin, setDatosBoletin] = useState({});
+  const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
+  const [nroBoletinExistente, setNroBoletinExistente] = useState(false);
 
   const obternerLista = (inicio, fin) => {
     const inicioNum = parseInt(inicio, 10);
@@ -54,13 +56,6 @@ const AltaBoletines = () => {
     return obternerLista(values.nroOrdenanzaInicial, values.nroOrdenanzaFinal);
   };
 
-  const obtenerResoluciones = () => {
-    return obternerLista(values.nroResolucionInicial);
-  };
-
-  //   // Aquí deberías manejar el guardado del boletín en tu backend o donde corresponda
-  //   console.log("Boletín a guardar:", boletin);
-  // };
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -83,24 +78,46 @@ const AltaBoletines = () => {
     setFormattedValue(formatNroResolucion(values.nroResolucion));
   }, [values.nroResolucion]);
 
+  useEffect(() => {}, [formattedValue]);
+
+  useEffect(() => {
+    getboletin();
+  }, []);
+
+  useEffect(() => {
+    const nuevoNumeroBoletin = values.nroBoletin; // Supongamos que este es el nuevo número de boletín que quieres verificar
+    const existe = numeroBoletinExiste(nuevoNumeroBoletin);
+    setNroBoletinExistente(existe);
+  }, [boletines, values.nroBoletin]);
+
   const formatNroResolucion = (inputValue) => {
-    const formatted = inputValue
-      ?.replace(/[^\d]/g, "") // Elimina caracteres no numéricos
-      ?.replace(/(\d{4})(?!$)/g, "$1-"); // Inserta un guion después de cada grupo de 4 dígitos, excepto al final
-    return formatted;
+    if (typeof inputValue === 'string') {
+      const formatted = inputValue
+        .replace(/[^\d]/g, "") // Elimina caracteres no numéricos
+        .replace(/(\d{4})(?!$)/g, "$1-"); // Inserta un guion después de cada grupo de 4 dígitos, excepto al final
+
+      return formatted;
+    }else{
+      return inputValue;
+    }
   };
 
   const handleResolucionChange = (e) => {
     const inputValue = e.target.value;
-    if (inputValue?.length < 150) {
-      const formatted = formatNroResolucion(inputValue);
-      setFormattedValue(formatted);
-      setResolucionArray(formatted.split("-").filter(Boolean));
+    if (typeof inputValue === "string") {
+      if (inputValue?.length < 150) {
+        const formatted = formatNroResolucion(inputValue);
+        setFormattedValue(formatted);
+        setResolucionArray(formatted.split("-").filter(Boolean));
+      }
     }
   };
 
   const esNumeroDeResolucionValido = () => {
-    return formattedValue === "" || /\d{4}$/.test(formattedValue) !== false;
+    console.log(formattedValue);
+    return (
+      formattedValue === undefined || /\d{4}$/.test(formattedValue) !== false
+    );
   };
 
   const puedeEnviarFormulario =
@@ -109,33 +126,53 @@ const AltaBoletines = () => {
       values.nroDecretoFinal !== "" ||
       values.nroOrdenanzaInicial !== "" ||
       values.nroOrdenanzaFinal !== "" ||
-      formattedValue !== "") &&
+      formattedValue !== undefined) &&
     esNumeroDeResolucionValido() &&
     values.fechaBoletin !== "" &&
     values.nroBoletin !== "";
 
   const handleMensaje = () => {
-    
-    if (formattedValue.length >= 1 && formattedValue.length < 4) {
+    if (formattedValue?.length >= 1 && formattedValue?.length < 4) {
       if (!/\d{4}$/.test(formattedValue)) {
         setOpen(true);
+        console.log(1);
         setMensaje("El último número de resolución debe tener 4 dígitos");
         setError("warning");
       } else {
         setOpen(true);
+        console.log(2);
+
         setMensaje("El número de resolución debe tener 4 dígitos");
         setError("warning");
       }
     } else if (values.nroBoletin === "") {
       setOpen(true);
+      console.log(3);
+
       setMensaje("Debe ingresar el Nº de Boletín");
+      setError("error");
+    } else if (numeroBoletinExiste(values.nroBoletin)) {
+      setOpen(true);
+      console.log(4);
+
+      setMensaje(`El Nº de Boletín ${values.nroBoletin} ya existe!`);
       setError("error");
     } else if (values.fechaBoletin === "") {
       setOpen(true);
-      setMensaje("Debe ingresar la fehca del Boletín");
+      console.log(5);
+
+      setMensaje("Debe ingresar la fecha del Boletín");
       setError("warning");
-    } else {
+    } else if (
+      values.nroDecretoInicial === "" &&
+      values.nroDecretoFinal === "" &&
+      values.nroOrdenanzaInicial === "" &&
+      values.nroOrdenanzaFinal === "" &&
+      formattedValue === undefined
+    ) {
       setOpen(true);
+      console.log(6);
+
       setMensaje("Debe llenar al menos un campo y adjuntar un archivo .pdf");
       setError("error");
     }
@@ -148,42 +185,47 @@ const AltaBoletines = () => {
     setOpen(false);
   };
 
-const handleConfirm = (flag) =>{
-  setBandera(flag)
-}
+  const numeroBoletinExiste = (nuevoNumeroBoletin) => {
+    const numero = parseInt(nuevoNumeroBoletin, 10); // Convertir a número
+    return boletines.some((boletin) => boletin.nroBoletin === numero);
+  };
 
   const handleGuardarBoletin = async () => {
-    // const enviarDatos = async () => {
     setMostrarModal(true);
-console.log(bandera)
-    if(bandera){
-      try {
-        const resolucionSinGuiones = resolucionArray.map((item) =>
-          parseInt(item)
-        );
-        values.nroDecreto = obtenerDecretos();
-        values.nroOrdenanza = obtenerOrdenanzas();
-        values.nroResolucion = resolucionSinGuiones;
-        console.log(resolucionSinGuiones);
-  
-        const respuesta = await axios.post("/boletin/alta", values);
-        console.log(respuesta);
-        setValues(ALTA_BOLETIN_VALUES);
-        setSelectedFileName("Seleccione un Archivo");
-        setFormattedValue("");
-        setOpen(true);
-        setMensaje("Boletin generado con éxito!");
-        setError("success");
-      } catch (error) {
-        console.error("Algo explotó! D:' ")
-      }
+  };
 
-    }else{
+  const handleConfirm = async (confirmado) => {
+    setBandera(confirmado);
+    setMostrarModal(false);
+    if (confirmado) {
+      console.log(bandera);
+      enviarDatos();
+    } else {
       setOpen(true);
       setMensaje("Intente nuevamente");
       setError("warning");
     }
+  };
 
+  const enviarDatos = async () => {
+    try {
+      const resolucionSinGuiones = resolucionArray.map((item) =>
+        parseInt(item)
+      );
+      values.nroDecreto = obtenerDecretos();
+      values.nroOrdenanza = obtenerOrdenanzas();
+      values.nroResolucion = resolucionSinGuiones;
+      // eslint-disable-next-line
+      const respuesta = await axios.post("/boletin/alta", values);
+      setValues(ALTA_BOLETIN_VALUES);
+      setSelectedFileName("Seleccione un Archivo");
+      setFormattedValue("");
+      setOpen(true);
+      setMensaje("Boletin generado con éxito!");
+      setError("success");
+    } catch (error) {
+      console.error("Algo explotó! D:' ");
+    }
   };
 
   return (
@@ -334,6 +376,7 @@ console.log(bandera)
         </Box>
       </div>
       {puedeEnviarFormulario ? (
+        !numeroBoletinExiste(values.nroBoletin) &&
         selectedFileName !== "" &&
         selectedFileName.toLowerCase().endsWith(".pdf") ? (
           <>
@@ -372,9 +415,11 @@ console.log(bandera)
         </Alert>
       </Snackbar>
       {mostrarModal && (
-        <ModalAltaBoletines 
-        // datosCorrectos={bandera}
-         abrir={mostrarModal}  datosBoletin={values} onConfirm={handleConfirm} />
+        <ModalXD
+          // datosCorrectos={bandera}
+          abrir={mostrarModal}
+          onConfirm={handleConfirm}
+        />
       )}
     </Box>
   );
