@@ -14,6 +14,7 @@ import useGet from "../../hook/useGet";
 
 const Buscador = () => {
   
+  
   const [values, setValues] = useState(BUSCADOR_VALUES);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
@@ -29,16 +30,18 @@ const Buscador = () => {
     const boletin = {
       nroBoletinBusqueda: values.nroBoletinBusqueda,
       fechaBusqueda: values.fechaBusqueda,
+      
     };
   
     setOpen(true)
     setMensaje("Busqueda realizada con éxito!")
     setError("success")
+    
+    
     // Aquí deberías manejar el guardado del boletín en tu backend o donde corresponda
-     
       console.log('Boletín a buscar:', boletin);
     setValues(BUSCADOR_VALUES)
-
+    
    
   };
 
@@ -63,13 +66,15 @@ const Buscador = () => {
     }
     setOpen(false);
   };
- const [boletines, loading, getbuscar] = useGet ("/boletin/buscar", axios);
-      const boletinesInvertidos = boletines.slice().reverse();
 
+  const [boletin, loading, getbuscar] = useGet("/boletin/buscar/nroBoletin", axios);
+
+ 
   return (
     <div className="d-flex justify-content-center">
       <Box className="buscador ">
         <h3 className="tituloBuscador">BUSCAR BOLETINES ANTERIORES</h3>
+        
         <Box
           component="form"
           sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}

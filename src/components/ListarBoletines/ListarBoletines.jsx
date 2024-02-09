@@ -10,8 +10,8 @@ import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 
 const ListarBoletines = () => {
  
-  const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
-  const boletinesInvertidos = boletines.slice().reverse();
+  const [boletin, loading, getboletin] = useGet("/boletin/listar", axios);
+  const boletinesInvertidos = boletin.slice().reverse();
 
   return (
     <>
