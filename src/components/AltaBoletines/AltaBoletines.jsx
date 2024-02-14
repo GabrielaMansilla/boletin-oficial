@@ -212,7 +212,7 @@ const AltaBoletines = () => {
       // Agregar los otros valores del formulario si es necesario
       // eslint-disable-next-line
       console.log([...formData.entries()]); // Convertir el iterador a un array para imprimir los valores
-      const respuesta = await axios.post("/boletin/alta", formData, {
+      const respuesta = await axios.post("/boletin/alta", formData,  {
         headers: {
           "Content-Type": "multipart/form-data",
         },
