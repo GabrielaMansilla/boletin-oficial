@@ -3,7 +3,7 @@ import { Box, Button } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import "../Form/FormAvanzada.css";
 
-export const ModalXD = ({ abrir, onConfirm }) => {
+export const ModalAltaBoletin = ({ abrir, onConfirm }) => {
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
