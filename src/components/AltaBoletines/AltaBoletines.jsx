@@ -25,6 +25,7 @@ const AltaBoletines = () => {
   const [selectedFileName, setSelectedFileName] = useState(
     "Seleccione un Archivo"
   );
+  const [formData, setFormData] = useState(new FormData());
   const [resolucionArray, setResolucionArray] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [bandera, setBandera] = useState(false);
@@ -71,6 +72,7 @@ const AltaBoletines = () => {
       setOpen(false); // Cerrar la advertencia si el archivo es un PDF
     }
     console.log(fileName); // Verificar el nombre del archivo
+    formData.append("archivoBoletin", e.target.files[0]); // Agregar el archivo al FormData
   };
 
   useEffect(() => {
@@ -201,18 +203,25 @@ const AltaBoletines = () => {
   const enviarDatos = async () => {
     try {
       console.log("hola");
-      const formData = new FormData();
-      formData.append("archivoBoletin", values.archivoBoletin[0]); // Agregar el archivo PDF al FormData
-      formData.append("fechaBoletin", values.fechaBoletin);
-      formData.append("nroBoletin", values.nroBoletin);
-      formData.append("nroResolucion", values.nroResolucion);
-      formData.append("nroDecreto", values.nroDecreto);
-      formData.append("nroOrdenanza", values.nroOrdenanza);
+      const inputFile = document.getElementById('fileBoletin');
+      console.log(inputFile)
 
-      // Agregar los otros valores del formulario si es necesario
+      const resolucionSinGuiones = resolucionArray.map((item) =>
+        parseInt(item)
+      );
+   
+      const decretos = obtenerDecretos();
+      const ordenanzas = obtenerOrdenanzas();
+
+      formData.append("nroBoletin", values.nroBoletin);
+      formData.append("fechaBoletin", values.fechaBoletin);
+      formData.append("nroDecreto", JSON.stringify(decretos)); 
+      formData.append("nroOrdenanza", JSON.stringify(ordenanzas));
+      formData.append("nroResolucion", JSON.stringify(resolucionSinGuiones));
+     
       // eslint-disable-next-line
-      console.log([...formData.entries()]); // Convertir el iterador a un array para imprimir los valores
-      const respuesta = await axios.post("/boletin/alta", formData,  {
+      console.log(...formData.entries()); 
+      const respuesta = await axios.post("/boletin/alta", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -232,8 +241,10 @@ const AltaBoletines = () => {
   return (
     <Box
       component="form"
+      id="form"
       // sx={{ '& > :not(style)': { m: 1, width: '25ch' }, }}
       noValidate
+      enctype="multipart/form-data"
       autoComplete="off"
       className="contBoxAltaBoletines container"
     >
@@ -362,6 +373,7 @@ const AltaBoletines = () => {
             <Input
               className="inputFileAltaBoletin"
               type="file"
+              id="fileBoletin"
               name="archivoBoletin"
               value={values.archivoBoletin}
               onChange={handleChangeFile}
