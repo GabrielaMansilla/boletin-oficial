@@ -8,6 +8,7 @@ import axios from "../../config/axios";
 import { ModalAltaBoletines } from "../ModalAltaBoletines/ModalAltaBoletines";
 
 const AltaBoletines = () => {
+  
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
   const [formattedValue, setFormattedValue] = useState("");
@@ -17,6 +18,9 @@ const AltaBoletines = () => {
     "Seleccione un Archivo"
   );
   const [resolucionArray, setResolucionArray] = useState([]);
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [bandera, setBandera] = useState(true);
+  const [datosBoletin, setDatosBoletin] = useState({});
 
   const obternerLista = (inicio, fin) => {
     const inicioNum = parseInt(inicio, 10);
@@ -73,8 +77,8 @@ const AltaBoletines = () => {
 
   const formatNroResolucion = (inputValue) => {
     const formatted = inputValue
-      .replace(/[^\d]/g, "") // Elimina caracteres no numéricos
-      .replace(/(\d{4})(?!$)/g, "$1-"); // Inserta un guion después de cada grupo de 4 dígitos, excepto al final
+      ?.replace(/[^\d]/g, "") // Elimina caracteres no numéricos
+      ?.replace(/(\d{4})(?!$)/g, "$1-"); // Inserta un guion después de cada grupo de 4 dígitos, excepto al final
     return formatted;
   };
 
@@ -103,8 +107,7 @@ const AltaBoletines = () => {
     values.nroBoletin !== "";
 
   const handleMensaje = () => {
-    <ModalAltaBoletines />;
-
+    
     if (formattedValue.length >= 1 && formattedValue.length < 4) {
       if (!/\d{4}$/.test(formattedValue)) {
         setOpen(true);
@@ -137,6 +140,10 @@ const AltaBoletines = () => {
     setOpen(false);
   };
 
+const handleConfirm = (flag) =>{
+  setBandera(flag)
+}
+
   const handleGuardarBoletin = async () => {
     // const enviarDatos = async () => {
     <ModalAltaBoletines />;
@@ -150,7 +157,6 @@ const AltaBoletines = () => {
       console.log(resolucionSinGuiones);
 
       const respuesta = await axios.post("/boletin/alta", values);
-     
       console.log(respuesta);
       setValues(ALTA_BOLETIN_VALUES);
       setSelectedFileName("Seleccione un Archivo");
@@ -346,6 +352,11 @@ const AltaBoletines = () => {
           {mensaje}
         </Alert>
       </Snackbar>
+      {mostrarModal && (
+        <ModalAltaBoletines 
+        // datosCorrectos={bandera}
+         abrir={mostrarModal}  datosBoletin={values} onConfirm={handleConfirm} />
+      )}
     </Box>
   );
 };

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import ListarBoletines from './components/ListarBoletines/ListarBoletines';
 import AltaBoletines from './components/AltaBoletines/AltaBoletines';
+import Buscador from './components/Buscador/Buscador';
 import Login from './components/Login/Login';
 
 
@@ -13,6 +14,7 @@ const App = () => {
         <Routes>
           <Route path="/*" element={<ListarBoletines />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/buscador" element={<Buscador />} />
           <Route path="/altaBoletines" element={<AltaBoletines />} />
         </Routes>
       </Layout>

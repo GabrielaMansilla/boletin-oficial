@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Box,
@@ -11,13 +11,15 @@ import {
   TextField,
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
-import { BUSCADOR_AVANZADA_VALUES } from "../../helpers/constantes";
 import "./ModalAltaBoletines.css";
 
-export const ModalAltaBoletines = () => {
+export const ModalAltaBoletines = ({ abrir, datosBoletin, onConfirm }) => {
+  const [openModal, setOpenModal] = useState(abrir);
 
-  const [values, setValues] = useState(BUSCADOR_AVANZADA_VALUES);
-  const [openModal, setOpenModal] = useState(false);
+  useEffect(() => {
+    setOpenModal(abrir);
+  }, [abrir]);
+
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
@@ -25,44 +27,15 @@ export const ModalAltaBoletines = () => {
   const [error, setError] = useState("error");
   const [mensajeAlert, setMensajeAlert] = useState("Algo Explotó :/");
 
-  const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+  const handleAcept = () => {
+    console.log([datosBoletin]);
+    setOpen(false);
+    onConfirm(true);
+    handleCloseModal(false);
   };
-
-  // const handleClear = () => {
-  //   setValues(BUSCADOR_AVANZADA_VALUES);
-  //   handleClose(); 
-  // };
-
-  const handleBuscarNorma = () => {
-
-    console.log('Valores de búsqueda:', values);
-    setOpen(true)
-    setMensajeAlert("Busqueda realizada con éxito!")
-    setError("success")
-    setValues(BUSCADOR_AVANZADA_VALUES);
-    handleCloseModal();
-    console.log("hola")
-  };
-
-
-  const handleMensaje = () => {
-    if (values.tipoBusquedaAvanzada === "") {
-
-      setOpen(true)
-      setMensajeAlert("Debe Seleccionar el Tipo de Norma")
-      setError("error")
-
-    } else {
-      setOpen(true)
-      setMensajeAlert("Debe llenar al menos un campo")
-      setError("error")
-
-    }
-  }
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setOpen(false);
@@ -70,94 +43,143 @@ export const ModalAltaBoletines = () => {
 
   return (
     <div>
-      <Button className="text-light" onClick={handleOpenModal}>
-        Busqueda Avanzada
-      </Button>
-      <Modal
-        open={openModal}
-        onClose={handleCloseModal}
-
-      >
-        <Box className="modal-busqueda-avanzada">
-          <h3 className="tituloBusquedaAvanzada">Búsqueda Avanzada</h3>
-          <Box className="modal-content"
-            component="form"
-            sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
-            noValidate
-            autoComplete="off"
-
-          >
-            <FormControl sx={{ m: 1, minWidth: 80 }} className="ms-3">
-              <InputLabel id="demo-simple-select-autowidth-label" >
-                Tipo de Norma
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-autowidth-label"
-                id="demo-simple-select-autowidth"
-                value={values.tipoBusquedaAvanzada}
-                onChange={handleChange}
-                autoWidth
-                label="Tipo de Norma"
-                name="tipoBusquedaAvanzada"
+      <Modal open={openModal} onClose={handleCloseModal}>
+        <div className=" d-flex align-items-center flex-column ">
+          <h3 className="tituloBusquedaAvanzada">Verificación de Boletín</h3>
+          <Box className=" contBoxAltaBoletinesModal">
+            <div className="contDivAltaBoletinesModal">
+              <Box
+                className="formGroupModal flex-col "
+                component="form"
+                sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+                noValidate
+                autoComplete="off"
               >
-                <MenuItem value="">
-                  <em>--Seleccione--</em>
-                </MenuItem>
-                <MenuItem value={10}>Decreto</MenuItem>
-                <MenuItem value={21}>Resolución</MenuItem>
-                <MenuItem value={22}>Ordenanza</MenuItem>
-              </Select>
-            </FormControl>
-            <TextField
-              label="Nro de Norma"
-              variant="outlined"
-              className="inputBuscador"
-              type="number"
-              value={values.nroNormaBusquedaAvanzada}
-              onChange={handleChange}
-              inputProps={{ min: "0" }}
-              name="nroNormaBusquedaAvanzada"
-            />
+                <div className="contRangoModal">
+                  <h5>Boletin:</h5>
+                  <div>
+                    <TextField
+                      label="Nro de Boletín"
+                      variant="outlined"
+                      className="inputAltaBoletinModal"
+                      type="number"
+                      value={datosBoletin.nroBoletin}
+                      name="nroBoletin"
+                      disabled
+                    />
 
-            <TextField
-              label="Fecha"
-              variant="outlined"
-              type="date"
-              className="inputBuscador"
-              value={values.fechaBusquedaAvanzada}
-              onChange={handleChange}
-              InputLabelProps={{ shrink: true }}
-              name="fechaBusquedaAvanzada"
-            />
+                    <TextField
+                      label="Fecha Boletin"
+                      variant="outlined"
+                      name="fechaBoletin"
+                      type="date"
+                      value={datosBoletin.fechaBoletin}
+                      className="inputAltaBoletinModal ms-3"
+                      InputLabelProps={{ shrink: true }}
+                      disabled
+                    />
+                  </div>
+                </div>
 
-            {values.tipoBusquedaAvanzada !== "" ? (
-              <Button variant="contained" className="btnAvanzada"  onClick={handleBuscarNorma}>
-                Buscar
-              </Button>
-            ) : (
-              <Button variant="contained" className="btnAvanzada" onClick={handleMensaje}>
-                Buscar
-              </Button>
-            )
+                <div className="contRangoModal">
+                  <h5>Decretos:</h5>
 
-            }
+                  <div>
+                    <TextField
+                      label="Nº de Decreto inicial"
+                      className="inputAltaBoletinModal"
+                      type="number"
+                      value={datosBoletin.nroDecretoInicial}
+                      name="nroDecretoInicial"
+                      disabled
+                    />
+                    <TextField
+                      label="Nº de Decreto Final"
+                      className="inputAltaBoletinModal ms-3"
+                      type="number"
+                      value={datosBoletin.nroDecretoFinal}
+                      name="nroDecretoFinal"
+                      disabled
+                    />
+                  </div>
+                </div>
+
+                <div className="contRangoModal">
+                  <h5>Ordenanza:</h5>
+
+                  <div>
+                    <TextField
+                      label="Nº de Ordenanza Inicial"
+                      className="inputAltaBoletinModal"
+                      type="number"
+                      value={datosBoletin.nroOrdenanzaInicial}
+                      name="nroOrdenanzaInicial"
+                      disabled
+                    />
+                    <TextField
+                      label="Nº de Ordenanza Final"
+                      className="inputAltaBoletinModal ms-3"
+                      type="number"
+                      value={datosBoletin.nroOrdenanzaFinal}
+                      name="nroOrdenanzaFinal"
+                      disabled
+                    />
+                  </div>
+                </div>
+
+                <div className="contRangoModal">
+                  <h5>Resolución:</h5>
+
+                  <div>
+                    <TextField
+                      label="Nº de Resolución"
+                      className="inputAltaBoletinModal"
+                      type="text"
+                      // value={values.nroResolucion}
+                      value={datosBoletin.nroResolucion}
+                      name="nroResolucion"
+                      disabled
+                    />
+                  </div>
+                </div>
+              </Box>
+
+              {/* <TextareaAutosize
+        minRows={10} className='textAreaBoletines' /> */}
+
+              <Box className="contInputFileBoletinModal col-4 W-100 pt-5 pb-4">
+                <label className="fileNameDisplayModal flex-column">
+                  {datosBoletin.archivoBoletin}
+                  {/* <TextField
+                    className="inputFileAltaBoletinModal"
+                    type="file"
+                    name="archivoBoletin"
+                    value={datosBoletin.archivoBoletin}
+                    disabled
+                  /> */}
+                </label>
+              </Box>
+            </div>
+            <div className=" btnModal d-flex align-items-center justify-content-center">
+              <Button onClick={handleAcept}>Confirmar</Button>
+            </div>
           </Box>
-        </Box>
+        </div>
       </Modal>
-        <Snackbar
-          open={open}
-          autoHideDuration={6000}
-          onClose={() => setOpen(false)}
+      {/* <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert
+        onClose={handleClose}
+        severity={error}
+          variant="filled"
+          sx={{ width: "100%" }}
         >
-          <Alert
-            onClose={handleClose}
-            severity={error}
-            variant="filled"
-            sx={{ width: '100%' }}
-          >
-            {mensajeAlert}
-          </Alert>
-        </Snackbar>
+          {mensajeAlert}
+        </Alert>
+      </Snackbar> */}
     </div>
   );
-}
+};
