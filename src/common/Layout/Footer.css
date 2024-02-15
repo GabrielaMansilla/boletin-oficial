@@ -8,7 +8,7 @@
   border-top: solid 1px;
   justify-content: center;
   margin-top: 20px !important;
-  font-family: 13px MavenPro_Regular;
+  font-family: 13px ;
 }
 
 .iconosRedes {
@@ -47,14 +47,15 @@
 
 .seguinos {
   display: flex;
-  /* justify-content: end; */
-  flex:end;
+  justify-content: end;
+  /* flex:end; */
   align-items: center !important;
 
 }
 
 @media (max-width: 770px) {
   .seguinos {
+    margin-right: 0 !important;
     justify-content: center !important;
   }
 }

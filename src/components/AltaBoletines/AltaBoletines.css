@@ -41,6 +41,7 @@
 .contRango {
     width: 100%;
     margin-top: 10px;
+    color: #ffffff;
 }
 
 .contRango div {
@@ -55,9 +56,6 @@ label {
     margin-top: 4px !important;
 }
 
-.contRango {
-    color: #ffffff;
-}
 
 .contInputFileBoletin {
     display: flex;
