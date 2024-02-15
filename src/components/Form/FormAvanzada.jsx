@@ -68,6 +68,10 @@ export default function FormAvanzada() {
     setOpen(false);
   };
 
+
+
+  
+
   return (
     <div>
       <Button className="text-light" onClick={handleOpenModal}>

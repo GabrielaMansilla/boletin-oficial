@@ -46,7 +46,7 @@ const Buscador = () => {
 
   const handleNroBoletinSearch = async (nroBoletin) => {
     try {
-      const respuesta = await axios.get(`/boletin/buscar/${nroBoletin}`); 
+      const respuesta = await axios.get(`/boletin/buscador/${nroBoletin}`); 
       if (respuesta.data) {
         setMensaje('Boletín encontrado')
         setValues(respuesta.data)
