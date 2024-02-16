@@ -203,29 +203,49 @@ const AltaBoletines = () => {
   const enviarDatos = async () => {
     try {
       console.log("hola");
-      const inputFile = document.getElementById('fileBoletin');
-      console.log(inputFile)
+      // const inputFile = document.getElementById('fileBoletin');
+      // console.log(inputFile)
 
-      const resolucionSinGuiones = resolucionArray.map((item) =>
-        parseInt(item)
-      );
-   
-      const decretos = obtenerDecretos();
-      const ordenanzas = obtenerOrdenanzas();
-
-      formData.append("nroBoletin", values.nroBoletin);
-      formData.append("fechaBoletin", values.fechaBoletin);
-      formData.append("nroDecreto", JSON.stringify(decretos)); 
-      formData.append("nroOrdenanza", JSON.stringify(ordenanzas));
-      formData.append("nroResolucion", JSON.stringify(resolucionSinGuiones));
-     
-      // eslint-disable-next-line
-      console.log(...formData.entries()); 
-      const respuesta = await axios.post("/boletin/alta", formData, {
+      const archivo = document.getElementById("fileBoletin").files[0];
+      formData.append("archivoBoletin", archivo);
+  
+      const respuestaArchivo = await axios.post("/boletin/alta", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+      console.log(respuestaArchivo);
+
+      const resolucionSinGuiones = resolucionArray.map((item) =>
+        parseInt(item)
+      );
+
+      const decretos = obtenerDecretos();
+      const ordenanzas = obtenerOrdenanzas();
+
+      const requestData = {
+        nroBoletin: values.nroBoletin,
+        fechaBoletin: values.fechaBoletin,
+        nroDecreto: decretos,
+        nroOrdenanza: ordenanzas,
+        nroResolucion: resolucionSinGuiones,
+      };
+      console.log(requestData);
+      const respuesta = await axios.post("/boletin/alta", requestData); 
+
+      // formData.append("nroBoletin", values.nroBoletin);
+      // formData.append("fechaBoletin", values.fechaBoletin);
+      // formData.append("nroDecreto", JSON.stringify(decretos));
+      // formData.append("nroOrdenanza", JSON.stringify(ordenanzas));
+      // formData.append("nroResolucion", JSON.stringify(resolucionSinGuiones));
+
+      // eslint-disable-next-line
+      // console.log(...formData.entries());
+      // const respuesta = await axios.post("/boletin/alta", formData, {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // });
       console.log(respuesta);
       setValues(ALTA_BOLETIN_VALUES);
       setSelectedFileName("Seleccione un Archivo");
