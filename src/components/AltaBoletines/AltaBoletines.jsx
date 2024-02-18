@@ -206,6 +206,7 @@ const AltaBoletines = () => {
   };
 
   const handleGuardarBoletin = async () => {
+<<<<<<< HEAD
     setMostrarModal(true);
   };
 
@@ -262,6 +263,28 @@ const AltaBoletines = () => {
     } catch (error) {
       console.error("Algo explotó! D:' ", error);
     }
+=======
+    // const enviarDatos = async () => {
+    <ModalAltaBoletines />;
+    try {
+      const resolucionSinGuiones = resolucionArray.map((item) =>
+        parseInt(item)
+      );
+      values.nroDecreto = obtenerDecretos();
+      values.nroOrdenanza = obtenerOrdenanzas();
+      values.nroResolucion = resolucionSinGuiones;
+      console.log(resolucionSinGuiones);
+
+      const respuesta = await axios.post("/boletin/alta", values);
+      console.log(respuesta);
+      setValues(ALTA_BOLETIN_VALUES);
+      setSelectedFileName("Seleccione un Archivo");
+      setFormattedValue("");
+      setOpen(true);
+      setMensaje("Boletin generado con éxito!");
+      setError("success");
+    } catch (error) {}
+>>>>>>> d166b05950951cfc75ad667921c98a526699804e
   };
 
   return (

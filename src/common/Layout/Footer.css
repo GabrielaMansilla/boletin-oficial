@@ -49,9 +49,13 @@
   display: flex;
   justify-content: end;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   /* flex:end; */
 >>>>>>> 364385c4566b1dd7ab3fbc272c657ab9123d7581
+=======
+
+>>>>>>> d166b05950951cfc75ad667921c98a526699804e
   align-items: center !important;
 
 }

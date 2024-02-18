@@ -10,6 +10,7 @@ import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 
 const ListarBoletines = () => {
  
+<<<<<<< HEAD
   const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
   const boletinesInvertidos = boletines.slice(0, 3).reverse();
 
@@ -40,6 +41,10 @@ const ListarBoletines = () => {
   //     toast.error("Error en la conexión");
   //   }
   // }
+=======
+  const [boletin, loading, getboletin] = useGet("/boletin/listar", axios);
+  const boletinesInvertidos = boletin.slice().reverse();
+>>>>>>> d166b05950951cfc75ad667921c98a526699804e
 
   return (
     <>

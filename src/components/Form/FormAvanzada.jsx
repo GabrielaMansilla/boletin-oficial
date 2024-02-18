@@ -69,6 +69,11 @@ export default function FormAvanzada() {
     setOpen(false);
   };
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> d166b05950951cfc75ad667921c98a526699804e
   
 
   return (

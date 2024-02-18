@@ -1,4 +1,5 @@
 import {
+<<<<<<< HEAD
     Alert,
     Box,
     Button,
@@ -36,6 +37,42 @@ import {
         setMensaje("Debe llenar al menos un campo")
         setError("error")
       }
+=======
+  Alert,
+  Box,
+  Button,
+  Snackbar,
+  TextField,
+  Grid
+} from "@mui/material";
+import React, { useState } from "react";
+import "./Buscador.css";
+import FormAvanzada from "../Form/FormAvanzada.jsx";
+import axios from "../../config/axios";
+import logoMuniBlanco from "../../assets/logo-SMT-Blanco.png";
+
+
+const Buscador = () => {
+  const [values, setValues] = useState({});
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState("error");
+  const [mensaje, setMensaje] = useState("Algo Explotó :/");
+  const [loading, setLoading] = useState(true)
+
+  
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  const handleMensaje = () => {
+    if (values.nroBoletinBusqueda === "" && values.fechaBusqueda === "") {
+      setOpen(true)
+      setError("error")
+    } else {
+      setOpen(true)
+      setMensaje("Debe llenar al menos un campo")
+      setError("error")
+>>>>>>> d166b05950951cfc75ad667921c98a526699804e
     }
   
     const handleClose = (event, reason) => {
@@ -79,6 +116,7 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
     } catch (error) {
       console.error('Error al buscar boletin:', error);
     }
+<<<<<<< HEAD
 }
   
   
@@ -154,6 +192,90 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
               )}
               <Button variant="contained" className="btnBuscadorAvanzada">
                 <FormAvanzada />
+=======
+    setOpen(false);
+  };
+
+
+  const handleNroBoletinSearch = async (nroBoletin) => {
+    try {
+      const respuesta = await axios.get(`/boletin/buscador/${nroBoletin}`); 
+      if (respuesta.data) {
+        setMensaje('Boletín encontrado')
+        setValues(respuesta.data)
+        setLoading(false)
+        console.log('Boletín encontrado:', respuesta.data);
+      } else {
+        setMensaje('error')
+        console.log('Boletín no encontrado.');
+      }
+    } catch (error) {
+      console.error('Error al buscar boletin:', error);
+    }
+  };
+
+
+  const handleBuscarBoletin = () => {
+    const boletin = {
+      nroBoletinBusqueda: values.nroBoletinBusqueda,
+      fechaBusqueda: values.fechaBusqueda,
+    };
+    if (!boletin.nroBoletinBusqueda && !boletin.fechaBusqueda) {
+      setOpen(true);
+      setMensaje("Debe ingresar el Nº de Boletín o Fecha de Publicación");
+      setError("error");
+      return;
+    }
+    if (boletin.nroBoletinBusqueda) {
+      handleNroBoletinSearch(boletin.nroBoletinBusqueda);
+      console.log(boletin.nroBoletinBusqueda)
+    } else {
+    }
+  };
+
+
+  return (
+      <>
+    <div className="d-flex justify-content-center">
+      <Box className="buscador ">
+        <h3 className="tituloBuscador">BUSCAR BOLETINES ANTERIORES</h3>
+        <Box
+          component="form"
+          sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+          noValidate
+          autoComplete="off"
+          className="inputCont container"
+        >
+          <div className="inputsBuscadores">
+
+            <TextField
+              label="Nro de Boletín"
+              variant="outlined"
+              className="inputBuscador"
+              type="number"
+              value={values.nroBoletinBusqueda}
+              onChange={handleChange}
+              inputProps={{ min: "0" }}
+              name="nroBoletinBusqueda"
+            />
+
+            <TextField
+              label="Fecha"
+              variant="outlined"
+              type="date"
+              className="inputBuscador"
+              value={values.fechaBusqueda}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              name="fechaBusqueda"
+            />
+          </div>
+          <div className="botonesBuscadores">
+            {(values.nroBoletinBusqueda !== "" || values.fechaBusqueda !== "") ? (
+
+              <Button variant="contained" className="btnBuscador" onClick={handleBuscarBoletin}>
+                Buscar
+>>>>>>> d166b05950951cfc75ad667921c98a526699804e
               </Button>
             </div>
           </Box>
@@ -163,6 +285,7 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
           autoHideDuration={6000}
           onClose={() => setOpen(false)}
         >
+<<<<<<< HEAD
           <Alert
             onClose={handleClose}
             severity={error}
@@ -219,3 +342,46 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
   
   export default Buscador;
   
+=======
+          {mensaje}
+        </Alert>
+      </Snackbar>
+      </div>
+      <div className="d-flex flex-row mt-4">
+      <Grid container spacing={2} className="d-flex contGrid">
+        <Grid className="contBoletines ps-5  pe-4 " item xs={12} md={12}>
+          {loading ? (
+            <p>cargando Boletines</p>
+          ) : (
+              <div className="boletin mb-2 " >
+                <img
+                  className="logoMuniBlanco"
+                  src={logoMuniBlanco}
+                  alt=" logo Muni"
+                />
+                <div className="boletinText container mt-3">
+                  <div className="d-flex flex-row justify-content-between">
+                    {/* <h2>Ultima Edicion | Boletin Nº 22334 </h2> */}
+                    <h2>Boletin Nº {values.nroBoletin}</h2>
+                    <div className="contBtn">
+                      <Button variant="contained" className="btnPdf">
+                        {/* <DownloadForOfflineIcon /> */}
+                      </Button>
+                    </div>
+                  </div>
+                  <div className=" d-flex flex-row">
+                    <h6>{values.fechaBoletin}</h6>{" "}
+                    <h6 className="ms-2">| Tucumán, Argentina</h6>
+                  </div>
+                </div>
+              </div>
+          )}
+        </Grid>
+      </Grid>
+    </div>
+    </>           
+  );
+};
+
+export default Buscador;
+>>>>>>> d166b05950951cfc75ad667921c98a526699804e
