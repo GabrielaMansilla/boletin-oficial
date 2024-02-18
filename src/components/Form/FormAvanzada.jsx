@@ -24,39 +24,107 @@ export default function FormAvanzada() {
 
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
-  const [mensajeAlert, setMensajeAlert] = useState("Algo Explotó :/");
-
+  const [mensajeAlert, setMensaje] = useState("Algo Explotó :/");
+  const [loading, setLoading] = useState(true)
+  console.log(values)
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  // const handleClear = () => {
-  //   setValues(BUSCADOR_AVANZADA_VALUES);
-  //   handleClose(); 
-  // };
 
-  const handleBuscarNorma = () => {
+  const handleBuscarNorma= () => {
 
-    console.log('Valores de búsqueda:', values);
-    setOpen(true)
-    setMensajeAlert("Busqueda realizada con éxito!")
-    setError("success")
-    setValues(BUSCADOR_AVANZADA_VALUES);
-    handleCloseModal();
-    console.log("hola")
+    const boletin = {
+      tipoBusquedaAvanzada:values.tipoBusquedaAvanzada,
+      nroNormaBusquedaAvanzada: values.nroNormaBusquedaAvanzada,
+      fechaBusquedaAvanzada: values.fechaBusquedaAvanzada,
+    };
+    if (!boletin.tipoBusquedaAvanzada && !boletin.nroNormaBusquedaAvanzada ) {
+      setOpen(true);
+      setMensaje("Debe ingresar el Nº de Norma o o o o Fecha de Publicación");
+      setError("error");
+      return;
+    }
+    if (boletin.nroDecreto) {
+      handleDecretoSearch(boletin.nroDecreto);
+      console.log(boletin.nroDecreto)
+    }
+    
+    if (boletin.nroOrdenanza){
+      handleOrdenanzaSearch(boletin.nroOrdenanza);
+      console.log(boletin.nroOrdenanza)
+    }
+    if (boletin.nroResolucion){
+      handleResolucionSearch(boletin.nroResolucion);
+      console.log(boletin.nroResolucion)
+    }
   };
 
+
+  const handleDecretoSearch = async (nroDecreto) => {
+    try {
+      const respuesta = await axios.get(`/boletin/buscarDecreto/${nroDecreto}`) 
+      if (respuesta.data) {
+        setMensaje('Norma no encontrada')
+        setValues(respuesta.data)
+        setLoading(false)
+        console.log('Nomra  encontrado:', respuesta.data.boletin );
+      } else {
+        setMensaje('error')
+        console.log('Norma no Encontrada');
+      }
+    } catch (error) {
+      console.error('Error al buscar la Nomra:', error);
+    }
+    };
+
+
+
+    const handleOrdenanzaSearch = async (nroOrdenanza) => {
+      try {
+        const respuesta = await axios.get(`/boletin/buscarOrdenanza/${nroOrdenanza}`) 
+        if (respuesta.data) {
+          setMensaje('Norma no encontrada')
+          setValues(respuesta.data)
+          setLoading(false)
+          console.log('Nomra  encontrado:', respuesta.data.boletin );
+        } else {
+          setMensaje('error')
+          console.log('Norma no Encontrada');
+        }
+      } catch (error) {
+        console.error('Error al buscar la Nomra:', error);
+      }
+      };
+
+      const handleResolucionSearch = async (nroResolucion) => {
+        try {
+          const respuesta = await axios.get(`/boletin/buscarResolucion/${nroResolucion}`) 
+          if (respuesta.data) {
+            setMensaje('Norma no encontrada')
+            setValues(respuesta.data)
+            setLoading(false)
+            console.log('Nomra  encontrado:', respuesta.data.boletin );
+          } else {
+            setMensaje('error')
+            console.log('Norma no Encontrada');
+          }
+        } catch (error) {
+          console.error('Error al buscar la Nomra:', error);
+        }
+        };
+    
 
   const handleMensaje = () => {
     if (values.tipoBusquedaAvanzada === "") {
 
       setOpen(true)
-      setMensajeAlert("Debe Seleccionar el Tipo de Norma")
+      setMensaje("Debe Seleccionar el Tipo de Norma")
       setError("error")
 
     } else {
       setOpen(true)
-      setMensajeAlert("Debe llenar al menos un campo")
+      setMensaje("Debe llenar al menos un campo")
       setError("error")
 
     }
@@ -68,13 +136,6 @@ export default function FormAvanzada() {
     }
     setOpen(false);
   };
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> d166b05950951cfc75ad667921c98a526699804e
-  
 
   return (
     <div>
@@ -167,5 +228,6 @@ export default function FormAvanzada() {
           </Alert>
         </Snackbar>
     </div>
+    
   );
-}
+};
