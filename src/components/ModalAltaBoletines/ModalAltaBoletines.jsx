@@ -12,10 +12,9 @@ import {
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import { BUSCADOR_AVANZADA_VALUES } from "../../helpers/constantes";
-import "./FormAvanzada.css";
-import axios from "../../config/axios.js";
+import "./ModalAltaBoletines.css";
 
-export default function FormAvanzada() {
+export const ModalAltaBoletines = () => {
 
   const [values, setValues] = useState(BUSCADOR_AVANZADA_VALUES);
   const [openModal, setOpenModal] = useState(false);
@@ -68,8 +67,6 @@ export default function FormAvanzada() {
     }
     setOpen(false);
   };
-
-  
 
   return (
     <div>
