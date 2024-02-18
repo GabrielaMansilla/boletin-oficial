@@ -11,7 +11,35 @@ import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 const ListarBoletines = () => {
  
   const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
-  const boletinesInvertidos = boletines.slice().reverse();
+  const boletinesInvertidos = boletines.slice(0, 3).reverse();
+
+  // const funcionDescarga = async (obj) => {
+  //   try {
+
+  //     const response = await axios.get(
+  //       `http://10.0.0.230:4000/noticias/listar/${obj._id}`,
+  //       {
+  //         responseType: "blob", // Especifica el tipo de respuesta como Blob
+  //       }
+  //     );
+
+  //     const blob = response.data;
+  //     const url = URL.createObjectURL(blob);
+
+  //     const link = document.createElement("a");
+  //     link.setAttribute("target", "_blank");
+  //     link.href = url;
+
+  //     if(!blob.type.includes("image") && !blob.type.includes('application/pdf')){
+  //       link.download = obj.titulo;
+  //     }
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
+  //   } catch (error) {
+  //     toast.error("Error en la conexión");
+  //   }
+  // }
 
   return (
     <>
