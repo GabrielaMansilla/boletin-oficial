@@ -11,10 +11,11 @@ import "./Buscador.css";
 import FormAvanzada from "../Form/FormAvanzada.jsx";
 import axios from "../../config/axios";
 import logoMuniBlanco from "../../assets/logo-SMT-Blanco.png";
+import { BUSCADOR_VALUES } from "../../helpers/constantes.js";
 
 
 const Buscador = () => {
-  const [values, setValues] = useState([]);
+  const [values, setValues] = useState([BUSCADOR_VALUES]);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
@@ -30,6 +31,7 @@ const Buscador = () => {
   const handleMensaje = () => {
     if (values.nroBoletinBusqueda === "" && values.fechaBusqueda === "") {
       setOpen(true)
+      setMensaje("Debe Selccionar el Nro de Boletin o  Fecha de Publicacion")
       setError("error")
     } else {
       setOpen(true)
@@ -63,27 +65,47 @@ const Buscador = () => {
     }
   };
 
-//probando con otro buscador 02
+//probando con otro buscador 01
+
+// const handleFechaBoletinSearch = async (fechaBoletin) => {
+//   try {
+//     const respuesta = await axios.get(`/boletin/buscar2/${fechaBoletin}`) 
+//     if (respuesta.data) {
+//       setMensaje('Boletín encontrado')
+//       setValues(respuesta.data)
+//       setLoading(false)
+//       console.log('Boletín encontrado:', respuesta.data.fechaBoletin );
+//     } else {
+//       setMensaje('error')
+//       console.log('Boletín no .');
+//     }
+//   } catch (error) {
+//     console.error('Error al buscar boletin:', error);
+//   }
+// };
+
+// probando buscadormio2
 
 const handleFechaBoletinSearch = async (fechaBoletin) => {
-try {
-  const respuesta = await axios.get(`/boletin/buscarFecha/${fechaBoletin}`) 
-  if (respuesta.data) {
-    setMensaje('Fecha no encontrada')
-    setValues(respuesta.data)
-    setLoading(false)
-    console.log('Fecha encontrado:', respuesta.data.fechaBoletin );
-  } else {
-    setMensaje('error')
-    console.log('Fecha no Encontrada');
+  try {
+    const respuesta = await axios.get(`/boletin/buscarFecha/${fechaBoletin}`) 
+    if (respuesta.data) {
+      setMensaje('Boletín encontrado')
+      // const respuestaFiltrada = respuesta.data.filter(boletin => {
+      //   return boletin.fechaBoletin === values.fechaBusqueda;
+      // });
+      // setValues(respuestaFiltrada);
+      setValues(respuesta.data)
+      setLoading(false);
+      console.log('Boletín encontrado:', respuesta.data.fechaBoletin );
+    } else {
+      setMensaje('error')
+      console.log('Boletín no .');
+    }
+  } catch (error) {
+    console.error('Error al buscar boletin:', error);
   }
-} catch (error) {
-  console.error('Error al buscar la fecha:', error);
 }
-};
-
-
-
   const handleBuscarBoletin = () => {
     const boletin = {
       nroBoletinBusqueda: values.nroBoletinBusqueda,
@@ -95,14 +117,40 @@ try {
       setError("error");
       return;
     }
+
+      if (boletin.nroBoletinBusqueda && boletin.fechaBusqueda) {
+    handleNroBoletinAndFechaSearch(boletin.nroBoletinBusqueda, boletin.fechaBusqueda.toString());
+    console.log(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
+    return;
+  }
+
     if (boletin.nroBoletinBusqueda) {
       handleNroBoletinSearch(boletin.nroBoletinBusqueda);
       console.log(boletin.nroBoletinBusqueda)
+      return;
     }
+
   // tratando de buscar por fecha
     if (boletin.fechaBusqueda){
       handleFechaBoletinSearch((boletin.fechaBusqueda).toString());
       console.log(boletin.fechaBusqueda)
+      return;
+    }
+  };
+  const handleNroBoletinAndFechaSearch = async (nroBoletin, fechaBoletin) => {
+    try {
+      const respuesta = await axios.get(`/boletin/buscarNroYFecha/${nroBoletin}/${fechaBoletin}`);
+      if (respuesta.data) {
+        setMensaje('Boletín encontrado');
+        setValues(respuesta.data);
+        setLoading(false);
+        console.log('Boletín encontrado:', respuesta.data);
+      } else {
+        setMensaje('error');
+        console.log('Boletín no encontrado.');
+      }
+    } catch (error) {
+      console.error('Error al buscar boletín:', error);
     }
   };
 
@@ -181,28 +229,36 @@ try {
           {loading ? (
             <p>cargando Boletines</p>
           ) : (
-              <div className="boletin mb-2 " >
-                <img
-                  className="logoMuniBlanco"
-                  src={logoMuniBlanco}
-                  alt=" logo Muni"
-                />
-                <div className="boletinText container mt-3">
-                  <div className="d-flex flex-row justify-content-between">
-                    {/* <h2>Ultima Edicion | Boletin Nº 22334 </h2> */}
-                    <h2>Boletin Nº {values.nroBoletin}</h2>
-                    <div className="contBtn">
-                      <Button variant="contained" className="btnPdf">
-                        {/* <DownloadForOfflineIcon /> */}
-                      </Button>
+              <>
+                { values.length > 0 ? (
+                  values.map((boletin) => (
+                    <div key={boletin.id} className="boletin mb-2">
+                       <img
+                      className="logoMuniBlanco"
+                      src={logoMuniBlanco}
+                      alt=" logo Muni"
+                    />
+                    <div className="boletinText container mt-3">
+                      <div className="d-flex flex-row justify-content-between">
+                        {/* <h2>Ultima Edicion | Boletin Nº 22334 </h2> */}
+                        <h2>Boletin Nº {boletin.nroBoletin}</h2>
+                        <div className="contBtn">
+                          <Button variant="contained" className="btnPdf">
+                            {/* <DownloadForOfflineIcon /> */}
+                          </Button>
+                        </div>
+                      </div>
+                      <div className=" d-flex flex-row">
+                        <h6>{boletin.fechaBoletin}</h6>{" "}
+                        <h6 className="ms-2">| Tucumán, Argentina</h6>
+                      </div>
                     </div>
-                  </div>
-                  <div className=" d-flex flex-row">
-                    <h6>{values.fechaBoletin}</h6>{" "}
-                    <h6 className="ms-2">| Tucumán, Argentina</h6>
-                  </div>
-                </div>
-              </div>
+                    </div>
+                  ))
+            ) : (
+              <p>No hay boletines para la fecha seleccionada.</p>
+            )}
+              </>
           )}
         </Grid>
       </Grid>
