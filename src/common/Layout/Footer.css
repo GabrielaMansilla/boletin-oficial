@@ -48,7 +48,9 @@
 .seguinos {
   display: flex;
   justify-content: end;
+
   /* flex:end; */
+
   align-items: center !important;
 
 }

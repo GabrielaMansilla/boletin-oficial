@@ -10,7 +10,7 @@ import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 
 const ListarBoletines = () => {
   const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
-  const boletinesInvertidos = boletines.slice().reverse();
+  const boletinesInvertidos = boletines.slice().reverse().slice(0, 3);
   const [open, setOpen] = useState(false);
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [error, setError] = useState("error");
@@ -24,24 +24,26 @@ const ListarBoletines = () => {
 
   const funcionDescarga = async (boletin) => {
     try {
-      console.log(boletin._id)
+      console.log(boletin._id);
       const response = await axios.get(
         `http://localhost:4000/boletin/listarDescarga/${boletin._id}`,
         {
-          
           responseType: "blob", // Especifica el tipo de respuesta como Blob
         }
-        );
-        console.log(boletin._id)
-  
+      );
+      console.log(boletin._id);
+
       const blob = response.data;
       const url = URL.createObjectURL(blob);
-  
+
       // Crear un elemento de enlace temporal para iniciar la descarga
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", `Boletin_Oficial_Municipal Nº ${boletin.nroBoletin}.pdf`); // Establecer el nombre de archivo
-  
+      link.setAttribute(
+        "download",
+        `Boletin_Oficial_Municipal Nº ${boletin.nroBoletin}.pdf`
+      ); // Establecer el nombre de archivo
+
       // Hacer clic en el enlace para iniciar la descarga
       link.click();
     } catch (error) {
@@ -50,7 +52,7 @@ const ListarBoletines = () => {
       setError("warning");
     }
   };
-  
+
   return (
     <>
       <Buscador />

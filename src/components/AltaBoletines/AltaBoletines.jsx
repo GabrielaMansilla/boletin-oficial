@@ -76,7 +76,6 @@ const AltaBoletines = () => {
     const aux = e.target.files[0];
 
     setArchivoSeleccionado(aux);
-
   };
 
   useEffect(() => {
@@ -182,7 +181,7 @@ const AltaBoletines = () => {
       mensaje = "El archivo solo puede ser PDF";
     } else {
       mensaje = "Recarga la pagina";
-  
+
       return;
     }
     setOpen(true);
@@ -250,8 +249,8 @@ const AltaBoletines = () => {
       setOpen(true);
       setMensaje("Boletin generado con éxito!");
       setError("success");
-      setFormData(new FormData())
-    } catch (error) { 
+      setFormData(new FormData());
+    } catch (error) {
       console.error("Algo explotó! D:' ", error);
     }
   };
