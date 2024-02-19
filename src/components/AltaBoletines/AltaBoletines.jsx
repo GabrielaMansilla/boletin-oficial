@@ -122,7 +122,7 @@ const AltaBoletines = () => {
     return (
       formattedValue === undefined ||
       /\d{4}$/.test(formattedValue) !== false ||
-      formattedValue.length == 0
+      formattedValue.length === 0
     );
   };
 
@@ -173,7 +173,7 @@ const AltaBoletines = () => {
       console.log(6);
       mensaje = "Debe llenar al menos un campo y adjuntar un archivo .pdf";
       setError("error");
-    } else if (fileName == "") {
+    } else if (fileName === "") {
       console.log(7);
       mensaje = "Debe seleccionar un archivo";
       setError("warning");
@@ -250,7 +250,8 @@ const AltaBoletines = () => {
       setOpen(true);
       setMensaje("Boletin generado con éxito!");
       setError("success");
-    } catch (error) {
+      setFormData(new FormData())
+    } catch (error) { 
       console.error("Algo explotó! D:' ", error);
     }
   };

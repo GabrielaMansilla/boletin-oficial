@@ -1,45 +1,56 @@
 // import { Calendario } from "../Calendario/Calendario";
-import React from "react";
+import React, { useState } from "react";
 import "./ListarBoletines.css";
 import axios from "../../config/axios";
 import useGet from "../../hook/useGet";
 import Buscador from "../Buscador/Buscador";
-import { Button, Grid } from "@mui/material";
+import { Alert, Button, Grid, Snackbar } from "@mui/material";
 import logoMuniBlanco from "../../assets/logo-SMT-Blanco.png";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 
 const ListarBoletines = () => {
   const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
-  const boletinesInvertidos = boletines.slice(0, 3).reverse();
+  const boletinesInvertidos = boletines.slice().reverse();
+  const [open, setOpen] = useState(false);
+  const [mensaje, setMensaje] = useState("Algo Explotó :/");
+  const [error, setError] = useState("error");
 
-  // const funcionDescarga = async (obj) => {
-  //   try {
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
 
-  //     const response = await axios.get(
-  //       `http://10.0.0.230:4000/noticias/listar/${obj._id}`,
-  //       {
-  //         responseType: "blob", // Especifica el tipo de respuesta como Blob
-  //       }
-  //     );
-
-  //     const blob = response.data;
-  //     const url = URL.createObjectURL(blob);
-
-  //     const link = document.createElement("a");
-  //     link.setAttribute("target", "_blank");
-  //     link.href = url;
-
-  //     if(!blob.type.includes("image") && !blob.type.includes('application/pdf')){
-  //       link.download = obj.titulo;
-  //     }
-  //     document.body.appendChild(link);
-  //     link.click();
-  //     document.body.removeChild(link);
-  //   } catch (error) {
-  //     toast.error("Error en la conexión");
-  //   }
-  // }
-
+  const funcionDescarga = async (boletin) => {
+    try {
+      console.log(boletin._id)
+      const response = await axios.get(
+        `http://localhost:4000/boletin/listarDescarga/${boletin._id}`,
+        {
+          
+          responseType: "blob", // Especifica el tipo de respuesta como Blob
+        }
+        );
+        console.log(boletin._id)
+  
+      const blob = response.data;
+      const url = URL.createObjectURL(blob);
+  
+      // Crear un elemento de enlace temporal para iniciar la descarga
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `Boletin_Oficial_Municipal Nº ${boletin.nroBoletin}.pdf`); // Establecer el nombre de archivo
+  
+      // Hacer clic en el enlace para iniciar la descarga
+      link.click();
+    } catch (error) {
+      setOpen(true);
+      setMensaje("Error en la conexión");
+      setError("warning");
+    }
+  };
+  
   return (
     <>
       <Buscador />
@@ -61,7 +72,11 @@ const ListarBoletines = () => {
                       {/* <h2>Ultima Edicion | Boletin Nº 22334 </h2> */}
                       <h2>Boletin Nº {boletin.nroBoletin}</h2>
                       <div className="contBtn">
-                        <Button variant="contained" className="btnPdf">
+                        <Button
+                          variant="contained"
+                          className="btnPdf"
+                          onClick={() => funcionDescarga(boletin)}
+                        >
                           <DownloadForOfflineIcon />
                         </Button>
                       </div>
@@ -81,6 +96,20 @@ const ListarBoletines = () => {
                     </aside>
                 </Grid> */}
         </Grid>
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={() => setOpen(false)}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={error}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {mensaje}
+          </Alert>
+        </Snackbar>
       </div>
     </>
   );
