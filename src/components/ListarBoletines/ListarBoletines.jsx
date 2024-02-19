@@ -5,7 +5,7 @@ import axios from "../../config/axios";
 import useGet from "../../hook/useGet";
 import Buscador from "../Buscador/Buscador";
 import { Alert, Button, Grid, Snackbar } from "@mui/material";
-import logoMuniColor from "../../assets/logo-SMT.jpg";
+import logoMuniColor from "../../assets/logo-SMT.png";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 
 const ListarBoletines = () => {
