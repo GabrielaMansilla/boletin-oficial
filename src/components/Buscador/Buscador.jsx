@@ -137,7 +137,7 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
       console.log(boletin.nroBoletinBusqueda)
       setValues(BUSCADOR_VALUES);
       setError("success");
-    setOpen(true);
+      setOpen(true);
       return;
     }
 
@@ -146,6 +146,8 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
       handleFechaBoletinSearch((boletin.fechaBusqueda).toString());
       console.log(boletin.fechaBusqueda)
       setValues(BUSCADOR_VALUES)
+      setError("success");
+      setOpen(true);
       return;
     }
   };
