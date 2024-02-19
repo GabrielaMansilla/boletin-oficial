@@ -260,7 +260,7 @@ const Buscador = () => {
               <></>
             ) : (
               <>
-                {values.length < 0 ? (
+                {values.length > 0 ? (
                   values.map((boletin) => (
                     <div key={boletin.id} className="boletin mb-2">
                       <img
