@@ -14,6 +14,7 @@ import logoMuniBlanco from "../../assets/logo-SMT-Blanco.png";
 import { BUSCADOR_VALUES } from "../../helpers/constantes.js";
 
 
+
 const Buscador = () => {
   const [values, setValues] = useState([BUSCADOR_VALUES]);
   const [open, setOpen] = useState(false);
@@ -27,7 +28,7 @@ const Buscador = () => {
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
-
+  
   const handleMensaje = () => {
     if (values.nroBoletinBusqueda === "" && values.fechaBusqueda === "") {
       setOpen(true)
@@ -57,7 +58,9 @@ const Buscador = () => {
         setLoading(false)
         console.log('Boletín encontrado:', respuesta.data.fechaBoletin );
       } else {
-        setMensaje('error')
+      setOpen(true);
+      setError("success");
+      setMensaje('error')
         console.log('Boletín no .');
       }
     } catch (error) {
@@ -91,6 +94,7 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
     const respuesta = await axios.get(`/boletin/buscarFecha/${fechaBoletin}`) 
     if (respuesta.data) {
       setMensaje('Boletín encontrado')
+
       // const respuestaFiltrada = respuesta.data.filter(boletin => {
       //   return boletin.fechaBoletin === values.fechaBusqueda;
       // });
@@ -113,20 +117,27 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
     };
     if (!boletin.nroBoletinBusqueda && !boletin.fechaBusqueda) {
       setOpen(true);
-      setMensaje("Debe ingresar el Nº de Boletín o o o o Fecha de Publicación");
-      setError("error");
+      setMensaje("Debe ingresar el Nº de Boletín o Fecha de Publicación");
+      setError("success");
       return;
     }
 
       if (boletin.nroBoletinBusqueda && boletin.fechaBusqueda) {
     handleNroBoletinAndFechaSearch(boletin.nroBoletinBusqueda, boletin.fechaBusqueda.toString());
     console.log(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
+    setValues(BUSCADOR_VALUES);
+    setError("success");
+    setOpen(true);
+
     return;
   }
 
     if (boletin.nroBoletinBusqueda) {
       handleNroBoletinSearch(boletin.nroBoletinBusqueda);
       console.log(boletin.nroBoletinBusqueda)
+      setValues(BUSCADOR_VALUES);
+      setError("success");
+    setOpen(true);
       return;
     }
 
@@ -134,6 +145,7 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
     if (boletin.fechaBusqueda){
       handleFechaBoletinSearch((boletin.fechaBusqueda).toString());
       console.log(boletin.fechaBusqueda)
+      setValues(BUSCADOR_VALUES)
       return;
     }
   };
