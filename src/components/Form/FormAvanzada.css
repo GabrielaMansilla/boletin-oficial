@@ -15,6 +15,16 @@
 
 }
 
+.busqueda {
+width: 100% !important;
+margin-left: 0px !important;
+height: 60px !important;
+margin-right: 175px !important;
+
+}
+
+
+
 .tituloBusquedaAvanzada {
     color: #fff;
     padding-top: 40px;
@@ -65,3 +75,67 @@ margin} */
     align-items: center;
     border-radius: 20px;
 }
+
+@media (max-width: 1200px) {
+.busqueda{
+    width:125% !important;
+    margin-left: -22px !important;
+    height: 60px !important;
+    margin-right: 90px !important;
+}
+}
+
+@media (max-width: 990px) {
+    .busqueda{
+        width:120% !important;
+        margin-left: -15px !important;
+        height: 60px !important;
+        margin-right: 56px !important;
+    }
+    }
+
+    @media (max-width: 775px) {
+        .busqueda{
+            width:186% !important;
+            margin-left: -80px !important;
+            height: 60px !important;
+            margin-right: 90px !important;
+        }
+        }
+
+        @media (max-width: 765px) {
+            .busqueda{
+                width:120% !important;
+                margin-left: -23px !important;
+                height: 60px !important;
+                margin-right: 100px !important;
+            }
+            }
+
+
+        @media (max-width: 730px) {
+            .busqueda{
+                width:160% !important;
+                margin-left: -49px !important;
+                height: 60px !important;
+                margin-right: 34px !important;
+            }
+            }
+
+            @media (max-width: 540px) {
+                .busqueda{
+                    width:140% !important;
+                    margin-left: -35px !important;
+                    height: 60px !important;
+                    margin-right: 33px !important;
+                }
+                }
+
+                @media (max-width: 500px) {
+                    .busqueda{
+                        width:130% !important;
+                        margin-left: -26px !important;
+                        height: 60px !important;
+                        margin-right: 19px !important;
+                    }
+                    }

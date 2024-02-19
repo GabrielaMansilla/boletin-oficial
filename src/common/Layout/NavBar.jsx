@@ -26,7 +26,7 @@ export const NavBar = () => {
                 }
 
                 <div className='contLogo mb-3'>
-                    <img src={logoMuni} alt="logo Muni" className='logoNav' />
+                   <a href="/"> <img src={logoMuni} alt="logo Muni" className='logoNav' /></a>
                     <div className='ms-2'>
                         <h4 className='mb-0'>CIUDAD</h4>
                         <div className='textMuni'>

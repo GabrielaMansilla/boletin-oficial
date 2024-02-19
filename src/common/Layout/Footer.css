@@ -46,10 +46,12 @@
 }
 
 .seguinos {
+  margin-left: 50px !important;
   display: flex;
   justify-content: end;
   /* flex:end; */
   align-items: center !important;
+  
 
 }
 

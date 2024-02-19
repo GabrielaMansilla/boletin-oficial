@@ -24,22 +24,24 @@
     overflow: hidden;
     align-items: center;
     border-radius: 10px;
-    background: #0066ff;
+    background: #ffffff;
     justify-content: space-around;
     box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    border: 3px solid #0066ff;
 }
 
-.logoMuniBlanco {
+.logoMuniColor {
     width: auto;
-    height: 100px;
-    margin-left: -40px !important;
+    height: 200px;
+    margin-left: -75px !important;
     padding-left: -10px !important;
+    padding-right: 0px !important;
 }
 
-.logoMuniBlanco2 {
+/* .logoMuniBlanco2 {
     width: auto;
     height: 100px;
-}
+} */
 
 .boletinText {
     flex-direction: column;
@@ -47,9 +49,10 @@
 }
 
 .boletin h2 {
+    margin-left: -2px;
     font-size: 160%;
     font-weight: 400 !important;
-    color: #fff !important
+    color: #000000 !important
 }
 
 .contBtn {

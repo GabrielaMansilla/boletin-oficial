@@ -5,7 +5,7 @@ import axios from "../../config/axios";
 import useGet from "../../hook/useGet";
 import Buscador from "../Buscador/Buscador";
 import { Button, Grid } from "@mui/material";
-import logoMuniBlanco from "../../assets/logo-SMT-Blanco.png";
+import logoMuniColor from "../../assets/logo-SMT.jpg";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 
 const ListarBoletines = () => {
@@ -53,8 +53,8 @@ const ListarBoletines = () => {
               boletinesInvertidos.map((boletin) => (
                 <div className="boletin mb-2 " key={boletin._id}>
                   <img
-                    className="logoMuniBlanco"
-                    src={logoMuniBlanco}
+                    className="logoMuniColor"
+                    src={logoMuniColor}
                     alt=" logo Muni"
                   />
                   <div className="boletinText container mt-3">
