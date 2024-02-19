@@ -68,6 +68,11 @@
     background-color: #2eb1ff !important;
 }
 
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root {
+    margin-left: -19px !important;
+    width: fit-content !important;
+    
+}
 .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
     width: 20% !important;
     color: #fff !important;

@@ -179,7 +179,7 @@ const handleBuscarNorma = () => {
 
   return (
     <div>
-      <Button className="text-light" onClick={handleOpenModal}>
+      <Button className="text-light busqueda" onClick={handleOpenModal}>
         Busqueda Avanzada
       </Button>
       <Modal
