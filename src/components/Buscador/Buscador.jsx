@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import "./Buscador.css";
 import FormAvanzada from "../Form/FormAvanzada.jsx";
 import axios from "../../config/axios";
-import logoMuniBlanco from "../../assets/logo-SMT-Blanco.png";
+import logoMuniColor from "../../assets/logo-SMT.png";
 import { BUSCADOR_VALUES } from "../../helpers/constantes.js";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 
@@ -21,7 +21,7 @@ const Buscador = () => {
   const handleMensaje = () => {
     if (values.nroBoletinBusqueda === "" && values.fechaBusqueda === "") {
       setOpen(true);
-      setMensaje("Debe Selccionar el Nro de Boletin o  Fecha de Publicacion");
+      setMensaje("Debe Selccionar el Nro de Boletin o Fecha de Publicación");
       setError("error");
     } else {
       setOpen(true);
@@ -40,42 +40,43 @@ const Buscador = () => {
   const handleNroBoletinSearch = async (nroBoletin) => {
     try {
       const respuesta = await axios.get(`/boletin/buscar/${nroBoletin}`);
-      if (respuesta.data) {
-        setOpen(true);
+      if (respuesta.data.length > 0) {
         setMensaje("Boletín encontrado");
         setError("success");
+        setOpen(true);
         setValues(respuesta.data);
         setLoading(false);
         console.log("Boletín encontrado:", respuesta.data.fechaBoletin);
       } else {
         setOpen(true);
+        setMensaje("No se encontró el boletín");
         setError("error");
-        setMensaje("No existe boletin");
         console.log("Boletín no .");
       }
     } catch (error) {
       console.error("Error al buscar boletin:", error);
     }
   };
-
   const handleFechaBoletinSearch = async (fechaBoletin) => {
     try {
       const respuesta = await axios.get(`/boletin/buscarFecha/${fechaBoletin}`);
-      if (respuesta.data !== "") {
-        setMensaje("Boletín encontrado");
+      if (respuesta.data.length > 0) {
         setOpen(true);
+        setMensaje("Boletín encontrado");
         setError("success");
-        setValues(respuesta.data);
         setLoading(false);
         console.log("Boletín encontrado:", respuesta.data);
       } else {
-        setError("error");
-        setMensaje("No existe boletin");
         setOpen(true);
+        setMensaje("Boletín no encontrado");
+        setError("error");
         console.log("Boletín no .");
       }
     } catch (error) {
       console.error("Error al buscar boletin:", error);
+      setOpen(true);
+      setMensaje("Error de conexion");
+      setError("warning");
     }
   };
   const handleBuscarBoletin = () => {
@@ -90,25 +91,34 @@ const Buscador = () => {
       return;
     }
 
-    if (boletin.nroBoletinBusqueda !== "" && boletin.fechaBusqueda !== "") {
+    if (boletin.nroBoletinBusqueda && boletin.fechaBusqueda) {
       handleNroBoletinAndFechaSearch(
         boletin.nroBoletinBusqueda,
-        boletin.fechaBusqueda.toString()
+        boletin.fechaBusqueda
       );
       console.log(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
+      setValues(BUSCADOR_VALUES);
+      setMensaje("Boletín encontrado 101");
+      setError("success");
+      setOpen(true);
+
       return;
     }
 
-    if (boletin.nroBoletinBusqueda !== "") {
+    if (boletin.nroBoletinBusqueda) {
       handleNroBoletinSearch(boletin.nroBoletinBusqueda);
       console.log(boletin.nroBoletinBusqueda);
+      setValues(BUSCADOR_VALUES);
+      setError("success");
+      setOpen(true);
       return;
     }
 
     // tratando de buscar por fecha
-    if (boletin.fechaBusqueda !== "") {
+    if (boletin.fechaBusqueda) {
       handleFechaBoletinSearch(boletin.fechaBusqueda.toString());
       console.log(boletin.fechaBusqueda);
+      setValues(BUSCADOR_VALUES);
       return;
     }
   };
@@ -117,20 +127,23 @@ const Buscador = () => {
       const respuesta = await axios.get(
         `/boletin/buscarNroYFecha/${nroBoletin}/${fechaBoletin}`
       );
-      if (respuesta.data) {
-        setValues(BUSCADOR_VALUES);
-        setMensaje("Boletín encontrado");
+      if (respuesta.data.length > 0) {
         setOpen(true);
+        setMensaje("Boletín encontrado");
         setError("success");
+        setValues(respuesta.data);
         setLoading(false);
         console.log("Boletín encontrado:", respuesta.data);
       } else {
         setOpen(true);
+        setMensaje("Boletín no encontrado");
         setError("error");
-        setMensaje("No existe Boletin");
         console.log("Boletín no encontrado.");
       }
     } catch (error) {
+      setOpen(true);
+      setMensaje("Error de conexión");
+      setError("warning");
       console.error("Error al buscar boletín:", error);
     }
   };
@@ -247,12 +260,12 @@ const Buscador = () => {
               <></>
             ) : (
               <>
-                {values.length > 0 ? (
+                {values.length < 0 ? (
                   values.map((boletin) => (
                     <div key={boletin.id} className="boletin mb-2">
                       <img
-                        className="logoMuniBlanco"
-                        src={logoMuniBlanco}
+                        className="logoMuniColor"
+                        src={logoMuniColor}
                         alt=" logo Muni"
                       />
                       <div className="boletinText container mt-3">
@@ -277,7 +290,7 @@ const Buscador = () => {
                     </div>
                   ))
                 ) : (
-                  <p>No hay boletines para la fecha seleccionada.</p>
+                  <p>No hay boletines para la fessscha seleccionada.</p>
                 )}
               </>
             )}

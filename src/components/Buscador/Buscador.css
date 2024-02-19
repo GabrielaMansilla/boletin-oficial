@@ -88,6 +88,14 @@
 
 }
 
+.logoMuniColor {
+    width: auto;
+    height: 140px;
+    margin-left: -35px !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
 @media (max-width: 775px) {
     .inputCont{
         width: 100% !important;
