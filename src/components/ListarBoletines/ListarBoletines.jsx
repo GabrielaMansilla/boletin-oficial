@@ -55,7 +55,6 @@ const ListarBoletines = () => {
 
   return (
     <>
-      <Buscador />
       <div className="d-flex flex-row mt-4">
         <Grid container spacing={2} className="d-flex contGrid">
           <Grid className="contBoletines ps-5  pe-4 " item xs={12} md={12}>
@@ -98,7 +97,7 @@ const ListarBoletines = () => {
                     </aside>
                 </Grid> */}
         </Grid>
-        <Snackbar
+        {/* <Snackbar
           open={open}
           autoHideDuration={6000}
           onClose={() => setOpen(false)}
@@ -111,7 +110,7 @@ const ListarBoletines = () => {
           >
             {mensaje}
           </Alert>
-        </Snackbar>
+        </Snackbar> */}
       </div>
     </>
   );

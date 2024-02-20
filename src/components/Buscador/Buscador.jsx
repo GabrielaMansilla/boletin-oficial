@@ -6,16 +6,20 @@ import axios from "../../config/axios";
 import logoMuniColor from "../../assets/logo-SMT.png";
 import { BUSCADOR_VALUES } from "../../helpers/constantes.js";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
+import ListarBoletines from "../ListarBoletines/ListarBoletines.jsx";
 
 const Buscador = () => {
-  const [values, setValues] = useState([BUSCADOR_VALUES]);
+  const [values, setValues] = useState([]);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [loading, setLoading] = useState(true);
+  const [boletinEncontrado, setBoletinEncontrado] = useState(true);
+  const [busquedaRealizada, setBusquedaRealizada] = useState(false);
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
+    setBusquedaRealizada(false);
   };
 
   const handleMensaje = () => {
@@ -37,115 +41,124 @@ const Buscador = () => {
     setOpen(false);
   };
 
-  const handleNroBoletinSearch = async (nroBoletin) => {
+  const handleBuscarBoletin = async () => {
     try {
-      const respuesta = await axios.get(`/boletin/buscar/${nroBoletin}`);
-      if (respuesta.data.length > 0) {
-        setMensaje("Boletín encontrado");
-        setError("success");
+      setLoading(true);
+      const boletin = {
+        nroBoletinBusqueda: values.nroBoletinBusqueda,
+        fechaBusqueda: values.fechaBusqueda,
+      };
+      if (!boletin.nroBoletinBusqueda && !boletin.fechaBusqueda) {
         setOpen(true);
-        setValues(respuesta.data);
-        setLoading(false);
-        console.log("Boletín encontrado:", respuesta.data.fechaBoletin);
-      } else {
-        setOpen(true);
-        setMensaje("No se encontró el boletín");
+        setMensaje("Debe ingresar el Nº de Boletín o Fecha de Publicación");
         setError("error");
-        console.log("Boletín no .");
+        return;
+      } else if (boletin.nroBoletinBusqueda || boletin.fechaBusqueda) {
+        handleSearchBoletin(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
+        console.log(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
+        setValues(BUSCADOR_VALUES);
+        setBusquedaRealizada(true);
+        // setMensaje("Boletín encontrado 101");
+        // setError("success");
+        // setOpen(true);
+
+        return;
       }
     } catch (error) {
-      console.error("Error al buscar boletin:", error);
-    }
-  };
-  const handleFechaBoletinSearch = async (fechaBoletin) => {
-    try {
-      const respuesta = await axios.get(`/boletin/buscarFecha/${fechaBoletin}`);
-      if (respuesta.data.length > 0) {
-        setOpen(true);
-        setMensaje("Boletín encontrado");
-        setError("success");
-        setLoading(false);
-        console.log("Boletín encontrado:", respuesta.data);
-      } else {
-        setOpen(true);
-        setMensaje("Boletín no encontrado");
-        setError("error");
-        console.log("Boletín no .");
-      }
-    } catch (error) {
-      console.error("Error al buscar boletin:", error);
       setOpen(true);
-      setMensaje("Error de conexion");
+      setMensaje("Algo explotó! :(");
       setError("warning");
+      console.error("Error al buscar boletín:", error);
     }
   };
-  const handleBuscarBoletin = () => {
-    const boletin = {
-      nroBoletinBusqueda: values.nroBoletinBusqueda,
-      fechaBusqueda: values.fechaBusqueda,
-    };
-    if (!boletin.nroBoletinBusqueda && !boletin.fechaBusqueda) {
-      setOpen(true);
-      setMensaje("Debe ingresar el Nº de Boletín o Fecha de Publicación");
-      setError("error");
-      return;
-    }
 
-    if (boletin.nroBoletinBusqueda && boletin.fechaBusqueda) {
-      handleNroBoletinAndFechaSearch(
-        boletin.nroBoletinBusqueda,
-        boletin.fechaBusqueda
-      );
-      console.log(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
-      setValues(BUSCADOR_VALUES);
-      setMensaje("Boletín encontrado 101");
-      setError("success");
-      setOpen(true);
-
-      return;
-    }
-
-    if (boletin.nroBoletinBusqueda) {
-      handleNroBoletinSearch(boletin.nroBoletinBusqueda);
-      console.log(boletin.nroBoletinBusqueda);
-      setValues(BUSCADOR_VALUES);
-      setError("success");
-      setOpen(true);
-      return;
-    }
-
-    // tratando de buscar por fecha
-    if (boletin.fechaBusqueda) {
-      handleFechaBoletinSearch(boletin.fechaBusqueda.toString());
-      console.log(boletin.fechaBusqueda);
-      setValues(BUSCADOR_VALUES);
-      return;
-    }
-  };
-  const handleNroBoletinAndFechaSearch = async (nroBoletin, fechaBoletin) => {
+  const handleSearchBoletin = async (nroBoletin, fechaBoletin) => {
     try {
-      const respuesta = await axios.get(
-        `/boletin/buscarNroYFecha/${nroBoletin}/${fechaBoletin}`
-      );
-      if (respuesta.data.length > 0) {
+      console.log(!!nroBoletin, !!fechaBoletin, "a");
+      if (!nroBoletin && !fechaBoletin) {
         setOpen(true);
-        setMensaje("Boletín encontrado");
-        setError("success");
-        setValues(respuesta.data);
-        setLoading(false);
-        console.log("Boletín encontrado:", respuesta.data);
-      } else {
-        setOpen(true);
-        setMensaje("Boletín no encontrado");
+        setMensaje(
+          "Debe ingresar el Nº de Boletín o Fecha de Publicación por nada"
+        );
         setError("error");
-        console.log("Boletín no encontrado.");
+      } else if (nroBoletin && fechaBoletin) {
+        const respuesta = await axios.get(
+          `/boletin/buscarNroYFecha/${nroBoletin}/${fechaBoletin}`
+        );
+        if (respuesta.data.length > 0) {
+          setValues(
+            Array.isArray(respuesta.data) ? respuesta.data : [respuesta.data]
+          );
+          setOpen(true);
+          setLoading(false);
+          setMensaje(
+            `Boletín encontrado Nº ${nroBoletin} fecha: ${fechaBoletin}`
+          );
+          setError("success");
+          setBoletinEncontrado(true);
+        } else {
+          setValues(BUSCADOR_VALUES);
+          setLoading(false);
+          setOpen(true);
+          setMensaje(`No existe boletin Nº ${nroBoletin}`);
+          setError("error");
+          console.log("Boletín no encontrado:", error);
+          setBoletinEncontrado(false);
+        }
+      } else if (nroBoletin && !fechaBoletin) {
+        const respuesta = await axios.get(`/boletin/buscar/${nroBoletin}`);
+        console.log("Boletín encontrado:", respuesta.data);
+        if (respuesta.data.length > 0) {
+          setValues(
+            Array.isArray(respuesta.data) ? respuesta.data : [respuesta.data]
+          );
+          setLoading(false);
+          setOpen(true);
+          setMensaje(`Boletín encontrado Nº ${nroBoletin}`);
+          setError("success");
+          setBoletinEncontrado(true);
+        } else {
+          setValues(BUSCADOR_VALUES);
+          setLoading(false);
+          setOpen(true);
+          setMensaje(`No existe boletin Nº ${nroBoletin}`);
+          setError("error");
+          console.log("Boletín no encontrado:", error);
+          setBoletinEncontrado(false);
+        }
+      } else if (!nroBoletin && fechaBoletin) {
+        const respuesta = await axios.get(
+          `/boletin/buscarFecha/${fechaBoletin}`
+        );
+        console.log(fechaBoletin, respuesta, respuesta.data.length);
+        if (respuesta.data.length > 0) {
+          setValues(
+            Array.isArray(respuesta.data) ? respuesta.data : [respuesta.data]
+          );
+          setLoading(false);
+          setOpen(true);
+          setMensaje(`Boletín encontrado fecha: ${fechaBoletin}`);
+          setError("success");
+          console.log("Boletín encontrado:", respuesta.data);
+          setBoletinEncontrado(true);
+        } else {
+          setValues(BUSCADOR_VALUES);
+          setLoading(false);
+          setOpen(true);
+          setMensaje(`No existe boletin para la fecha ${fechaBoletin}`);
+          setError("error");
+          console.log("Boletín no encontrado:", error);
+          setBoletinEncontrado(false);
+        }
       }
     } catch (error) {
+      setLoading(false);
       setOpen(true);
       setMensaje("Error de conexión");
       setError("warning");
       console.error("Error al buscar boletín:", error);
     }
+    return;
   };
 
   const funcionDescarga = async (boletin) => {
@@ -257,10 +270,10 @@ const Buscador = () => {
         <Grid container spacing={2} className="d-flex contGrid">
           <Grid className="contBoletines ps-5  pe-4 " item xs={12} md={12}>
             {loading ? (
-              <></>
+              <ListarBoletines />
             ) : (
               <>
-                {values.length > 0 ? (
+                {Array.isArray(values) && values.length > 0 ? (
                   values.map((boletin) => (
                     <div key={boletin.id} className="boletin mb-2">
                       <img
@@ -270,7 +283,6 @@ const Buscador = () => {
                       />
                       <div className="boletinText container mt-3">
                         <div className="d-flex flex-row justify-content-between">
-                          {/* <h2>Ultima Edicion | Boletin Nº 22334 </h2> */}
                           <h2>Boletin Nº {boletin.nroBoletin}</h2>
                           <div className="contBtn">
                             <Button
@@ -290,7 +302,9 @@ const Buscador = () => {
                     </div>
                   ))
                 ) : (
-                  <p>No hay boletines para la fessscha seleccionada.</p>
+                  <p className="d-flex justify-content-center">
+                    No se encontró Boletin
+                  </p>
                 )}
               </>
             )}
