@@ -7,7 +7,6 @@ import {
   Input,
   Snackbar,
   TextField,
-  // TextareaAutosize,
 } from "@mui/material";
 import { ALTA_BOLETIN_VALUES } from "../../helpers/constantes";
 import FileUp from "@mui/icons-material/FileUpload";
@@ -30,7 +29,6 @@ const AltaBoletines = () => {
   const [resolucionArray, setResolucionArray] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [bandera, setBandera] = useState(false);
-  // const [datosBoletin, setDatosBoletin] = useState({});
   const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
   const [nroBoletinExistente, setNroBoletinExistente] = useState(false);
 
@@ -259,7 +257,6 @@ const AltaBoletines = () => {
     <Box
       component="form"
       id="form"
-      // sx={{ '& > :not(style)': { m: 1, width: '25ch' }, }}
       noValidate
       enctype="multipart/form-data"
       autoComplete="off"
@@ -372,7 +369,6 @@ const AltaBoletines = () => {
                 label="Nº de Resolución"
                 className="inputAltaBoletin"
                 type="text"
-                // value={values.nroResolucion}
                 value={formattedValue}
                 onChange={handleResolucionChange}
                 name="nroResolucion"
@@ -380,9 +376,6 @@ const AltaBoletines = () => {
             </div>
           </div>
         </Box>
-
-        {/* <TextareaAutosize
-        minRows={10} className='textAreaBoletines' /> */}
 
         <Box className="contInputFileBoletin col-4 W-100 pt-5 pb-4">
           <label className="fileNameDisplay flex-column">
@@ -446,7 +439,6 @@ const AltaBoletines = () => {
       </Snackbar>
       {mostrarModal && (
         <ModalAltaBoletin
-          // datosCorrectos={bandera}
           abrir={mostrarModal}
           onConfirm={handleConfirm}
         />

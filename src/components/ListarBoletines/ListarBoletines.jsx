@@ -24,28 +24,24 @@ const ListarBoletines = () => {
 
   const funcionDescarga = async (boletin) => {
     try {
-      console.log(boletin._id);
       const response = await axios.get(
         `http://localhost:4000/boletin/listarDescarga/${boletin._id}`,
         {
           responseType: "blob", // Especifica el tipo de respuesta como Blob
         }
-      );
-      console.log(boletin._id);
-
+      )
       const blob = response.data;
       const url = URL.createObjectURL(blob);
-
-      // Crear un elemento de enlace temporal para iniciar la descarga
       const link = document.createElement("a");
+     
       link.href = url;
       link.setAttribute(
         "download",
         `Boletin_Oficial_Municipal Nº ${boletin.nroBoletin}.pdf`
-      ); // Establecer el nombre de archivo
+      );
 
-      // Hacer clic en el enlace para iniciar la descarga
       link.click();
+
     } catch (error) {
       setOpen(true);
       setMensaje("Error en la conexión");
@@ -61,7 +57,7 @@ const ListarBoletines = () => {
             {loading ? (
               <p>cargando Boletines</p>
             ) : (
-              boletinesInvertidos.map((boletin) => (
+              boletinesInvertidos.map((boletin, index) => (
                 <div className="boletin mb-2 " key={boletin._id}>
                   <img
                     className="logoMuniColor"
@@ -70,8 +66,12 @@ const ListarBoletines = () => {
                   />
                   <div className="boletinText container mt-3">
                     <div className="d-flex flex-row justify-content-between">
-                      {/* <h2>Ultima Edicion | Boletin Nº 22334 </h2> */}
-                      <h2>Boletin Nº {boletin.nroBoletin}</h2>
+                      <h2>
+                        {index === 0
+                          ? `ÚLTIMA EDICIÓN | BOLETÍN Nº ${boletin.nroBoletin}`
+                          : `BOLETÍN Nº ${boletin.nroBoletin}`}
+                      </h2>
+                      {/* <h2>Boletin Nº {boletin.nroBoletin}</h2> */}
                       <div className="contBtn">
                         <Button
                           variant="contained"
@@ -97,7 +97,7 @@ const ListarBoletines = () => {
                     </aside>
                 </Grid> */}
         </Grid>
-        {/* <Snackbar
+        <Snackbar
           open={open}
           autoHideDuration={6000}
           onClose={() => setOpen(false)}
@@ -110,7 +110,7 @@ const ListarBoletines = () => {
           >
             {mensaje}
           </Alert>
-        </Snackbar> */}
+        </Snackbar>
       </div>
     </>
   );

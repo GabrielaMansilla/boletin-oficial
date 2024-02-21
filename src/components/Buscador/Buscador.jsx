@@ -81,6 +81,7 @@ const Buscador = () => {
           "Debe ingresar el Nº de Boletín o Fecha de Publicación por nada"
         );
         setError("error");
+        <ListarBoletines />;
       } else if (nroBoletin && fechaBoletin) {
         const respuesta = await axios.get(
           `/boletin/buscarNroYFecha/${nroBoletin}/${fechaBoletin}`
@@ -302,9 +303,12 @@ const Buscador = () => {
                     </div>
                   ))
                 ) : (
-                  <p className="d-flex justify-content-center">
-                    No se encontró Boletin
-                  </p>
+                  <>
+                    <p className="d-flex justify-content-center">
+                      No se encontró Boletin
+                    </p>
+                    <ListarBoletines />
+                  </>
                 )}
               </>
             )}
