@@ -78,16 +78,16 @@ export default function FormAvanzada() {
         onClose={handleCloseModal}
 
       >
-        <Box className="modal-busqueda-avanzada">
+        <Box className="modal-busqueda-avanzada" sx={{ width: "100%" }}>
           <h3 className="tituloBusquedaAvanzada">Búsqueda Avanzada</h3>
           <Box className="modal-content"
             component="form"
-            sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+            sx={{ "& > :not(style)": { m: 1, width: "100%" } }}
             noValidate
             autoComplete="off"
 
           >
-            <FormControl sx={{ m: 1, minWidth: 80 }} className="ms-3">
+            <FormControl sx={{ m: 1, }} className="ms-3">
               <InputLabel id="demo-simple-select-autowidth-label" >
                 Tipo de Norma
               </InputLabel>
