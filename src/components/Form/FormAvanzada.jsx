@@ -11,12 +11,20 @@ import {
   TextField,
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
+
 import "./FormAvanzada.css";
 import axios from "../../config/axios";
 import { BUSCADOR_AVANZADA_VALUES } from "../../helpers/constantes";
 
-export default function FormAvanzada() {
+export default function FormAvanzada({ busquedaAvanzada }) {
   const [values, setValues] = useState([BUSCADOR_AVANZADA_VALUES]);
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setValues(BUSCADOR_AVANZADA_VALUES);
+  };
+  const [resultados, setResultados] = useState([]);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
@@ -24,19 +32,8 @@ export default function FormAvanzada() {
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
-  const [openModal, setOpenModal] = useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => {
-    setOpenModal(false);
-    setValues(BUSCADOR_AVANZADA_VALUES);
-  };
 
-  // const handleClear = () => {
-  //   setValues(BUSCADOR_AVANZADA_VALUES);
-  //   handleClose();
-  // };
-
-  const handleMensajeAvanzada = () => {
+  const handleMensaje = () => {
     if (
       values.tipoBusquedaAvanzada === "" &&
       values.nroNormaBusquedaAvanzada === "" &&
@@ -45,13 +42,9 @@ export default function FormAvanzada() {
       setOpen(true);
       setMensaje("Debe llenar al menos un campo");
       setError("error");
-    } else if (
-      values.tipoBusquedaAvanzada === "" &&
-      values.nroNormaBusquedaAvanzada !== "" &&
-      values.fechaBusquedaAvanzada === ""
-    ) {
+    } else {
       setOpen(true);
-      setMensaje("Debe seleccionar el Tipo de Norma o Fecha");
+      setMensaje("Debe Seleccionar el Tipo de Norma o Fecha");
       setError("error");
     }
   };
@@ -63,177 +56,295 @@ export default function FormAvanzada() {
     setOpen(false);
   };
 
-  const handleNroDecretoSearch = async (nroDecreto) => {
+  // const handleNroDecretoSearch = async (nroDecreto) => {
+  //   try {
+  //     const respuesta = await axios.get(`/boletin/buscarDecreto/${nroDecreto}`);
+  //     if (respuesta.data) {
+  //       setMensaje("Decreto encontrado");
+  //       setValues(respuesta.data);
+  //       setLoading(false);
+  //       console.log("Decreto encontrado:", respuesta.data.nroDecreto);
+  //     } else {
+  //       setMensaje("error");
+  //       console.log("Decreto no .");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error al buscar decreto:", error);
+  //   }
+  // };
+  // const handleNroOrdenanzaSearch = async (nroOrdenanza) => {
+  //   try {
+  //     const respuesta = await axios.get(
+  //       `/boletin/buscarOrdenanza/${nroOrdenanza}`
+  //     );
+  //     if (respuesta.data) {
+  //       setMensaje("Ordenanza encontrado");
+  //       setValues(respuesta.data);
+  //       setLoading(false);
+  //       console.log("Ordenanza encontrada:", respuesta.data.nroOrdenanza);
+  //     } else {
+  //       setMensaje("error");
+  //       console.log("Ordenanza no .");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error al buscar Ordenanza:", error);
+  //   }
+  // };
+  // const handleNroResolucionSearch = async (nroResolucion) => {
+  //   try {
+  //     const respuesta = await axios.get(
+  //       `/boletin/buscarResolucion/${nroResolucion}`
+  //     );
+  //     if (respuesta.data) {
+  //       setMensaje("Resolucion encontrado");
+  //       setValues(respuesta.data);
+  //       setLoading(false);
+  //       console.log("Resolucion encontrado:", respuesta.data.nroResolucion);
+  //     } else {
+  //       setMensaje("error");
+  //       console.log("Resolucion no .");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error al buscar Resolucion:", error);
+  //   }
+  // };
+
+  // const handleFechaBoletinSearch = async (fechaBoletin) => {
+  //   try {
+  //     const respuesta = await axios.get(`/boletin/buscarFecha/${fechaBoletin}`);
+  //     if (respuesta.data) {
+  //       setMensaje("Norma encontrado");
+  //       // const respuestaFiltrada = respuesta.data.filter(boletin => {
+  //       //   return boletin.fechaBoletin === values.fechaBusqueda;
+  //       // });
+  //       // setValues(respuestaFiltrada);
+  //       setValues(respuesta.data);
+  //       setLoading(false);
+  //       console.log("Norma encontrado:", respuesta.data.fechaBoletin);
+  //     } else {
+  //       setMensaje("error");
+  //       console.log("Norma no .");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error al buscar norma:", error);
+  //   }
+  // };
+
+  // const handleBuscarNorma = () => {
+  //   const boletin = {
+  //     tipoBusquedaAvanzada: values.tipoBusquedaAvanzada,
+  //     nroNormaBusquedaAvanzada: values.nroNormaBusquedaAvanzada,
+  //     fechaBusquedaAvanzada: values.fechaBusquedaAvanzada,
+  //   };
+  //   if (
+  //     boletin.tipoBusquedaAvanzada === "" &&
+  //     boletin.nroNormaBusquedaAvanzada === ""
+  //   ) {
+  //     setOpen(true);
+  //     setMensaje("Debe llenar al menos un campo");
+  //     setError("error");
+  //   } else {
+  //     setOpen(true);
+  //     setMensaje("Debe Seleccionar el Tipo de Norma");
+  //     setError("error");
+  //   }
+  //   // if (boletin.tipoBusquedaAvanzada) {
+  //   //   handleNroDecretoSearch(boletin.tipoBusquedaAvanzada);
+  //   //   console.log(boletin.tipoBusquedaAvanzada);
+  //   // }
+  //   // if (boletin.tipoBusquedaAvanzada) {
+  //   //   handleNroOrdenanzaSearch(boletin.tipoBusquedaAvanzada);
+  //   //   console.log(boletin.tipoBusquedaAvanzada);
+  //   // }
+  //   // if (boletin.tipoBusquedaAvanzada) {
+  //   //   handleNroResolucionSearch(boletin.tipoBusquedaAvanzada);
+  //   //   console.log(boletin.tipoBusquedaAvanzada);
+  //   // }
+
+  //   // if (boletin.nroNormaBusquedaAvanzada) {
+  //   //   handleNroDecretoSearch(boletin.nroNormaBusquedaAvanzada);
+  //   //   console.log(boletin.nroNormaBusquedaAvanzada);
+  //   // }
+  //   // if (boletin.nroNormaBusquedaAvanzada) {
+  //   //   handleNroOrdenanzaSearch(boletin.nroNormaBusquedaAvanzada);
+  //   //   console.log(boletin.nroNormaBusquedaAvanzada);
+  //   // }
+  //   // if (boletin.nroNormaBusquedaAvanzada) {
+  //   //   handleNroResolucionSearch(boletin.nroNormaBusquedaAvanzada);
+  //   //   console.log(boletin.nroNormaBusquedaAvanzada);
+  //   // }
+  //   // if (boletin.fechaBusquedaAvanzada) {
+  //   //   handleFechaBoletinSearch(boletin.fechaBusquedaAvanzada.toString());
+  //   //   console.log(boletin.fechaBusquedaAvanzada);
+  //   // }
+  // };
+
+  const handleBuscarPorNorma = async (tipoDeNorma, nroDeNorma) => {
     try {
-      const respuesta = await axios.get(`/boletin/buscarDecreto/${nroDecreto}`);
-      if (respuesta.data) {
-        setMensaje("Decreto encontrado");
-        setValues(respuesta.data);
-        setLoading(false);
-        console.log("Decreto encontrado:", respuesta.data.nroDecreto);
-      } else {
-        setMensaje("error");
-        console.log("Decreto no .");
+      if (
+        (values.tipoDeNorma === "" && values.nroDeNorma === "") ||
+        (!tipoDeNorma && !nroDeNorma)
+      ) {
+        setOpen(true);
+        setMensaje("Debe llenar al menos un campo");
+        setError("error");
+      } else if (values.tipoDeNorma === "" && values.nroDeNorma !== "") {
+        setOpen(true);
+        console.log(values.tipoDeNorma, values.nroDeNorma);
+        setMensaje("Debe Seleccionar el Tipo de Norma");
+        setError("error");
+      } else if (values.tipoDeNorma !== "" && values.nroDeNorma === "") {
+        const response = await axios.get(
+          `/boletin/buscarPorTipo/${tipoDeNorma}/${nroDeNorma}`
+        );
+        console.log(response.data);
+        setResultados(response.data);
+        setOpen(true);
+        setMensaje("Buscado por Tipo de Norma");
+        setError("success");
+      } else if (values.tipoDeNorma !== "" && values.nroDeNorma !== "") {
+        console.log(tipoDeNorma, nroDeNorma);
+
+        const response = await axios.get(
+          `/boletin/buscarPorTipo/${tipoDeNorma}/${nroDeNorma}`
+        );
+        console.log(response.data);
+        setResultados(response.data);
+        setOpen(true);
+        setMensaje("Busacado por tipo de Norma y nro");
+        setError("success");
       }
     } catch (error) {
-      console.error("Error al buscar decreto:", error);
+      setOpen(true);
+      setMensaje("Error en la conexión");
+      setError("warning");
+      console.log("algo explotó! :(", error);
     }
   };
-  const handleNroOrdenanzaSearch = async (nroOrdenanza) => {
+
+  const handleBuscarPorFechaAvanzada = async (fecha, tipo) => {
     try {
-      const respuesta = await axios.get(
-        `/boletin/buscarOrdenanza/${nroOrdenanza}`
-      );
-      if (respuesta.data) {
-        setMensaje("Ordenanza encontrado");
-        setValues(respuesta.data);
-        setLoading(false);
-        console.log("Ordenanza encontrada:", respuesta.data.nroOrdenanza);
-      } else {
-        setMensaje("error");
-        console.log("Ordenanza no .");
+      if (fecha === "" || tipo === "") {
+        setOpen(true);
+        setMensaje("Debe llenar al menos un campo");
+        setError("error");
+      } else if ((fecha !== "") & (tipo === "")) {
+        console.log(fecha);
+        const resp = await axios.get(`/boletin/buscarFecha/${fecha}`);
+        console.log(resp.data);
+        setResultados(resp.data);
+        setOpen(true);
+        setMensaje("Boletin buscado por fecha");
+        setError("success");
+      } else if (fecha !== "" && tipo !== "") {
+        const resp = await axios.get(
+          `/boletin/buscarPorFecha/${fecha}/${tipo}`
+        );
+        console.log(resp.data);
+        setResultados(resp.data);
+        setOpen(true);
+        setMensaje("Boletin buscado por fecha y tipo");
+        setError("success");
       }
     } catch (error) {
-      console.error("Error al buscar Ordenanza:", error);
+      setOpen(true);
+      setMensaje("Error en la conexión");
+      setError("warning");
+      console.log("algo explotó! :(", error);
     }
   };
-  const handleNroResolucionSearch = async (nroResolucion) => {
+
+  const handlebuscarBoletinAvanzado = async () => {
     try {
-      const respuesta = await axios.get(
-        `/boletin/buscarResolucion/${nroResolucion}`
-      );
-      if (respuesta.data) {
-        setMensaje("Resolucion encontrado");
-        setValues(respuesta.data);
-        setLoading(false);
-        console.log("Resolucion encontrado:", respuesta.data.nroResolucion);
-      } else {
-        setMensaje("error");
-        console.log("Resolucion no .");
-      }
-    } catch (error) {
-      console.error("Error al buscar Resolucion:", error);
-    }
-  };
-
-  const handleFechaBoletinSearch = async (fechaBoletin) => {
-    try {
-      const respuesta = await axios.get(`/boletin/buscarFecha/${fechaBoletin}`);
-      if (respuesta.data) {
-        setMensaje("Norma encontrado");
-        // const respuestaFiltrada = respuesta.data.filter(boletin => {
-        //   return boletin.fechaBoletin === values.fechaBusqueda;
-        // });
-        // setValues(respuestaFiltrada);
-        setValues(respuesta.data);
-        setLoading(false);
-        console.log("Norma encontrado:", respuesta.data.fechaBoletin);
-      } else {
-        setMensaje("error");
-        console.log("Norma no .");
-      }
-    } catch (error) {
-      console.error("Error al buscar norma:", error);
-    }
-  };
-
-  const handleBuscarNorma = () => {
-    const boletin = {
-      tipoBusquedaAvanzada: values.tipoBusquedaAvanzada,
-      nroNormaBusquedaAvanzada: values.nroNormaBusquedaAvanzada,
-      fechaBusquedaAvanzada: values.fechaBusquedaAvanzada,
-    };
-    if (
-      values.tipoBusquedaAvanzada === "" &&
-      values.nroNormaBusquedaAvanzada === ""
-    ) {
-      setOpen(true);
-      setMensaje("Debe Seleccionar el Tipo de Norma");
-      setError("error");
-    } else {
-      setOpen(true);
-      setMensaje("Debe llenar al menos un campo");
-      setError("error");
-    }
-    if (boletin.tipoBusquedaAvanzada) {
-      handleNroDecretoSearch(boletin.tipoBusquedaAvanzada);
-      console.log(boletin.tipoBusquedaAvanzada);
-    }
-    if (boletin.tipoBusquedaAvanzada) {
-      handleNroOrdenanzaSearch(boletin.tipoBusquedaAvanzada);
-      console.log(boletin.tipoBusquedaAvanzada);
-    }
-    if (boletin.tipoBusquedaAvanzada) {
-      handleNroResolucionSearch(boletin.tipoBusquedaAvanzada);
-      console.log(boletin.tipoBusquedaAvanzada);
-    }
-
-    if (boletin.nroNormaBusquedaAvanzada) {
-      handleNroDecretoSearch(boletin.nroNormaBusquedaAvanzada);
-      console.log(boletin.nroNormaBusquedaAvanzada);
-    }
-    if (boletin.nroNormaBusquedaAvanzada) {
-      handleNroOrdenanzaSearch(boletin.nroNormaBusquedaAvanzada);
-      console.log(boletin.nroNormaBusquedaAvanzada);
-    }
-    if (boletin.nroNormaBusquedaAvanzada) {
-      handleNroResolucionSearch(boletin.nroNormaBusquedaAvanzada);
-      console.log(boletin.nroNormaBusquedaAvanzada);
-    }
-    if (boletin.fechaBusquedaAvanzada) {
-      handleFechaBoletinSearch(boletin.fechaBusquedaAvanzada.toString());
-      console.log(boletin.fechaBusquedaAvanzada);
-    }
-  };
-
-  const handleBuscarBoletin = async (
-    tipoBusquedaAvanzada,
-    nroNormaBusquedaAvanzada,
-    fechaBusquedaAvanzada
-  ) => {};
-
-  const handleBuscarBoletinAvanzado = async () => {
-    const boletin = {
-      tipoBusquedaAvanzada: values.tipoBusquedaAvanzada,
-      nroNormaBusquedaAvanzada: values.nroNormaBusquedaAvanzada,
-      fechaBusquedaAvanzada: values.fechaBusquedaAvanzada,
-    };
-
-    if (
-      !boletin.tipoBusquedaAvanzada &&
-      !boletin.nroNormaBusquedaAvanzada &&
-      !boletin.fechaBusquedaAvanzada
-    ) {
-      setOpen(true);
-      setMensaje("Debe rellenar al menos un campo");
-      setError("error");
-      return;
-    } else if (
-      !boletin.tipoBusquedaAvanzada &&
-      boletin.nroNormaBusquedaAvanzada &&
-      !boletin.fechaBusquedaAvanzada
-    ) {
-      setOpen(true);
-      setMensaje("Debe seleccionar el Tipo de Norma o Fecha");
-      setError("error");
-      return;
-    } else if (
-      boletin.tipoBusquedaAvanzada &&
-      boletin.nroNormaBusquedaAvanzada &&
-      !boletin.fechaBusquedaAvanzada
-    ) {
-      handleBuscarBoletin(
+      const {
         tipoBusquedaAvanzada,
         nroNormaBusquedaAvanzada,
+        fechaBusquedaAvanzada,
+      } = values;
+
+      if (
+        !tipoBusquedaAvanzada &&
+        !nroNormaBusquedaAvanzada &&
+        !fechaBusquedaAvanzada
+      ) {
+        setOpen(true);
+        setMensaje("Debe llenar al menos un campo");
+        setError("error");
+      } else if (
+        tipoBusquedaAvanzada &&
+        !nroNormaBusquedaAvanzada &&
+        !fechaBusquedaAvanzada
+      ) {
+        handleBuscarPorNorma(tipoBusquedaAvanzada);
+        setOpen(true);
+        setMensaje("Boletin buscado por Tipo de Norma");
+        setError("success");
+      } else if (
+        tipoBusquedaAvanzada &&
+        nroNormaBusquedaAvanzada &&
+        !fechaBusquedaAvanzada
+      ) {
+        handleBuscarPorNorma(tipoBusquedaAvanzada, nroNormaBusquedaAvanzada);
+        setOpen(true);
+        setMensaje("Boletin buscado por Tipo de Norma y nro");
+        setError("success");
+      } else if (
+        !tipoBusquedaAvanzada &&
+        !nroNormaBusquedaAvanzada &&
         fechaBusquedaAvanzada
-      );
+      ) {
+        handleBuscarPorFechaAvanzada(fechaBusquedaAvanzada);
+        setOpen(true);
+        setMensaje("Boletin buscado por fecha");
+        setError("success");
+      } else if (
+        tipoBusquedaAvanzada &&
+        !nroNormaBusquedaAvanzada &&
+        fechaBusquedaAvanzada
+      ) {
+        handleBuscarPorFechaAvanzada(
+          fechaBusquedaAvanzada,
+          tipoBusquedaAvanzada
+        );
+        setOpen(true);
+        setMensaje("Boletin buscado por tipo y fecha");
+        setError("success");
+      } else if (
+        !tipoBusquedaAvanzada &&
+        nroNormaBusquedaAvanzada &&
+        fechaBusquedaAvanzada
+      ) {
+        setOpen(true);
+        setMensaje("Debe ingresar el Tipo de Norma");
+        setError("error");
+      } else if (
+        !tipoBusquedaAvanzada &&
+        nroNormaBusquedaAvanzada &&
+        !fechaBusquedaAvanzada
+      ) {
+        setOpen(true);
+        setMensaje("Debe seleccionar Tipo de Norma o Fecha ");
+        setError("error");
+      } else if (
+        tipoBusquedaAvanzada &&
+        nroNormaBusquedaAvanzada &&
+        fechaBusquedaAvanzada
+      ) {
+        setOpen(true);
+        setMensaje("Boletin buscado por todos");
+        setError("success");
+      } else {
+        setOpen(true);
+        setMensaje("Debe llenar al menos un campo");
+        setError("error");
+      }
+    } catch (error) {
       setOpen(true);
-      setMensaje("Boletines buscados por tipo y nro");
-      setError("success");
-      return;
+      setMensaje("Error en la conexión");
+      setError("warning");
+      console.log("algo explotó! :(", error);
     }
   };
-
   return (
     <div>
       <Button className="text-light busqueda" onClick={handleOpenModal}>
@@ -265,9 +376,9 @@ export default function FormAvanzada() {
                 <MenuItem value="">
                   <em>--Seleccione--</em>
                 </MenuItem>
-                <MenuItem value={10}>Decreto</MenuItem>
-                <MenuItem value={21}>Resolución</MenuItem>
-                <MenuItem value={22}>Ordenanza</MenuItem>
+                <MenuItem value={"Decreto"}>Decreto</MenuItem>
+                <MenuItem value={"Ordenanza"}>Ordenanza</MenuItem>
+                <MenuItem value={"Resolucion"}>Resolución</MenuItem>
               </Select>
             </FormControl>
             <TextField
@@ -292,16 +403,12 @@ export default function FormAvanzada() {
               name="fechaBusquedaAvanzada"
             />
 
-            {(values.tipoBusquedaAvanzada === "" &&
-              values.nroNormaBusquedaAvanzada !== "" &&
-              values.fechaBusquedaAvanzada === "") ||
-            (values.tipoBusquedaAvanzada === "" &&
-              values.nroNormaBusquedaAvanzada === "" &&
-              values.fechaBusquedaAvanzada === "") ? (
+            {values.tipoBusquedaAvanzada !== "" ||
+            values.fechaBusquedaAvanzada !== "" ? (
               <Button
                 variant="contained"
                 className="btnAvanzada"
-                onClick={handleMensajeAvanzada}
+                onClick={handlebuscarBoletinAvanzado}
               >
                 Buscar
               </Button>
@@ -309,7 +416,7 @@ export default function FormAvanzada() {
               <Button
                 variant="contained"
                 className="btnAvanzada"
-                onClick={handleBuscarBoletinAvanzado}
+                onClick={handleMensaje}
               >
                 Buscar
               </Button>

@@ -7,6 +7,7 @@ import {
   Input,
   Snackbar,
   TextField,
+  // TextareaAutosize,
 } from "@mui/material";
 import { ALTA_BOLETIN_VALUES } from "../../helpers/constantes";
 import FileUp from "@mui/icons-material/FileUpload";
@@ -24,11 +25,11 @@ const AltaBoletines = () => {
   const [selectedFileName, setSelectedFileName] = useState(
     "Seleccione un Archivo"
   );
-  const [archivoSeleccionado, setArchivoSeleccionado] = useState(null);
   const [formData, setFormData] = useState(new FormData());
   const [resolucionArray, setResolucionArray] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [bandera, setBandera] = useState(false);
+  // const [datosBoletin, setDatosBoletin] = useState({});
   const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
   const [nroBoletinExistente, setNroBoletinExistente] = useState(false);
 
@@ -70,10 +71,8 @@ const AltaBoletines = () => {
     } else {
       setOpen(false); // Cerrar la advertencia si el archivo es un PDF
     }
-
-    const aux = e.target.files[0];
-
-    setArchivoSeleccionado(aux);
+    console.log(fileName); // Verificar el nombre del archivo
+    formData.append("archivoBoletin", e.target.files[0]); // Agregar el archivo al FormData
   };
 
   useEffect(() => {
@@ -117,9 +116,7 @@ const AltaBoletines = () => {
 
   const esNumeroDeResolucionValido = () => {
     return (
-      formattedValue === undefined ||
-      /\d{4}$/.test(formattedValue) !== false ||
-      formattedValue.length === 0
+      formattedValue === undefined || /\d{4}$/.test(formattedValue) !== false
     );
   };
 
@@ -135,55 +132,43 @@ const AltaBoletines = () => {
     values.nroBoletin !== "";
 
   const handleMensaje = () => {
-    let mensaje = "";
-    let fileName = archivoSeleccionado?.name || "";
-
     if (formattedValue?.length >= 1 && formattedValue?.length < 4) {
       if (!/\d{4}$/.test(formattedValue)) {
+        setOpen(true);
         console.log(1);
-        mensaje = "El último número de resolución debe tener 4 dígitos";
+        setMensaje("El último número de resolución debe tener 4 dígitos");
         setError("warning");
       } else {
+        setOpen(true);
         console.log(2);
-        mensaje = "El número de resolución debe tener 4 dígitos";
+
+        setMensaje("El número de resolución debe tener 4 dígitos");
         setError("warning");
       }
     } else if (values.nroBoletin === "") {
+      setOpen(true);
       console.log(3);
-      mensaje = "Debe ingresar el Nº de Boletín";
+
+      setMensaje("Debe ingresar el Nº de Boletín");
       setError("error");
     } else if (numeroBoletinExiste(values.nroBoletin)) {
+      setOpen(true);
       console.log(4);
-      mensaje = `El Nº de Boletín ${values.nroBoletin} ya existe!`;
+
+      setMensaje(`El Nº de Boletín ${values.nroBoletin} ya existe!`);
       setError("error");
     } else if (values.fechaBoletin === "") {
+      setOpen(true);
       console.log(5);
-      mensaje = "Debe ingresar la fecha del Boletín";
-      setError("warning");
-    } else if (
-      !values.nroDecretoInicial &&
-      !values.nroDecretoFinal &&
-      !values.nroOrdenanzaInicial &&
-      !values.nroOrdenanzaFinal &&
-      !formattedValue
-    ) {
-      console.log(6);
-      mensaje = "Debe llenar al menos un campo y adjuntar un archivo .pdf";
-      setError("error");
-    } else if (fileName === "") {
-      console.log(7);
-      mensaje = "Debe seleccionar un archivo";
-      setError("warning");
-    } else if (!fileName.toLowerCase().endsWith(".pdf")) {
-      console.log(8);
-      mensaje = "El archivo solo puede ser PDF";
-    } else {
-      mensaje = "Recarga la pagina";
 
-      return;
+      setMensaje("Debe ingresar la fecha del Boletín");
+      setError("warning");
+    } else {
+      setOpen(true);
+      console.log(6);
+      setMensaje("Debe llenar al menos un campo y adjuntar un archivo .pdf");
+      setError("error");
     }
-    setOpen(true);
-    setMensaje(mensaje);
   };
 
   const handleClose = (event, reason) => {
@@ -206,6 +191,7 @@ const AltaBoletines = () => {
     setBandera(confirmado);
     setMostrarModal(false);
     if (confirmado) {
+      console.log(bandera);
       enviarDatos();
     } else {
       setOpen(true);
@@ -216,6 +202,20 @@ const AltaBoletines = () => {
 
   const enviarDatos = async () => {
     try {
+      console.log("hola");
+      // const inputFile = document.getElementById('fileBoletin');
+      // console.log(inputFile)
+
+      const archivo = document.getElementById("fileBoletin").files[0];
+      formData.append("archivoBoletin", archivo);
+  
+      const respuestaArchivo = await axios.post("/boletin/alta", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(respuestaArchivo);
+
       const resolucionSinGuiones = resolucionArray.map((item) =>
         parseInt(item)
       );
@@ -224,22 +224,15 @@ const AltaBoletines = () => {
       const ordenanzas = obtenerOrdenanzas();
 
       const requestData = {
-        nroBoletin: parseInt(values.nroBoletin, 10),
+        nroBoletin: values.nroBoletin,
         fechaBoletin: values.fechaBoletin,
         nroDecreto: decretos,
         nroOrdenanza: ordenanzas,
         nroResolucion: resolucionSinGuiones,
       };
-      formData.append("requestData", JSON.stringify(requestData));
-      formData.append("archivoBoletin", archivoSeleccionado);
-      setFormData(formData);
-      console.log(...formData.entries());
+      console.log(requestData);
+      const respuesta = await axios.post("/boletin/alta", requestData); 
 
-      const respuesta = await axios.post("/boletin/alta", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
       console.log(respuesta);
       setValues(ALTA_BOLETIN_VALUES);
       setSelectedFileName("Seleccione un Archivo");
@@ -247,7 +240,6 @@ const AltaBoletines = () => {
       setOpen(true);
       setMensaje("Boletin generado con éxito!");
       setError("success");
-      setFormData(new FormData());
     } catch (error) {
       console.error("Algo explotó! D:' ", error);
     }
@@ -257,6 +249,7 @@ const AltaBoletines = () => {
     <Box
       component="form"
       id="form"
+      // sx={{ '& > :not(style)': { m: 1, width: '25ch' }, }}
       noValidate
       enctype="multipart/form-data"
       autoComplete="off"
@@ -369,6 +362,7 @@ const AltaBoletines = () => {
                 label="Nº de Resolución"
                 className="inputAltaBoletin"
                 type="text"
+                // value={values.nroResolucion}
                 value={formattedValue}
                 onChange={handleResolucionChange}
                 name="nroResolucion"
@@ -376,6 +370,9 @@ const AltaBoletines = () => {
             </div>
           </div>
         </Box>
+
+        {/* <TextareaAutosize
+        minRows={10} className='textAreaBoletines' /> */}
 
         <Box className="contInputFileBoletin col-4 W-100 pt-5 pb-4">
           <label className="fileNameDisplay flex-column">
@@ -439,6 +436,7 @@ const AltaBoletines = () => {
       </Snackbar>
       {mostrarModal && (
         <ModalAltaBoletin
+          // datosCorrectos={bandera}
           abrir={mostrarModal}
           onConfirm={handleConfirm}
         />

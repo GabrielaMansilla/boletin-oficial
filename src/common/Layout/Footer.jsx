@@ -39,6 +39,10 @@ export const Footer = () => {
               <p className='text-center text-md-end my-2 me-0 me-md-5  ' >Municipalidad de San Miguel de Tucumán</p>
               <p className='text-center text-md-end my-2 me-0  me-md-5 '>9 de Julio 598, Tucumán. República Argentina</p>
               <p className='text-center text-md-end my-2 me-0 me-md-5'>Tel: (0381)- 4516500</p>
+              
+              
+
+
             </div>
           </div>
           {/* </ul> */}

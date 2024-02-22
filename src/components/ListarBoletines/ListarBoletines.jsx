@@ -29,11 +29,11 @@ const ListarBoletines = () => {
         {
           responseType: "blob", // Especifica el tipo de respuesta como Blob
         }
-      )
+      );
       const blob = response.data;
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
-     
+
       link.href = url;
       link.setAttribute(
         "download",
@@ -41,11 +41,11 @@ const ListarBoletines = () => {
       );
 
       link.click();
-
     } catch (error) {
       setOpen(true);
       setMensaje("Error en la conexión");
       setError("warning");
+      console.log("algo explotó! :(", error);
     }
   };
 
@@ -91,11 +91,6 @@ const ListarBoletines = () => {
               ))
             )}
           </Grid>
-          {/* <Grid item xs={12} md={5}>
-                    <aside className='calendarioBoletines'>
-                        <Calendario />
-                    </aside>
-                </Grid> */}
         </Grid>
         <Snackbar
           open={open}

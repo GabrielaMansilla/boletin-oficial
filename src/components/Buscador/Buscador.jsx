@@ -14,6 +14,7 @@ const Buscador = () => {
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [loading, setLoading] = useState(true);
+  const [resultados, setResultados] = useState([])
   const [boletinEncontrado, setBoletinEncontrado] = useState(true);
   const [busquedaRealizada, setBusquedaRealizada] = useState(false);
 
@@ -74,7 +75,6 @@ const Buscador = () => {
 
   const handleSearchBoletin = async (nroBoletin, fechaBoletin) => {
     try {
-      console.log(!!nroBoletin, !!fechaBoletin, "a");
       if (!nroBoletin && !fechaBoletin) {
         setOpen(true);
         setMensaje(
@@ -247,7 +247,7 @@ const Buscador = () => {
                 </Button>
               )}
               <Button variant="contained" className="btnBuscadorAvanzada">
-                <FormAvanzada />
+                <FormAvanzada  />
               </Button>
             </div>
           </Box>
