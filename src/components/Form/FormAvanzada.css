@@ -15,13 +15,15 @@
 
 }
 
-.busqueda {
-width: 100% !important;
-margin-left: 0px !important;
-height: 60px !important;
-margin-right: 175px !important;
 
+
+.busqueda {
+    width: 100% !important;
+    margin-left: 0px !important;
+    height: 60px !important;
+    margin-right: 175px !important;
 }
+
 
 
 
@@ -49,6 +51,8 @@ margin-right: 175px !important;
 }
 
 .modal-content {
+    width: 100%;
+    overflow-x: hidden;
     align-items: center;
     justify-content: center;
     align-self: center;
