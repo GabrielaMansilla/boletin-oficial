@@ -179,7 +179,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
   //   // }
   // };
 
-  const handleBuscarPorNorma = async (tipoDeNorma, nroDeNorma) => {
+  const handleBuscarPorNorma = async (tipoDeNorma, nroDeNorma, callback) => {
     try {
       if (
         (values.tipoDeNorma === "" && values.nroDeNorma === "") ||
@@ -198,7 +198,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
           `/boletin/buscarPorTipo/${tipoDeNorma}/${nroDeNorma}`
         );
         console.log(response.data);
-        setResultados(response.data);
+        callback(response.data);
         setOpen(true);
         setMensaje("Buscado por Tipo de Norma");
         setError("success");
@@ -209,7 +209,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
           `/boletin/buscarPorTipo/${tipoDeNorma}/${nroDeNorma}`
         );
         console.log(response.data);
-        setResultados(response.data);
+        callback(response.data);
         setOpen(true);
         setMensaje("Busacado por tipo de Norma y nro");
         setError("success");
@@ -222,7 +222,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
     }
   };
 
-  const handleBuscarPorFechaAvanzada = async (fecha, tipo) => {
+  const handleBuscarPorFechaAvanzada = async (fecha, tipo, callback) => {
     try {
       if (fecha === "" || tipo === "") {
         setOpen(true);
@@ -232,7 +232,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
         console.log(fecha);
         const resp = await axios.get(`/boletin/buscarFecha/${fecha}`);
         console.log(resp.data);
-        setResultados(resp.data);
+        callback(resp.data);
         setOpen(true);
         setMensaje("Boletin buscado por fecha");
         setError("success");
@@ -241,7 +241,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
           `/boletin/buscarPorFecha/${fecha}/${tipo}`
         );
         console.log(resp.data);
-        setResultados(resp.data);
+        callback(resp.data);
         setOpen(true);
         setMensaje("Boletin buscado por fecha y tipo");
         setError("success");
@@ -408,7 +408,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
               <Button
                 variant="contained"
                 className="btnAvanzada"
-                onClick={handlebuscarBoletinAvanzado}
+                onClick={(handlebuscarBoletinAvanzado, busquedaAvanzada)}
               >
                 Buscar
               </Button>

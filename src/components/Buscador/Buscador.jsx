@@ -14,7 +14,7 @@ const Buscador = () => {
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [loading, setLoading] = useState(true);
-  const [resultados, setResultados] = useState([])
+  const [resultados, setResultados] = useState([]);
   const [boletinEncontrado, setBoletinEncontrado] = useState(true);
   const [busquedaRealizada, setBusquedaRealizada] = useState(false);
 
@@ -35,6 +35,9 @@ const Buscador = () => {
     }
   };
 
+  const handleModalResults = (resuts) => {
+    setResultados(resuts);
+  };
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -247,7 +250,7 @@ const Buscador = () => {
                 </Button>
               )}
               <Button variant="contained" className="btnBuscadorAvanzada">
-                <FormAvanzada  />
+                <FormAvanzada  busquedaAvanzada={handleModalResults}/>
               </Button>
             </div>
           </Box>
