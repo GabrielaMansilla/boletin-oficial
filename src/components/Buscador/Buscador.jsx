@@ -14,7 +14,7 @@ const Buscador = () => {
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [loading, setLoading] = useState(true);
-  const [resultados, setResultados] = useState([])
+  const [resultados, setResultados] = useState([]);
   const [boletinEncontrado, setBoletinEncontrado] = useState(true);
   const [busquedaRealizada, setBusquedaRealizada] = useState(false);
 
@@ -192,6 +192,11 @@ const Buscador = () => {
       setError("warning");
     }
   };
+
+  const handleModalResults = (results) => {
+    setResultados(results);
+  };
+
   return (
     <>
       <div className="d-flex justify-content-center">
@@ -247,7 +252,7 @@ const Buscador = () => {
                 </Button>
               )}
               <Button variant="contained" className="btnBuscadorAvanzada">
-                <FormAvanzada  />
+                <FormAvanzada busquedaAvanzada={handleModalResults} />
               </Button>
             </div>
           </Box>
@@ -266,6 +271,7 @@ const Buscador = () => {
             {mensaje}
           </Alert>
         </Snackbar>
+        {console.log(resultados,"resultados")}
       </div>
       <div className="d-flex flex-row mt-4">
         <Grid container spacing={2} className="d-flex contGrid">

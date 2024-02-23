@@ -24,7 +24,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
     setOpenModal(false);
     setValues(BUSCADOR_AVANZADA_VALUES);
   };
-  const [resultados, setResultados] = useState([]);
+  // const [resultados, callback] = useState([]);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
@@ -179,26 +179,38 @@ export default function FormAvanzada({ busquedaAvanzada }) {
   //   // }
   // };
 
-  const handleBuscarPorNorma = async (tipoDeNorma, nroDeNorma) => {
+  const handleBuscarPorNorma = async (tipoDeNorma, nroDeNorma, callback) => {
     try {
       if (
         (values.tipoDeNorma === "" && values.nroDeNorma === "") ||
-        (!tipoDeNorma && !nroDeNorma)
+        (!tipoDeNorma && !nroDeNorma) ||
+        (values.tipoDeNorma === "undefined" &&
+          values.nroDeNorma === "undefined")
       ) {
         setOpen(true);
         setMensaje("Debe llenar al menos un campo");
         setError("error");
-      } else if (values.tipoDeNorma === "" && values.nroDeNorma !== "") {
+      } else if (
+        (values.tipoDeNorma === "" ||
+          values.tipoDeNorma === "undefined" ||
+          !tipoDeNorma) &&
+        values.nroDeNorma !== ""
+      ) {
         setOpen(true);
         console.log(values.tipoDeNorma, values.nroDeNorma);
         setMensaje("Debe Seleccionar el Tipo de Norma");
         setError("error");
-      } else if (values.tipoDeNorma !== "" && values.nroDeNorma === "") {
+      } else if (
+        values.tipoDeNorma !== "" &&
+        (values.nroDeNorma === "" ||
+          values.nroDeNorma === "undefined" ||
+          !nroDeNorma)
+      ) {
         const response = await axios.get(
           `/boletin/buscarPorTipo/${tipoDeNorma}/${nroDeNorma}`
         );
         console.log(response.data);
-        setResultados(response.data);
+        callback(response.data);
         setOpen(true);
         setMensaje("Buscado por Tipo de Norma");
         setError("success");
@@ -209,7 +221,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
           `/boletin/buscarPorTipo/${tipoDeNorma}/${nroDeNorma}`
         );
         console.log(response.data);
-        setResultados(response.data);
+        callback(response.data);
         setOpen(true);
         setMensaje("Busacado por tipo de Norma y nro");
         setError("success");
@@ -218,11 +230,13 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       setOpen(true);
       setMensaje("Error en la conexión");
       setError("warning");
+      console.log(typeof nroDeNorma);
+
       console.log("algo explotó! :(", error);
     }
   };
 
-  const handleBuscarPorFechaAvanzada = async (fecha, tipo) => {
+  const handleBuscarPorFechaAvanzada = async (fecha, tipo, callback) => {
     try {
       if (fecha === "" || tipo === "") {
         setOpen(true);
@@ -232,7 +246,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
         console.log(fecha);
         const resp = await axios.get(`/boletin/buscarFecha/${fecha}`);
         console.log(resp.data);
-        setResultados(resp.data);
+        callback(resp.data);
         setOpen(true);
         setMensaje("Boletin buscado por fecha");
         setError("success");
@@ -241,7 +255,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
           `/boletin/buscarPorFecha/${fecha}/${tipo}`
         );
         console.log(resp.data);
-        setResultados(resp.data);
+        callback(resp.data);
         setOpen(true);
         setMensaje("Boletin buscado por fecha y tipo");
         setError("success");
@@ -254,7 +268,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
     }
   };
 
-  const handlebuscarBoletinAvanzado = async () => {
+  const handlebuscarBoletinAvanzado = async (callback) => {
     try {
       const {
         tipoBusquedaAvanzada,
@@ -265,46 +279,65 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       if (
         !tipoBusquedaAvanzada &&
         !nroNormaBusquedaAvanzada &&
-        !fechaBusquedaAvanzada
+        nroNormaBusquedaAvanzada === "" &&
+        !fechaBusquedaAvanzada &&
+        tipoBusquedaAvanzada === "" &&
+        nroNormaBusquedaAvanzada === "" &&
+        fechaBusquedaAvanzada === ""
       ) {
         setOpen(true);
         setMensaje("Debe llenar al menos un campo");
         setError("error");
       } else if (
-        tipoBusquedaAvanzada &&
-        !nroNormaBusquedaAvanzada &&
-        !fechaBusquedaAvanzada
+        (tipoBusquedaAvanzada &&
+          (!nroNormaBusquedaAvanzada || nroNormaBusquedaAvanzada === "") &&
+          !fechaBusquedaAvanzada) ||
+        fechaBusquedaAvanzada === ""
       ) {
-        handleBuscarPorNorma(tipoBusquedaAvanzada);
+        handleBuscarPorNorma(
+          tipoBusquedaAvanzada,
+          nroNormaBusquedaAvanzada,
+          callback
+        );
         setOpen(true);
         setMensaje("Boletin buscado por Tipo de Norma");
         setError("success");
       } else if (
         tipoBusquedaAvanzada &&
         nroNormaBusquedaAvanzada &&
-        !fechaBusquedaAvanzada
+        nroNormaBusquedaAvanzada !== "" &&
+        (!fechaBusquedaAvanzada || fechaBusquedaAvanzada === "")
       ) {
-        handleBuscarPorNorma(tipoBusquedaAvanzada, nroNormaBusquedaAvanzada);
+        handleBuscarPorNorma(
+          tipoBusquedaAvanzada,
+          nroNormaBusquedaAvanzada,
+          callback
+        );
         setOpen(true);
         setMensaje("Boletin buscado por Tipo de Norma y nro");
         setError("success");
       } else if (
         !tipoBusquedaAvanzada &&
-        !nroNormaBusquedaAvanzada &&
+        (!nroNormaBusquedaAvanzada || nroNormaBusquedaAvanzada === "") &&
         fechaBusquedaAvanzada
       ) {
-        handleBuscarPorFechaAvanzada(fechaBusquedaAvanzada);
+        handleBuscarPorFechaAvanzada(
+          fechaBusquedaAvanzada,
+          tipoBusquedaAvanzada,
+          callback
+        );
         setOpen(true);
         setMensaje("Boletin buscado por fecha");
         setError("success");
       } else if (
         tipoBusquedaAvanzada &&
-        !nroNormaBusquedaAvanzada &&
+        (!nroNormaBusquedaAvanzada || nroNormaBusquedaAvanzada === "") &&
         fechaBusquedaAvanzada
       ) {
         handleBuscarPorFechaAvanzada(
           fechaBusquedaAvanzada,
-          tipoBusquedaAvanzada
+          tipoBusquedaAvanzada,
+          callback
         );
         setOpen(true);
         setMensaje("Boletin buscado por tipo y fecha");
@@ -312,6 +345,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       } else if (
         !tipoBusquedaAvanzada &&
         nroNormaBusquedaAvanzada &&
+        nroNormaBusquedaAvanzada !== "" &&
         fechaBusquedaAvanzada
       ) {
         setOpen(true);
@@ -320,6 +354,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       } else if (
         !tipoBusquedaAvanzada &&
         nroNormaBusquedaAvanzada &&
+        nroNormaBusquedaAvanzada !== "" &&
         !fechaBusquedaAvanzada
       ) {
         setOpen(true);
@@ -328,6 +363,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       } else if (
         tipoBusquedaAvanzada &&
         nroNormaBusquedaAvanzada &&
+        nroNormaBusquedaAvanzada !== "" &&
         fechaBusquedaAvanzada
       ) {
         setOpen(true);
@@ -408,7 +444,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
               <Button
                 variant="contained"
                 className="btnAvanzada"
-                onClick={handlebuscarBoletinAvanzado}
+                onClick={() => handlebuscarBoletinAvanzado(busquedaAvanzada)}
               >
                 Buscar
               </Button>
