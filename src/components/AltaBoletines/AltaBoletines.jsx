@@ -15,7 +15,6 @@ import File from "@mui/icons-material/UploadFileRounded";
 import axios from "../../config/axios";
 import { ModalAltaBoletin } from "../ModalAltaBoletines/ModalAltaBoletin.jsx";
 import useGet from "../../hook/useGet";
-
 const AltaBoletines = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
@@ -25,6 +24,7 @@ const AltaBoletines = () => {
   const [selectedFileName, setSelectedFileName] = useState(
     "Seleccione un Archivo"
   );
+  const [archivoSeleccionado, setArchivoSeleccionado] = useState(null);
   const [formData, setFormData] = useState(new FormData());
   const [resolucionArray, setResolucionArray] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -36,7 +36,6 @@ const AltaBoletines = () => {
   const obternerLista = (inicio, fin) => {
     const inicioNum = parseInt(inicio, 10);
     const finNum = parseInt(fin, 10);
-
     if (!isNaN(inicioNum) && !isNaN(finNum)) {
       return Array.from(
         { length: finNum - inicioNum + 1 },
@@ -48,22 +47,18 @@ const AltaBoletines = () => {
       return [];
     }
   };
-
   const obtenerDecretos = () => {
     return obternerLista(values.nroDecretoInicial, values.nroDecretoFinal);
   };
-
   const obtenerOrdenanzas = () => {
     return obternerLista(values.nroOrdenanzaInicial, values.nroOrdenanzaFinal);
   };
-
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
   const handleChangeFile = (e) => {
     const fileName = e.target.files[0]?.name || "";
     setSelectedFileName(fileName);
-
     if (!fileName.toLowerCase().endsWith(".pdf")) {
       setOpen(true);
       setMensaje("El archivo solo puede ser PDF");
@@ -71,38 +66,31 @@ const AltaBoletines = () => {
     } else {
       setOpen(false); // Cerrar la advertencia si el archivo es un PDF
     }
-    console.log(fileName); // Verificar el nombre del archivo
-    formData.append("archivoBoletin", e.target.files[0]); // Agregar el archivo al FormData
+    const aux = e.target.files[0];
+    setArchivoSeleccionado(aux);
   };
-
   useEffect(() => {
     setFormattedValue(formatNroResolucion(values.nroResolucion));
   }, [values.nroResolucion]);
-
   useEffect(() => {}, [formattedValue]);
-
   useEffect(() => {
     getboletin();
   }, []);
-
   useEffect(() => {
     const nuevoNumeroBoletin = values.nroBoletin; // Supongamos que este es el nuevo número de boletín que quieres verificar
     const existe = numeroBoletinExiste(nuevoNumeroBoletin);
     setNroBoletinExistente(existe);
   }, [boletines, values.nroBoletin]);
-
   const formatNroResolucion = (inputValue) => {
     if (typeof inputValue === "string") {
       const formatted = inputValue
         .replace(/[^\d]/g, "") // Elimina caracteres no numéricos
         .replace(/(\d{4})(?!$)/g, "$1-"); // Inserta un guion después de cada grupo de 4 dígitos, excepto al final
-
       return formatted;
     } else {
       return inputValue;
     }
   };
-
   const handleResolucionChange = (e) => {
     const inputValue = e.target.value;
     if (typeof inputValue === "string") {
@@ -113,13 +101,13 @@ const AltaBoletines = () => {
       }
     }
   };
-
   const esNumeroDeResolucionValido = () => {
     return (
-      formattedValue === undefined || /\d{4}$/.test(formattedValue) !== false
+      formattedValue === undefined ||
+      /\d{4}$/.test(formattedValue) !== false ||
+      formattedValue.length === 0
     );
   };
-
   const puedeEnviarFormulario =
     selectedFileName !== "Seleccione un Archivo" &&
     (values.nroDecretoInicial !== "" ||
@@ -130,68 +118,72 @@ const AltaBoletines = () => {
     esNumeroDeResolucionValido() &&
     values.fechaBoletin !== "" &&
     values.nroBoletin !== "";
-
   const handleMensaje = () => {
+    let mensaje = "";
+    let fileName = archivoSeleccionado?.name || "";
     if (formattedValue?.length >= 1 && formattedValue?.length < 4) {
       if (!/\d{4}$/.test(formattedValue)) {
-        setOpen(true);
         console.log(1);
-        setMensaje("El último número de resolución debe tener 4 dígitos");
+        mensaje = "El último número de resolución debe tener 4 dígitos";
         setError("warning");
       } else {
-        setOpen(true);
         console.log(2);
-
-        setMensaje("El número de resolución debe tener 4 dígitos");
+        mensaje = "El número de resolución debe tener 4 dígitos";
         setError("warning");
       }
     } else if (values.nroBoletin === "") {
-      setOpen(true);
       console.log(3);
-
-      setMensaje("Debe ingresar el Nº de Boletín");
+      mensaje = "Debe ingresar el Nº de Boletín";
       setError("error");
     } else if (numeroBoletinExiste(values.nroBoletin)) {
-      setOpen(true);
       console.log(4);
-
-      setMensaje(`El Nº de Boletín ${values.nroBoletin} ya existe!`);
+      mensaje = `El Nº de Boletín ${values.nroBoletin} ya existe!`;
       setError("error");
     } else if (values.fechaBoletin === "") {
-      setOpen(true);
       console.log(5);
-
-      setMensaje("Debe ingresar la fecha del Boletín");
+      mensaje = "Debe ingresar la fecha del Boletín";
       setError("warning");
-    } else {
-      setOpen(true);
+    } else if (
+      !values.nroDecretoInicial &&
+      !values.nroDecretoFinal &&
+      !values.nroOrdenanzaInicial &&
+      !values.nroOrdenanzaFinal &&
+      !formattedValue
+    ) {
       console.log(6);
-      setMensaje("Debe llenar al menos un campo y adjuntar un archivo .pdf");
+      mensaje = "Debe llenar al menos un campo y adjuntar un archivo .pdf";
       setError("error");
+    } else if (fileName === "") {
+      console.log(7);
+      mensaje = "Debe seleccionar un archivo";
+      setError("warning");
+    } else if (!fileName.toLowerCase().endsWith(".pdf")) {
+      console.log(8);
+      mensaje = "El archivo solo puede ser PDF";
+    } else {
+      mensaje = "Recarga la pagina";
+      return;
     }
+    setOpen(true);
+    setMensaje(mensaje);
   };
-
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpen(false);
   };
-
   const numeroBoletinExiste = (nuevoNumeroBoletin) => {
     const numero = parseInt(nuevoNumeroBoletin, 10); // Convertir a número
     return boletines.some((boletin) => boletin.nroBoletin === numero);
   };
-
   const handleGuardarBoletin = async () => {
     setMostrarModal(true);
   };
-
   const handleConfirm = async (confirmado) => {
     setBandera(confirmado);
     setMostrarModal(false);
     if (confirmado) {
-      console.log(bandera);
       enviarDatos();
     } else {
       setOpen(true);
@@ -199,40 +191,29 @@ const AltaBoletines = () => {
       setError("warning");
     }
   };
-
   const enviarDatos = async () => {
     try {
-      console.log("hola");
-      // const inputFile = document.getElementById('fileBoletin');
-      // console.log(inputFile)
-
-      const archivo = document.getElementById("fileBoletin").files[0];
-      formData.append("archivoBoletin", archivo);
-  
-      const respuestaArchivo = await axios.post("/boletin/alta", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log(respuestaArchivo);
-
       const resolucionSinGuiones = resolucionArray.map((item) =>
         parseInt(item)
       );
-
       const decretos = obtenerDecretos();
       const ordenanzas = obtenerOrdenanzas();
-
       const requestData = {
-        nroBoletin: values.nroBoletin,
+        nroBoletin: parseInt(values.nroBoletin, 10),
         fechaBoletin: values.fechaBoletin,
         nroDecreto: decretos,
         nroOrdenanza: ordenanzas,
         nroResolucion: resolucionSinGuiones,
       };
-      console.log(requestData);
-      const respuesta = await axios.post("/boletin/alta", requestData); 
-
+      formData.append("requestData", JSON.stringify(requestData));
+      formData.append("archivoBoletin", archivoSeleccionado);
+      setFormData(formData);
+      console.log(...formData.entries());
+      const respuesta = await axios.post("/boletin/alta", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       console.log(respuesta);
       setValues(ALTA_BOLETIN_VALUES);
       setSelectedFileName("Seleccione un Archivo");
@@ -240,11 +221,11 @@ const AltaBoletines = () => {
       setOpen(true);
       setMensaje("Boletin generado con éxito!");
       setError("success");
+      setFormData(new FormData());
     } catch (error) {
       console.error("Algo explotó! D:' ", error);
     }
   };
-
   return (
     <Box
       component="form"
@@ -270,7 +251,6 @@ const AltaBoletines = () => {
                 inputProps={{ min: "0" }}
                 name="nroBoletin"
               />
-
               <TextField
                 label="Fecha Boletin"
                 variant="outlined"
@@ -283,10 +263,8 @@ const AltaBoletines = () => {
               />
             </div>
           </div>
-
           <div className="contRango">
             <h5>Decretos:</h5>
-
             <div>
               <TextField
                 label="Nº de Decreto inicial"
@@ -318,10 +296,8 @@ const AltaBoletines = () => {
               />
             </div>
           </div>
-
           <div className="contRango">
             <h5>Ordenanza:</h5>
-
             <div>
               <TextField
                 label="Nº de Ordenanza Inicial"
@@ -353,10 +329,8 @@ const AltaBoletines = () => {
               />
             </div>
           </div>
-
           <div className="contRango">
             <h5>Resolución:</h5>
-
             <div>
               <TextField
                 label="Nº de Resolución"

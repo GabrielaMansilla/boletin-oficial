@@ -5,10 +5,12 @@
   height: 100%;
   display: flex;
   border-color: #3333 !important;
+  background-color: #0066ff;
   border-top: solid 1px;
   justify-content: center;
   margin-top: 20px !important;
   font-family: 13px ;
+  color: #fff;
 }
 
 .iconosRedes {
@@ -16,6 +18,10 @@
   font-size: 20px;
   align-self: center;
   justify-content: center;
+}
+
+.iconosRedes i{
+  color: #fff;
 }
 
 .logoFooter {
@@ -49,7 +55,7 @@
   margin-left: 50px !important;
   display: flex;
   justify-content: end;
-
+color: #fff;
   /* flex:end; */
 
   align-items: center !important;

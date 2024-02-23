@@ -35,8 +35,8 @@ const Buscador = () => {
     }
   };
 
-  const handleModalResults = (resuts) => {
-    setResultados(resuts);
+  const handleModalResults = (results) => {
+    setResultados(results.slice().reverse());
   };
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -59,13 +59,9 @@ const Buscador = () => {
         return;
       } else if (boletin.nroBoletinBusqueda || boletin.fechaBusqueda) {
         handleSearchBoletin(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
-        console.log(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
+        // console.log(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
         setValues(BUSCADOR_VALUES);
         setBusquedaRealizada(true);
-        // setMensaje("Boletín encontrado 101");
-        // setError("success");
-        // setOpen(true);
-
         return;
       }
     } catch (error) {
@@ -81,7 +77,7 @@ const Buscador = () => {
       if (!nroBoletin && !fechaBoletin) {
         setOpen(true);
         setMensaje(
-          "Debe ingresar el Nº de Boletín o Fecha de Publicación por nada"
+          "Debe ingresar el Nº de Boletín o Fecha de Publicación"
         );
         setError("error");
         <ListarBoletines />;
@@ -195,6 +191,7 @@ const Buscador = () => {
       setError("warning");
     }
   };
+
   return (
     <>
       <div className="d-flex justify-content-center">
@@ -250,7 +247,7 @@ const Buscador = () => {
                 </Button>
               )}
               <Button variant="contained" className="btnBuscadorAvanzada">
-                <FormAvanzada  busquedaAvanzada={handleModalResults}/>
+                <FormAvanzada busquedaAvanzada={handleModalResults} />
               </Button>
             </div>
           </Box>
@@ -273,12 +270,10 @@ const Buscador = () => {
       <div className="d-flex flex-row mt-4">
         <Grid container spacing={2} className="d-flex contGrid">
           <Grid className="contBoletines ps-5  pe-4 " item xs={12} md={12}>
-            {loading ? (
-              <ListarBoletines />
-            ) : (
+            {resultados.length > 0 ? (
               <>
-                {Array.isArray(values) && values.length > 0 ? (
-                  values.map((boletin) => (
+                {Array.isArray(values) && resultados.length > 0 ? (
+                  resultados.map((boletin) => (
                     <div key={boletin.id} className="boletin mb-2">
                       <img
                         className="logoMuniColor"
@@ -310,7 +305,51 @@ const Buscador = () => {
                     <p className="d-flex justify-content-center">
                       No se encontró Boletin
                     </p>
-                    <ListarBoletines />
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                {loading ? (
+                  <ListarBoletines />
+                ) : (
+                  <>
+                    {Array.isArray(values) && values.length > 0 ? (
+                      values.map((boletin) => (
+                        <div key={boletin.id} className="boletin mb-2">
+                          <img
+                            className="logoMuniColor"
+                            src={logoMuniColor}
+                            alt=" logo Muni"
+                          />
+                          <div className="boletinText container mt-3">
+                            <div className="d-flex flex-row justify-content-between">
+                              <h2>Boletin Nº {boletin.nroBoletin}</h2>
+                              <div className="contBtn">
+                                <Button
+                                  variant="contained"
+                                  className="btnPdf"
+                                  onClick={() => funcionDescarga(boletin)}
+                                >
+                                  <DownloadForOfflineIcon />
+                                </Button>
+                              </div>
+                            </div>
+                            <div className=" d-flex flex-row">
+                              <h6>{boletin.fechaBoletin}</h6>{" "}
+                              <h6 className="ms-2">| Tucumán, Argentina</h6>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <>
+                        <p className="d-flex justify-content-center">
+                          No se encontró Boletin
+                        </p>
+                        <ListarBoletines />
+                      </>
+                    )}
                   </>
                 )}
               </>

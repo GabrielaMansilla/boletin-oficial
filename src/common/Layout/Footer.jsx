@@ -14,7 +14,7 @@ export const Footer = () => {
               
               <div cla0ssName='ms-2'>
                 
-                <h4 className='mb-0'>CIUDAD</h4>
+                <h4 className='mb-0 '>CIUDAD</h4>
                 
                 <div>
                   <h1>SMTucumán</h1>
