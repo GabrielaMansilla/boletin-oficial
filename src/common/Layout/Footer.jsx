@@ -14,7 +14,7 @@ export const Footer = () => {
               
               <div cla0ssName='ms-2'>
                 
-                <h4 className='mb-0'>CIUDAD</h4>
+                <h4 className='mb-0 '>CIUDAD</h4>
                 
                 <div>
                   <h1>SMTucumán</h1>
@@ -39,6 +39,10 @@ export const Footer = () => {
               <p className='text-center text-md-end my-2 me-0 me-md-5  ' >Municipalidad de San Miguel de Tucumán</p>
               <p className='text-center text-md-end my-2 me-0  me-md-5 '>9 de Julio 598, Tucumán. República Argentina</p>
               <p className='text-center text-md-end my-2 me-0 me-md-5'>Tel: (0381)- 4516500</p>
+              
+              
+
+
             </div>
           </div>
           {/* </ul> */}
