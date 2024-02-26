@@ -75,8 +75,20 @@
 
 
 @media (max-width: 546px) {
+    .boletin{
+        height: auto;
+        padding: 5px;
+    }
     .boletin h2 {
-        color: #fff !important;
-        font-size: 120% !important;
+        font-size: 105% !important;
+    }
+    .btnPdf{
+        margin-right: 0 !important;
+    }
+    .logoMuniColor{
+        height: 100px !important;
+    }
+    .boletinText h6 {
+        font-size: 75% !important;
     }
 }

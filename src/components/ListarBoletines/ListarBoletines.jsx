@@ -49,6 +49,7 @@ const ListarBoletines = () => {
     }
   };
 
+  {console.log(boletinesInvertidos)}
   return (
     <>
       <div className="d-flex flex-row mt-4">
@@ -57,6 +58,7 @@ const ListarBoletines = () => {
             {loading ? (
               <p>cargando Boletines</p>
             ) : (
+
               boletinesInvertidos.map((boletin, index) => (
                 <div className="boletin mb-2 " key={boletin._id}>
                   <img
@@ -67,9 +69,10 @@ const ListarBoletines = () => {
                   <div className="boletinText container mt-3">
                     <div className="d-flex flex-row justify-content-between">
                       <h2>
+                        {console.log(boletin.id_Boletin)}
                         {index === 0
-                          ? `ÚLTIMA EDICIÓN | BOLETÍN Nº ${boletin.nroBoletin}`
-                          : `BOLETÍN Nº ${boletin.nroBoletin}`}
+                          ? `ÚLTIMA EDICIÓN | BOLETÍN Nº ${boletin.nro_Boletin}`
+                          : `BOLETÍN Nº ${boletin.nro_Boletin}`}
                       </h2>
                       {/* <h2>Boletin Nº {boletin.nroBoletin}</h2> */}
                       <div className="contBtn">
@@ -83,7 +86,7 @@ const ListarBoletines = () => {
                       </div>
                     </div>
                     <div className=" d-flex flex-row">
-                      <h6>{boletin.fechaBoletin}</h6>{" "}
+                      <h6>{boletin.fecha_publicacion}</h6>{" "}
                       <h6 className="ms-2">| Tucumán, Argentina</h6>
                     </div>
                   </div>
