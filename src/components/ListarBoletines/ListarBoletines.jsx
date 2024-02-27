@@ -25,7 +25,7 @@ const ListarBoletines = () => {
   const funcionDescarga = async (boletin) => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/boletin/listarDescarga/${boletin._id}`,
+        `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         {
           responseType: "blob", // Especifica el tipo de respuesta como Blob
         }
@@ -57,7 +57,6 @@ const ListarBoletines = () => {
             {loading ? (
               <p>cargando Boletines</p>
             ) : (
-
               boletinesInvertidos.map((boletin, index) => (
                 <div className="boletin mb-2 " key={boletin.id_boletin}>
                   <img
@@ -84,7 +83,7 @@ const ListarBoletines = () => {
                       </div>
                     </div>
                     <div className=" d-flex flex-row">
-                      <h6>{boletin.fecha_publicacion.slice(0,10)}</h6>{" "}
+                      <h6>{boletin.fecha_publicacion.slice(0, 10)}</h6>{" "}
                       <h6 className="ms-2">| Tucumán, Argentina</h6>
                     </div>
                   </div>
