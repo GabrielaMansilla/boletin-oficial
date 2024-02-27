@@ -61,7 +61,7 @@ const Buscador = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center">
+    <div className="d-flex flex-column align-items-center">
       <Box className="buscador ">
         <h3 className="tituloBuscador">BUSCAR BOLETINES ANTERIORES</h3>
         <Box
@@ -71,7 +71,7 @@ const Buscador = () => {
           autoComplete="off"
           className="inputCont container"
         >
-          <div className="inputsBuscadores">
+          <div className="inputsBuscadores d-flex flex-column flex-md-row align-items-md-center" >
 
             <TextField
               label="Nro de Boletín"

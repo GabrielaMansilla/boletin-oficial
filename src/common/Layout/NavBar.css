@@ -24,14 +24,15 @@
     align-items: center;
 }
 
-.textMuni {
+/* .textMuni {
     display: flex;
     flex-direction: row;
+    margin-left: 5px;
 }
 
 .textMuni h1 {
     color: #fff;
-}
+} */
 
 .boletinNavCont  {
     width: 100%;
@@ -43,13 +44,14 @@
     /* font-weight: 300 !important; */
 }
 
-.boletinNav {
+ .boletinNav {
     width: fit-content;
     text-align: center;
     color: #fff;
+    
 }
 
-.contLogo h4,
+/* .contLogo h4,
 h1 {
     margin-top: 0 !important;
 
@@ -59,15 +61,30 @@ h1 {
 .contLogo h4 {
     height: 14px;
     font-size: 13px !important;
-    margin-bottom: 0 !important;
+    margin-left: 5px;
 }
 
 .contLogo h1 {
     font-size: 20px !important;
     height: 10px;
-}
+} */
 
 .logoNav {
+    margin-top: 20px;
     width: auto;
-    height: 50px;
+    height: 60px !important;
+    margin-left: 6px;
+    }
+    
+
+@media (max-width: 500px ){
+
+.textMuni{
+    margin-left: -10px;
+}
+
+.contLogo h4 {
+    margin-left: -10px;
+    }
+
 }

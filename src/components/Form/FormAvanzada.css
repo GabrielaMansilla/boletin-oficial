@@ -18,10 +18,10 @@
 
 
 .busqueda {
-    width: 100% !important;
+    width: 269px!important;
     margin-left: 0px !important;
     height: 60px !important;
-    margin-right: 175px !important;
+    
 }
 
 
@@ -72,7 +72,7 @@ margin} */
 
 .btnAvanzada {
     height: 50px;
-    background-color: #2eb1ff !important;
+    background-color: #2197db !important;
     width: fit-content !important;
     margin-bottom: 10px;
     flex-direction: column;
@@ -82,28 +82,26 @@ margin} */
 
 @media (max-width: 1200px) {
 .busqueda{
-    width:125% !important;
-    margin-left: -22px !important;
+    width: 270px !important;
     height: 60px !important;
-    margin-right: 90px !important;
 }
 }
 
 @media (max-width: 990px) {
     .busqueda{
-        width:120% !important;
-        margin-left: -15px !important;
+        width: 165px !important;
+        /* margin-left: -15px !important; */
         height: 60px !important;
-        margin-right: 56px !important;
+        /* margin-right: 56px !important; */
     }
     }
 
     @media (max-width: 775px) {
         .busqueda{
-            width:186% !important;
-            margin-left: -80px !important;
+            width: 350px !important;
+            /* margin-left: -80px !important; */
             height: 60px !important;
-            margin-right: 90px !important;
+            /* margin-right: 90px !important; */
         }
         }
 
@@ -137,9 +135,9 @@ margin} */
 
                 @media (max-width: 500px) {
                     .busqueda{
-                        width:130% !important;
-                        margin-left: -26px !important;
+                        width: 120 !important;
+                        /* margin-left: -26px !important; */
                         height: 60px !important;
-                        margin-right: 19px !important;
+                        /* margin-right: 19px !important; */
                     }
                     }

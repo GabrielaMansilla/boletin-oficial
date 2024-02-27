@@ -58,6 +58,7 @@
 .contBtn {
     display: flex;
     align-items: center;
+    padding: 0px;
 }
 
 .btnPdf {
@@ -76,7 +77,21 @@
 
 @media (max-width: 546px) {
     .boletin h2 {
-        color: #fff !important;
+       
         font-size: 120% !important;
     }
+}
+
+@media (max-width: 500px) {
+
+    .btnPdf {
+        width: fit-content;
+        height: 30px;  
+        margin-bottom: 15px !important;
+      }
+
+      .logoMuniColor {
+        width: 120px;
+        height: 100px;
+      }
 }
