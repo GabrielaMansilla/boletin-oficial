@@ -72,18 +72,18 @@ const Buscador = () => {
     }
   };
 
-  const handleSearchBoletin = async (nroBoletin, fechaBoletin) => {
+  const handleSearchBoletin = async (nro_boletin, fecha_publicacion) => {
     try {
-      if (!nroBoletin && !fechaBoletin) {
+      if (!nro_boletin && !fecha_publicacion) {
         setOpen(true);
         setMensaje(
           "Debe ingresar el Nº de Boletín o Fecha de Publicación"
         );
         setError("error");
         <ListarBoletines />;
-      } else if (nroBoletin && fechaBoletin) {
+      } else if (nro_boletin && fecha_publicacion) {
         const respuesta = await axios.get(
-          `/boletin/buscarNroYFecha/${nroBoletin}/${fechaBoletin}`
+          `/boletin/buscarNroYFecha/${nro_boletin}/${fecha_publicacion}`
         );
         if (respuesta.data.length > 0) {
           setValues(
@@ -92,7 +92,7 @@ const Buscador = () => {
           setOpen(true);
           setLoading(false);
           setMensaje(
-            `Boletín encontrado Nº ${nroBoletin} fecha: ${fechaBoletin}`
+            `Boletín encontrado Nº ${nro_boletin} fecha: ${fecha_publicacion}`
           );
           setError("success");
           setBoletinEncontrado(true);
@@ -100,13 +100,13 @@ const Buscador = () => {
           setValues(BUSCADOR_VALUES);
           setLoading(false);
           setOpen(true);
-          setMensaje(`No existe boletin Nº ${nroBoletin}`);
+          setMensaje(`No existe boletin Nº ${nro_boletin}`);
           setError("error");
           console.log("Boletín no encontrado:", error);
           setBoletinEncontrado(false);
         }
-      } else if (nroBoletin && !fechaBoletin) {
-        const respuesta = await axios.get(`/boletin/buscar/${nroBoletin}`);
+      } else if (nro_boletin && !fecha_publicacion) {
+        const respuesta = await axios.get(`/boletin/buscar/${nro_boletin}`);
         console.log("Boletín encontrado:", respuesta.data);
         if (respuesta.data.length > 0) {
           setValues(
@@ -114,30 +114,30 @@ const Buscador = () => {
           );
           setLoading(false);
           setOpen(true);
-          setMensaje(`Boletín encontrado Nº ${nroBoletin}`);
+          setMensaje(`Boletín encontrado Nº ${nro_boletin}`);
           setError("success");
           setBoletinEncontrado(true);
         } else {
           setValues(BUSCADOR_VALUES);
           setLoading(false);
           setOpen(true);
-          setMensaje(`No existe boletin Nº ${nroBoletin}`);
+          setMensaje(`No existe boletin Nº ${nro_boletin}`);
           setError("error");
           console.log("Boletín no encontrado:", error);
           setBoletinEncontrado(false);
         }
-      } else if (!nroBoletin && fechaBoletin) {
+      } else if (!nro_boletin && fecha_publicacion) {
         const respuesta = await axios.get(
-          `/boletin/buscarFecha/${fechaBoletin}`
+          `/boletin/buscarFecha/${fecha_publicacion}`
         );
-        console.log(fechaBoletin, respuesta, respuesta.data.length);
+        console.log(fecha_publicacion, respuesta, respuesta.data.length);
         if (respuesta.data.length > 0) {
           setValues(
             Array.isArray(respuesta.data) ? respuesta.data : [respuesta.data]
           );
           setLoading(false);
           setOpen(true);
-          setMensaje(`Boletín encontrado fecha: ${fechaBoletin}`);
+          setMensaje(`Boletín encontrado fecha: ${fecha_publicacion}`);
           setError("success");
           console.log("Boletín encontrado:", respuesta.data);
           setBoletinEncontrado(true);
@@ -145,7 +145,7 @@ const Buscador = () => {
           setValues(BUSCADOR_VALUES);
           setLoading(false);
           setOpen(true);
-          setMensaje(`No existe boletin para la fecha ${fechaBoletin}`);
+          setMensaje(`No existe boletin para la fecha ${fecha_publicacion}`);
           setError("error");
           console.log("Boletín no encontrado:", error);
           setBoletinEncontrado(false);
@@ -163,14 +163,14 @@ const Buscador = () => {
 
   const funcionDescarga = async (boletin) => {
     try {
-      console.log(boletin._id);
+      console.log(boletin.id_boletin);
       const response = await axios.get(
-        `http://localhost:4000/boletin/listarDescarga/${boletin._id}`,
+        `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         {
           responseType: "blob", // Especifica el tipo de respuesta como Blob
         }
       );
-      console.log(boletin._id);
+      console.log(boletin.id_boletin);
 
       const blob = response.data;
       const url = URL.createObjectURL(blob);
@@ -180,7 +180,7 @@ const Buscador = () => {
       link.href = url;
       link.setAttribute(
         "download",
-        `Boletin_Oficial_Municipal Nº ${boletin.nroBoletin}.pdf`
+        `Boletin_Oficial_Municipal Nº ${boletin.nro_boletin}.pdf`
       ); // Establecer el nombre de archivo
 
       // Hacer clic en el enlace para iniciar la descarga
@@ -212,7 +212,7 @@ const Buscador = () => {
                 type="number"
                 value={values.nroBoletinBusqueda}
                 onChange={handleChange}
-                inputProps={{ min: "0" }}
+                inputProps={{ min: "0" , shrink: false}}
                 name="nroBoletinBusqueda"
               />
 
@@ -274,7 +274,7 @@ const Buscador = () => {
               <>
                 {Array.isArray(values) && resultados.length > 0 ? (
                   resultados.map((boletin) => (
-                    <div key={boletin.id} className="boletin mb-2">
+                    <div key={boletin.id_boletin} className="boletin mb-2">
                       <img
                         className="logoMuniColor"
                         src={logoMuniColor}
@@ -282,7 +282,7 @@ const Buscador = () => {
                       />
                       <div className="boletinText container mt-3">
                         <div className="d-flex flex-row justify-content-between">
-                          <h2>Boletin Nº {boletin.nroBoletin}</h2>
+                          <h2>Boletin Nº {boletin.nro_boletin}</h2>
                           <div className="contBtn">
                             <Button
                               variant="contained"
@@ -294,7 +294,7 @@ const Buscador = () => {
                           </div>
                         </div>
                         <div className=" d-flex flex-row">
-                          <h6>{boletin.fechaBoletin}</h6>{" "}
+                          <h6>{boletin.fecha_publicacion.slice(0,10)}</h6>{" "}
                           <h6 className="ms-2">| Tucumán, Argentina</h6>
                         </div>
                       </div>
@@ -316,7 +316,7 @@ const Buscador = () => {
                   <>
                     {Array.isArray(values) && values.length > 0 ? (
                       values.map((boletin) => (
-                        <div key={boletin.id} className="boletin mb-2">
+                        <div key={boletin.id_boletin} className="boletin mb-2">
                           <img
                             className="logoMuniColor"
                             src={logoMuniColor}
@@ -324,7 +324,7 @@ const Buscador = () => {
                           />
                           <div className="boletinText container mt-3">
                             <div className="d-flex flex-row justify-content-between">
-                              <h2>Boletin Nº {boletin.nroBoletin}</h2>
+                              <h2>Boletin Nº {boletin.nro_boletin}</h2>
                               <div className="contBtn">
                                 <Button
                                   variant="contained"
@@ -336,7 +336,7 @@ const Buscador = () => {
                               </div>
                             </div>
                             <div className=" d-flex flex-row">
-                              <h6>{boletin.fechaBoletin}</h6>{" "}
+                              <h6>{boletin.fecha_publicacion.slice(0,10)}</h6>{" "}
                               <h6 className="ms-2">| Tucumán, Argentina</h6>
                             </div>
                           </div>
