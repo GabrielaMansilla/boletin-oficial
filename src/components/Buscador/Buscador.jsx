@@ -46,7 +46,7 @@ const Buscador = () => {
   };
 
   const handleBuscarBoletin = async () => {
-    try {
+    try { 
       setLoading(true);
       const boletin = {
         nroBoletinBusqueda: values.nroBoletinBusqueda,
@@ -193,18 +193,19 @@ const Buscador = () => {
   };
 
   return (
+
     <>
-      <div className="d-flex justify-content-center">
-        <Box className="buscador ">
-          <h3 className="tituloBuscador">BUSCAR BOLETINES ANTERIORES</h3>
-          <Box
-            component="form"
-            sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
-            noValidate
-            autoComplete="off"
-            className="inputCont container"
-          >
-            <div className="inputsBuscadores">
+      <div className="d-flex flex-column align-items-center">
+      <Box className="buscador ">
+        <h3 className="tituloBuscador">BUSCAR BOLETINES ANTERIORES</h3>
+        <Box
+          component="form"
+          sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+          noValidate
+          autoComplete="off"
+          className="inputCont container"
+        >
+          <div className="inputsBuscadores d-flex flex-column flex-md-row align-items-md-center" >
               <TextField
                 label="Nro de Boletín"
                 variant="outlined"
