@@ -9,7 +9,7 @@
   border-top: solid 1px;
   justify-content: center;
   margin-top: 20px !important;
-  font-family: 13px ;
+  font-family: 13px;
   color: #fff;
 }
 
@@ -20,7 +20,7 @@
   justify-content: center;
 }
 
-.iconosRedes i{
+.iconosRedes i {
   color: #fff;
 }
 
@@ -31,6 +31,11 @@
   justify-content: center;
 }
 
+.logoFooter img{
+  margin-top: -30px;
+  width: 100px;
+}
+
 .logoFooter h1 {
   font-size: 45px !important;
 
@@ -39,7 +44,7 @@
 .logoFooter h4 {
   height: 20px;
   text-align: left;
-  color: #333 !important;
+  color: #fff;
   margin-top: 0 !important;
   font-size: 20px !important;
   font-weight: 600 !important;
@@ -55,11 +60,11 @@
   margin-left: 50px !important;
   display: flex;
   justify-content: end;
-color: #fff;
+  color: #fff;
   /* flex:end; */
 
   align-items: center !important;
-  
+
 
 }
 

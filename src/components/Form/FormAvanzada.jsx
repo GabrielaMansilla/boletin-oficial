@@ -208,6 +208,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       setError("warning");
       console.log("algo explotó! :(", error);
     }
+    handleCloseModal()
   };
 
   const handleBuscarPorTodo = async (fecha, tipo, nroNorma, callback) => {
@@ -249,6 +250,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       setError("warning");
       console.log("algo explotó! :(", error);
     }
+    handleCloseModal()
   };
 
   const handlebuscarBoletinAvanzado = async (callback) => {
@@ -354,6 +356,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       setError("warning");
       console.log("algo explotó! :(", error);
     }
+    handleCloseModal()
   };
   return (
     <div>

@@ -2,10 +2,12 @@
     display: flex;
     padding: 20px;
     border-radius: 25px;
+    margin-top: 20px;
     align-items: center;
     flex-direction: column;
     background-color: #0066ff;
     box-Shadow: 0 5px 8px rgba(0, 0, 0, 0.5)
+    
 }
 
 .contAltaBoletines {
@@ -13,6 +15,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+
 }
 
 /* INPUTFILE*/

@@ -16,9 +16,10 @@
 .tituloBuscador {
     color: #fff;
     font-weight: 600;
-    margin-left: 50px;
-    padding-top: 40px;
-    margin-bottom: 30px;
+    font-size: 22px;
+    margin-left: 138px;
+    padding-top: 0px;
+    margin-bottom: 10px;
 }
 
 .inputCont {
@@ -148,18 +149,27 @@
 
 }
 
+@media (max-width: 1352px) {
+    .tituloBuscador{
+        
+        margin-left: 134px !important;
+        
+    }
+  }
+
+  @media (max-width: 1209px) {
+    .tituloBuscador{
+        
+        margin-left: 60px !important;
+        
+    }
+  }
+
 @media (max-width: 500px) {
-
-    .logoNav {
-        height: 90px !important;
+    .tituloBuscador{
+        
+        margin-left: 26px !important;
+        
     }
+  }
 
-    .contLogo h4 {
-        height: fit-content;
-        font-size: 90% !important;
-    }
-
-    .contLogo h1 {
-        font-size: 150% !important;
-    }
-}

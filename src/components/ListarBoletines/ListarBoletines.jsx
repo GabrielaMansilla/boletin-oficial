@@ -25,7 +25,7 @@ const ListarBoletines = () => {
   const funcionDescarga = async (boletin) => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/boletin/listarDescarga/${boletin._id}`,
+        `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         {
           responseType: "blob", // Especifica el tipo de respuesta como Blob
         }
@@ -37,7 +37,7 @@ const ListarBoletines = () => {
       link.href = url;
       link.setAttribute(
         "download",
-        `Boletin_Oficial_Municipal Nº ${boletin.nroBoletin}.pdf`
+        `Boletin_Oficial_Municipal Nº ${boletin.nro_boletin}.pdf`
       );
 
       link.click();
@@ -58,7 +58,7 @@ const ListarBoletines = () => {
               <p>cargando Boletines</p>
             ) : (
               boletinesInvertidos.map((boletin, index) => (
-                <div className="boletin mb-2 " key={boletin._id}>
+                <div className="boletin mb-2 " key={boletin.id_boletin}>
                   <img
                     className="logoMuniColor"
                     src={logoMuniColor}
@@ -68,8 +68,8 @@ const ListarBoletines = () => {
                     <div className="d-flex flex-row justify-content-between">
                       <h2>
                         {index === 0
-                          ? `ÚLTIMA EDICIÓN | BOLETÍN Nº ${boletin.nroBoletin}`
-                          : `BOLETÍN Nº ${boletin.nroBoletin}`}
+                          ? `ÚLTIMA EDICIÓN | BOLETÍN Nº ${boletin.nro_boletin}`
+                          : `BOLETÍN Nº ${boletin.nro_boletin}`}
                       </h2>
                       {/* <h2>Boletin Nº {boletin.nroBoletin}</h2> */}
                       <div className="contBtn">
@@ -83,7 +83,7 @@ const ListarBoletines = () => {
                       </div>
                     </div>
                     <div className=" d-flex flex-row">
-                      <h6>{boletin.fechaBoletin}</h6>{" "}
+                      <h6>{boletin.fecha_publicacion.slice(0, 10)}</h6>{" "}
                       <h6 className="ms-2">| Tucumán, Argentina</h6>
                     </div>
                   </div>

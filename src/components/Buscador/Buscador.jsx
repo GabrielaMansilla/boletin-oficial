@@ -45,120 +45,109 @@ const Buscador = () => {
     setOpen(false);
   };
 
-
-  const handleNroBoletinSearch = async (nroBoletin) => {
-    try {
-      const respuesta = await axios.get(`/boletin/buscar/${nroBoletin}`) 
-      if (respuesta.data) {
-        setMensaje('Boletín encontrado')
-        setValues(respuesta.data)
-        setLoading(false)
-        console.log('Boletín encontrado:', respuesta.data.fechaBoletin );
-      } else {
-      setOpen(true);
-      setError("success");
-      setMensaje('error')
-        console.log('Boletín no .');
+  const handleBuscarBoletin = async () => {
+    try { 
+      setLoading(true);
+      const boletin = {
+        nroBoletinBusqueda: values.nroBoletinBusqueda,
+        fechaBusqueda: values.fechaBusqueda,
+      };
+      if (!boletin.nroBoletinBusqueda && !boletin.fechaBusqueda) {
+        setOpen(true);
+        setMensaje("Debe ingresar el Nº de Boletín o Fecha de Publicación");
+        setError("error");
+        return;
+      } else if (boletin.nroBoletinBusqueda || boletin.fechaBusqueda) {
+        handleSearchBoletin(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
+        // console.log(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
+        setValues(BUSCADOR_VALUES);
+        setBusquedaRealizada(true);
+        return;
       }
     } catch (error) {
-      console.error('Error al buscar boletin:', error);
-    }
-  };
-
-//probando con otro buscador 01
-
-// const handleFechaBoletinSearch = async (fechaBoletin) => {
-//   try {
-//     const respuesta = await axios.get(`/boletin/buscar2/${fechaBoletin}`) 
-//     if (respuesta.data) {
-//       setMensaje('Boletín encontrado')
-//       setValues(respuesta.data)
-//       setLoading(false)
-//       console.log('Boletín encontrado:', respuesta.data.fechaBoletin );
-//     } else {
-//       setMensaje('error')
-//       console.log('Boletín no .');
-//     }
-//   } catch (error) {
-//     console.error('Error al buscar boletin:', error);
-//   }
-// };
-
-// probando buscadormio2
-
-const handleFechaBoletinSearch = async (fechaBoletin) => {
-  try {
-    const respuesta = await axios.get(`/boletin/buscarFecha/${fechaBoletin}`) 
-    if (respuesta.data) {
-      setMensaje('Boletín encontrado')
-
-      // const respuestaFiltrada = respuesta.data.filter(boletin => {
-      //   return boletin.fechaBoletin === values.fechaBusqueda;
-      // });
-      // setValues(respuestaFiltrada);
-      setValues(respuesta.data)
-      setLoading(false);
-      console.log('Boletín encontrado:', respuesta.data.fechaBoletin );
-    } else {
-      setMensaje('error')
-      console.log('Boletín no .');
-    }
-  } catch (error) {
-    console.error('Error al buscar boletin:', error);
-  }
-}
-  const handleBuscarBoletin = () => {
-    const boletin = {
-      nroBoletinBusqueda: values.nroBoletinBusqueda,
-      fechaBusqueda: values.fechaBusqueda,
-    };
-    if (!boletin.nroBoletinBusqueda && !boletin.fechaBusqueda) {
-      setOpen(true);
-      setMensaje("Debe ingresar el Nº de Boletín o Fecha de Publicación");
-      setError("success");
-      return;
-    }
-
-      if (boletin.nroBoletinBusqueda && boletin.fechaBusqueda) {
-    handleNroBoletinAndFechaSearch(boletin.nroBoletinBusqueda, boletin.fechaBusqueda.toString());
-    console.log(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
-    setValues(BUSCADOR_VALUES);
-    setError("success");
-    setOpen(true);
-
-    return;
-  }
-
-    if (boletin.nroBoletinBusqueda) {
-      handleNroBoletinSearch(boletin.nroBoletinBusqueda);
-      console.log(boletin.nroBoletinBusqueda)
-      setValues(BUSCADOR_VALUES);
-      setError("success");
-      setOpen(true);
-      return;
-    }
-
-  // tratando de buscar por fecha
-    if (boletin.fechaBusqueda){
-      handleFechaBoletinSearch((boletin.fechaBusqueda).toString());
-      console.log(boletin.fechaBusqueda)
-      setValues(BUSCADOR_VALUES)
-      setError("success");
       setOpen(true);
       return;
     }
   };
-  const handleNroBoletinAndFechaSearch = async (nroBoletin, fechaBoletin) => {
+
+  const handleSearchBoletin = async (nro_boletin, fecha_publicacion) => {
     try {
-      const respuesta = await axios.get(`/boletin/buscarNroYFecha/${nroBoletin}/${fechaBoletin}`);
-      if (respuesta.data) {
-        setMensaje('Boletín encontrado');
-        setValues(respuesta.data);
-        setLoading(false);
-        console.log('Boletín encontrado:', respuesta.data);
-      } else {
-        setMensaje('error');
-        console.log('Boletín no encontrado.');
+      if (!nro_boletin && !fecha_publicacion) {
+        setOpen(true);
+        setMensaje(
+          "Debe ingresar el Nº de Boletín o Fecha de Publicación"
+        );
+        setError("error");
+        <ListarBoletines />;
+      } else if (nro_boletin && fecha_publicacion) {
+        const respuesta = await axios.get(
+          `/boletin/buscarNroYFecha/${nro_boletin}/${fecha_publicacion}`
+        );
+        if (respuesta.data.length > 0) {
+          setValues(
+            Array.isArray(respuesta.data) ? respuesta.data : [respuesta.data]
+          );
+          setOpen(true);
+          setLoading(false);
+          setMensaje(
+            `Boletín encontrado Nº ${nro_boletin} fecha: ${fecha_publicacion}`
+          );
+          setError("success");
+          setBoletinEncontrado(true);
+        } else {
+          setValues(BUSCADOR_VALUES);
+          setLoading(false);
+          setOpen(true);
+          setMensaje(`No existe boletin Nº ${nro_boletin}`);
+          setError("error");
+          console.log("Boletín no encontrado:", error);
+          setBoletinEncontrado(false);
+        }
+      } else if (nro_boletin && !fecha_publicacion) {
+        const respuesta = await axios.get(`/boletin/buscar/${nro_boletin}`);
+        console.log("Boletín encontrado:", respuesta.data);
+        if (respuesta.data.length > 0) {
+          setValues(
+            Array.isArray(respuesta.data) ? respuesta.data : [respuesta.data]
+          );
+          setLoading(false);
+          setOpen(true);
+          setMensaje(`Boletín encontrado Nº ${nro_boletin}`);
+          setError("success");
+          setBoletinEncontrado(true);
+        } else {
+          setValues(BUSCADOR_VALUES);
+          setLoading(false);
+          setOpen(true);
+          setMensaje(`No existe boletin Nº ${nro_boletin}`);
+          setError("error");
+          console.log("Boletín no encontrado:", error);
+          setBoletinEncontrado(false);
+        }
+      } else if (!nro_boletin && fecha_publicacion) {
+        const respuesta = await axios.get(
+          `/boletin/buscarFecha/${fecha_publicacion}`
+        );
+        console.log(fecha_publicacion, respuesta, respuesta.data.length);
+        if (respuesta.data.length > 0) {
+          setValues(
+            Array.isArray(respuesta.data) ? respuesta.data : [respuesta.data]
+          );
+          setLoading(false);
+          setOpen(true);
+          setMensaje(`Boletín encontrado fecha: ${fecha_publicacion}`);
+          setError("success");
+          console.log("Boletín encontrado:", respuesta.data);
+          setBoletinEncontrado(true);
+        } else {
+          setValues(BUSCADOR_VALUES);
+          setLoading(false);
+          setOpen(true);
+          setMensaje(`No existe boletin para la fecha ${fecha_publicacion}`);
+          setError("error");
+          console.log("Boletín no encontrado:", error);
+          setBoletinEncontrado(false);
+        }
       }
     } catch (error) {
       setLoading(false);
@@ -172,14 +161,14 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
 
   const funcionDescarga = async (boletin) => {
     try {
-      console.log(boletin._id);
+      console.log(boletin.id_boletin);
       const response = await axios.get(
-        `http://localhost:4000/boletin/listarDescarga/${boletin._id}`,
+        `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         {
           responseType: "blob", // Especifica el tipo de respuesta como Blob
         }
       );
-      console.log(boletin._id);
+      console.log(boletin.id_boletin);
 
       const blob = response.data;
       const url = URL.createObjectURL(blob);
@@ -189,7 +178,7 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
       link.href = url;
       link.setAttribute(
         "download",
-        `Boletin_Oficial_Municipal Nº ${boletin.nroBoletin}.pdf`
+        `Boletin_Oficial_Municipal Nº ${boletin.nro_boletin}.pdf`
       ); // Establecer el nombre de archivo
 
       // Hacer clic en el enlace para iniciar la descarga
@@ -202,18 +191,19 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
   };
 
   return (
+
     <>
-      <div className="d-flex justify-content-center">
-        <Box className="buscador ">
-          <h3 className="tituloBuscador">BUSCAR BOLETINES ANTERIORES</h3>
-          <Box
-            component="form"
-            sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
-            noValidate
-            autoComplete="off"
-            className="inputCont container"
-          >
-            <div className="inputsBuscadores">
+      <div className="d-flex flex-column align-items-center">
+      <Box className="buscador ">
+        <h3 className="tituloBuscador">BUSCAR BOLETINES ANTERIORES</h3>
+        <Box
+          component="form"
+          sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+          noValidate
+          autoComplete="off"
+          className="inputCont container"
+        >
+          <div className="inputsBuscadores d-flex flex-column flex-md-row align-items-md-center" >
               <TextField
                 label="Nro de Boletín"
                 variant="outlined"
@@ -221,7 +211,7 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
                 type="number"
                 value={values.nroBoletinBusqueda}
                 onChange={handleChange}
-                inputProps={{ min: "0" }}
+                inputProps={{ min: "0" , shrink: false}}
                 name="nroBoletinBusqueda"
               />
 
@@ -283,7 +273,7 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
               <>
                 {Array.isArray(values) && resultados.length > 0 ? (
                   resultados.map((boletin) => (
-                    <div key={boletin.id} className="boletin mb-2">
+                    <div key={boletin.id_boletin} className="boletin mb-2">
                       <img
                         className="logoMuniColor"
                         src={logoMuniColor}
@@ -291,7 +281,7 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
                       />
                       <div className="boletinText container mt-3">
                         <div className="d-flex flex-row justify-content-between">
-                          <h2>Boletin Nº {boletin.nroBoletin}</h2>
+                          <h2>Boletin Nº {boletin.nro_boletin}</h2>
                           <div className="contBtn">
                             <Button
                               variant="contained"
@@ -303,7 +293,7 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
                           </div>
                         </div>
                         <div className=" d-flex flex-row">
-                          <h6>{boletin.fechaBoletin}</h6>{" "}
+                          <h6>{boletin.fecha_publicacion.slice(0,10)}</h6>{" "}
                           <h6 className="ms-2">| Tucumán, Argentina</h6>
                         </div>
                       </div>
@@ -325,7 +315,7 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
                   <>
                     {Array.isArray(values) && values.length > 0 ? (
                       values.map((boletin) => (
-                        <div key={boletin.id} className="boletin mb-2">
+                        <div key={boletin.id_boletin} className="boletin mb-2">
                           <img
                             className="logoMuniColor"
                             src={logoMuniColor}
@@ -333,7 +323,7 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
                           />
                           <div className="boletinText container mt-3">
                             <div className="d-flex flex-row justify-content-between">
-                              <h2>Boletin Nº {boletin.nroBoletin}</h2>
+                              <h2>Boletin Nº {boletin.nro_boletin}</h2>
                               <div className="contBtn">
                                 <Button
                                   variant="contained"
@@ -345,7 +335,7 @@ const handleFechaBoletinSearch = async (fechaBoletin) => {
                               </div>
                             </div>
                             <div className=" d-flex flex-row">
-                              <h6>{boletin.fechaBoletin}</h6>{" "}
+                              <h6>{boletin.fecha_publicacion.slice(0,10)}</h6>{" "}
                               <h6 className="ms-2">| Tucumán, Argentina</h6>
                             </div>
                           </div>
