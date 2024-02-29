@@ -29,6 +29,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
+  // eslint-disable-next-line
   const [loading, setLoading] = useState(true);
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,11 +84,13 @@ export default function FormAvanzada({ busquedaAvanzada }) {
         setError("error");
       } else if (
         values.tipoDeNorma !== "" &&
+        values.tipoDeNorma !== "undefined" &&
         (values.nroDeNorma === "" ||
           values.nroDeNorma === "undefined" ||
           !nroDeNorma)
       ) {
         callback([]);
+        nroDeNorma = "undefined"
         const response = await axios.get(
           `/boletin/buscarPorTipo/${tipoDeNorma}/${nroDeNorma}`
         );
@@ -138,7 +141,8 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       setOpen(true);
       setMensaje("Error en la conexión");
       setError("warning");
-      console.log(typeof nroDeNorma);
+      console.log(typeof tipoDeNorma);
+      console.log(tipoDeNorma);
       console.log("algo explotó! :(", error);
     }
     handleCloseModal();
@@ -208,7 +212,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       setError("warning");
       console.log("algo explotó! :(", error);
     }
-    handleCloseModal()
+    handleCloseModal();
   };
 
   const handleBuscarPorTodo = async (fecha, tipo, nroNorma, callback) => {
@@ -250,7 +254,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       setError("warning");
       console.log("algo explotó! :(", error);
     }
-    handleCloseModal()
+    handleCloseModal();
   };
 
   const handlebuscarBoletinAvanzado = async (callback) => {
@@ -356,7 +360,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       setError("warning");
       console.log("algo explotó! :(", error);
     }
-    handleCloseModal()
+    handleCloseModal();
   };
   return (
     <div>

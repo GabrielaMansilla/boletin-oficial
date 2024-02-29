@@ -28,9 +28,12 @@ const AltaBoletines = () => {
   const [formData, setFormData] = useState(new FormData());
   const [resolucionArray, setResolucionArray] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
+  // eslint-disable-next-line 
   const [bandera, setBandera] = useState(false);
   // const [datosBoletin, setDatosBoletin] = useState({});
+  // eslint-disable-next-line 
   const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
+  // eslint-disable-next-line 
   const [nroBoletinExistente, setNroBoletinExistente] = useState(false);
 
   const obternerLista = (inicio, fin) => {
@@ -74,10 +77,12 @@ const AltaBoletines = () => {
   }, [values.nroResolucion]);
   useEffect(() => {}, [formattedValue]);
   useEffect(() => {
+    // eslint-disable-next-line 
     getboletin();
   }, []);
   useEffect(() => {
     const nuevoNumeroBoletin = values.nroBoletin; // Supongamos que este es el nuevo número de boletín que quieres verificar
+    // eslint-disable-next-line 
     const existe = numeroBoletinExiste(nuevoNumeroBoletin);
     setNroBoletinExistente(existe);
   }, [boletines, values.nroBoletin]);

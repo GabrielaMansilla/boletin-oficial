@@ -1,6 +1,6 @@
 import '../../common/Layout/Footer.css'
 import logo from '../../assets/logo-SMT-Blanco.png'
-import React, { useState } from 'react';
+import React from 'react';
 
 export const Footer = () => {
   return (

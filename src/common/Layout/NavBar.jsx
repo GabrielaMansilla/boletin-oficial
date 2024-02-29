@@ -1,8 +1,8 @@
 import "./NavBar.css";
 import { Container } from "@mui/material";
 import logoMuni from "../../assets/Logo-SMT-Blanco  completo.png";
-import LogIcono from "@mui/icons-material/AccountCircleOutlined";
-import React, { useState } from "react";
+// import LogIcono from "@mui/icons-material/AccountCircleOutlined";
+import React from "react";
 
 export const NavBar = () => {
   return (

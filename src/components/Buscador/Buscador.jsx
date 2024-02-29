@@ -15,7 +15,9 @@ const Buscador = () => {
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [loading, setLoading] = useState(true);
   const [resultados, setResultados] = useState([]);
+  // eslint-disable-next-line 
   const [boletinEncontrado, setBoletinEncontrado] = useState(true);
+  // eslint-disable-next-line 
   const [busquedaRealizada, setBusquedaRealizada] = useState(false);
 
   const handleChange = (e) => {

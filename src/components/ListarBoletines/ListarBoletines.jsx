@@ -1,14 +1,15 @@
 // import { Calendario } from "../Calendario/Calendario";
+// import Buscador from "../Buscador/Buscador";
 import React, { useState } from "react";
 import "./ListarBoletines.css";
 import axios from "../../config/axios";
 import useGet from "../../hook/useGet";
-import Buscador from "../Buscador/Buscador";
 import { Alert, Button, Grid, Snackbar } from "@mui/material";
 import logoMuniColor from "../../assets/logo-SMT.png";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 
 const ListarBoletines = () => {
+  // eslint-disable-next-line
   const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
   const boletinesInvertidos = boletines.slice().reverse().slice(0, 3);
   const [open, setOpen] = useState(false);
@@ -52,9 +53,9 @@ const ListarBoletines = () => {
 
   return (
     <>
-      <div className="d-flex flex-row mt-4">
+      <div className="d-flex flex-row">
         <Grid container spacing={2} className="d-flex contGrid">
-          <Grid className="contBoletines ps-5  pe-4 " item xs={12} md={12}>
+          <Grid className="contBoletines " item xs={12} md={12}>
             {loading ? (
               <p>cargando Boletines</p>
             ) : (
