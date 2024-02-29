@@ -25,6 +25,7 @@ const ListarBoletines = () => {
   const funcionDescarga = async (boletin) => {
     try {
       const response = await axios.get(
+        // `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         {
           responseType: "blob", // Especifica el tipo de respuesta como Blob
