@@ -57,6 +57,9 @@ export const Footer = () => {
               <p className="text-center text-md-end my-2 me-0 me-md-5">
                 Tel: (0381)- 4516500
               </p>
+              <p className="text-center text-md-end my-2 me-0 me-md-5">
+                Desarrollado por DITec
+              </p>
             </div>
           </div>
           {/* </ul> */}

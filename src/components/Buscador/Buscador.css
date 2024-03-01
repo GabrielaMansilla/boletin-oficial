@@ -4,9 +4,13 @@
     height: auto;
     align-self: center;
     align-items: center;
+    /* border-radius: 20px; */
     justify-content: center;
     background-color: #0066ff;
+    /* background-color: #ffff; */
     padding-bottom: 20px !important;
+        /* box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12); */
+
 }
 
 .tituloBuscador {
@@ -23,7 +27,7 @@
     align-items: center;
     width: 100% !important;
     flex-direction: row !important;
-}
+    }
 
 
 
@@ -47,21 +51,20 @@
     width: 50% !important;
     align-items: center;
     flex: end;
+    /* justify-content: end; */
 }
 
 .MuiOutlinedInput-notchedOutline {
     border-color: #ffffff !important;
-
+    
 }
 
-.MuiInputLabel-root.Mui-focused {
+.MuiInputLabel-root.Mui-focused{
     color: #ffffff !important
 }
-
 .MuiInputLabel-root {
     color: #ffffff !important
 }
-
 .MuiOutlinedInput-input {
     color: #ffffff !important;
     /* filter: invert(1) */
@@ -78,9 +81,8 @@
 .css-1e6y48t-MuiButtonBase-root-MuiButton-root {
     margin-left: -19px !important;
     width: fit-content !important;
-
+    
 }
-
 .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
     width: 20% !important;
     color: #fff !important;
@@ -96,32 +98,21 @@
 
 }
 
-.logoMuniColor {
-    width: auto;
-    height: 140px;
-    margin-left: -35px !important;
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-}
 
 @media (max-width: 775px) {
-    .inputCont {
+    .inputCont{
         width: 100% !important;
         flex-direction: column !important;
     }
-
-    .inputsBuscadores,
-    .botonesBuscadores {
+    .inputsBuscadores, .botonesBuscadores{
         width: 100% !important;
 
     }
-
-    .btnBuscador,
-    .btnBuscadorAvanzada {
+    .btnBuscador, .btnBuscadorAvanzada {
         width: 50% !important;
-
+        
     }
-
+    
 }
 
 
@@ -155,49 +146,52 @@
 
     .inputCont {
         padding-bottom: 15px;
-        width: 100% !important;
+        width: 100% !important ;
         flex-direction: column !important;
     }
 
 }
 
 @media (max-width: 1352px) {
-    .tituloBuscador {
-
+    .tituloBuscador{
+        
         margin-left: 134px !important;
-
+        
     }
-}
+  }
 
-@media (max-width: 1209px) {
-    .tituloBuscador {
-
+  @media (max-width: 1209px) {
+    .tituloBuscador{
+        
         margin-left: 60px !important;
-
+        
     }
-}
-
-@media (max-width: 767px) {
-
-    .inputBuscador {
-
-        margin-bottom: 10px !important;
-
-    }
-
-}
+  }
 
 @media (max-width: 500px) {
+    .tituloBuscador{
+        
+        margin-left: 26px !important;
+        
+    }
+  }
 
-    .inputBuscador {
+  @media (max-width: 767px) {
+
+    .inputBuscador{
 
         margin-bottom: 10px !important;
 
     }
 
-    .tituloBuscador {
+  }
 
-        margin-left: 26px !important;
+  @media (max-width: 500px) {
+
+    .inputBuscador{
+
+        margin-bottom: 10px !important;
 
     }
-}
+
+  }
