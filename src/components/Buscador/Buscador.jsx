@@ -5,8 +5,8 @@ import FormAvanzada from "../Form/FormAvanzada.jsx";
 import axios from "../../config/axios";
 import logoMuniColor from "../../assets/logo-SMT.png";
 import { BUSCADOR_VALUES } from "../../helpers/constantes.js";
-
-
+import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
+import ListarBoletines from "../ListarBoletines/ListarBoletines.jsx";
 
 const Buscador = () => {
   const [values, setValues] = useState([]);
@@ -15,14 +15,16 @@ const Buscador = () => {
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [loading, setLoading] = useState(true);
   const [resultados, setResultados] = useState([]);
+  // eslint-disable-next-line
   const [boletinEncontrado, setBoletinEncontrado] = useState(true);
+  // eslint-disable-next-line
   const [busquedaRealizada, setBusquedaRealizada] = useState(false);
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
     setBusquedaRealizada(false);
   };
-  
+
   const handleMensaje = () => {
     if (values.nroBoletinBusqueda === "" && values.fechaBusqueda === "") {
       setOpen(true);
@@ -46,7 +48,7 @@ const Buscador = () => {
   };
 
   const handleBuscarBoletin = async () => {
-    try { 
+    try {
       setLoading(true);
       const boletin = {
         nroBoletinBusqueda: values.nroBoletinBusqueda,
@@ -66,7 +68,9 @@ const Buscador = () => {
       }
     } catch (error) {
       setOpen(true);
-      return;
+      setMensaje("Algo explotó! :(");
+      setError("warning");
+      console.error("Error al buscar boletín:", error);
     }
   };
 
@@ -74,9 +78,7 @@ const Buscador = () => {
     try {
       if (!nro_boletin && !fecha_publicacion) {
         setOpen(true);
-        setMensaje(
-          "Debe ingresar el Nº de Boletín o Fecha de Publicación"
-        );
+        setMensaje("Debe ingresar el Nº de Boletín o Fecha de Publicación");
         setError("error");
         <ListarBoletines />;
       } else if (nro_boletin && fecha_publicacion) {
@@ -163,7 +165,9 @@ const Buscador = () => {
     try {
       console.log(boletin.id_boletin);
       const response = await axios.get(
-        `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
+        // `IP SERVIDOR DESARROLLO:PUERTO DEL BACK-END/boletin/listarDescarga/${boletin.id_boletin}`,
+        `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
+        // `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         {
           responseType: "blob", // Especifica el tipo de respuesta como Blob
         }
@@ -191,19 +195,18 @@ const Buscador = () => {
   };
 
   return (
-
     <>
       <div className="d-flex flex-column align-items-center">
-      <Box className="buscador ">
-        <h3 className="tituloBuscador">BUSCAR BOLETINES ANTERIORES</h3>
-        <Box
-          component="form"
-          sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
-          noValidate
-          autoComplete="off"
-          className="inputCont container"
-        >
-          <div className="inputsBuscadores d-flex flex-column flex-md-row align-items-md-center" >
+        <Box className="buscador ">
+          <h3 className="tituloBuscador">BUSCAR BOLETINES ANTERIORES</h3>
+          <Box
+            component="form"
+            sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+            noValidate
+            autoComplete="off"
+            className="inputCont container"
+          >
+            <div className="inputsBuscadores d-flex flex-column flex-md-row align-items-md-center">
               <TextField
                 label="Nro de Boletín"
                 variant="outlined"
@@ -211,7 +214,7 @@ const Buscador = () => {
                 type="number"
                 value={values.nroBoletinBusqueda}
                 onChange={handleChange}
-                inputProps={{ min: "0" , shrink: false}}
+                inputProps={{ min: "0", shrink: false }}
                 name="nroBoletinBusqueda"
               />
 
@@ -293,7 +296,7 @@ const Buscador = () => {
                           </div>
                         </div>
                         <div className=" d-flex flex-row">
-                          <h6>{boletin.fecha_publicacion.slice(0,10)}</h6>{" "}
+                          <h6>{boletin.fecha_publicacion.slice(0, 10)}</h6>{" "}
                           <h6 className="ms-2">| Tucumán, Argentina</h6>
                         </div>
                       </div>
@@ -335,7 +338,7 @@ const Buscador = () => {
                               </div>
                             </div>
                             <div className=" d-flex flex-row">
-                              <h6>{boletin.fecha_publicacion.slice(0,10)}</h6>{" "}
+                              <h6>{boletin.fecha_publicacion.slice(0, 10)}</h6>{" "}
                               <h6 className="ms-2">| Tucumán, Argentina</h6>
                             </div>
                           </div>

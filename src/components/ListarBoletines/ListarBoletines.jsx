@@ -1,14 +1,15 @@
 // import { Calendario } from "../Calendario/Calendario";
+// import Buscador from "../Buscador/Buscador";
 import React, { useState } from "react";
 import "./ListarBoletines.css";
 import axios from "../../config/axios";
 import useGet from "../../hook/useGet";
-import Buscador from "../Buscador/Buscador";
-import { Alert, Button, Grid, Snackbar } from "@mui/material";
+import { Alert, Button, Grid, Skeleton, Snackbar } from "@mui/material";
 import logoMuniColor from "../../assets/logo-SMT.png";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 
 const ListarBoletines = () => {
+  // eslint-disable-next-line
   const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
   const boletinesInvertidos = boletines.slice().reverse().slice(0, 3);
   const [open, setOpen] = useState(false);
@@ -25,7 +26,8 @@ const ListarBoletines = () => {
   const funcionDescarga = async (boletin) => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
+        `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
+        // `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         {
           responseType: "blob", // Especifica el tipo de respuesta como Blob
         }
@@ -51,11 +53,27 @@ const ListarBoletines = () => {
 
   return (
     <>
-      <div className="d-flex flex-row mt-4">
+      <div className="d-flex flex-row">
         <Grid container spacing={2} className="d-flex contGrid">
-          <Grid className="contBoletines ps-5  pe-4 " item xs={12} md={12}>
+          <Grid className="contBoletines " item xs={12} md={12}>
             {loading ? (
-              <p>cargando Boletines</p>
+              <>
+                <Skeleton
+                  height={110}
+                  variant="rounded"
+                  className="boletin mb-2"
+                />
+                <Skeleton
+                  height={110}
+                  variant="rounded"
+                  className=" boletin mb-2 "
+                />
+                <Skeleton
+                  height={110}
+                  variant="rounded"
+                  className="boletin mb-2"
+                />
+              </>
             ) : (
               boletinesInvertidos.map((boletin, index) => (
                 <div className="boletin mb-2 " key={boletin.id_boletin}>
@@ -71,7 +89,6 @@ const ListarBoletines = () => {
                           ? `ÚLTIMA EDICIÓN | BOLETÍN Nº ${boletin.nro_boletin}`
                           : `BOLETÍN Nº ${boletin.nro_boletin}`}
                       </h2>
-                      {/* <h2>Boletin Nº {boletin.nroBoletin}</h2> */}
                       <div className="contBtn">
                         <Button
                           variant="contained"

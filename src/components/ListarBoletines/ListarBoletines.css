@@ -1,7 +1,5 @@
 .contBoletines {
     height: auto;
-    /* width: 60%; */
-    /* background-color: red; */
 }
 
 .calendarioBoletines {
@@ -11,11 +9,14 @@
 
 }
 
-/* .contGrid {
-    background-color: RED;
-    display: flex;
-    justify-content: left !important;
-} */
+.pindonga {
+    border: solid 3px;
+    border-color: #0066ff;
+}
+
+.css-1u5xo4f-MuiSkeleton-root {
+    background-color:transparent !important
+}
 
 .boletin {
     display: flex;
@@ -37,11 +38,6 @@
     padding-left: 0px !important;
     padding-right: 0px !important;
 }
-
-/* .logoMuniBlanco2 {
-    width: auto;
-    height: 100px;
-} */
 
 .boletinText {
     flex-direction: column;
@@ -76,12 +72,13 @@
 
 
 @media (max-width: 546px) {
-    .boletin{
+    .boletin {
         height: auto;
         padding: 5px;
     }
+
     .boletin h2 {
-       
+
         font-size: 120% !important;
     }
 }
@@ -90,12 +87,39 @@
 
     .btnPdf {
         width: fit-content;
-        height: 30px;  
+        height: 30px;
         margin-bottom: 15px !important;
-      }
+    }
 
-      .logoMuniColor {
+    .logoMuniColor {
         width: 120px;
         height: 100px;
-      }
+    }
+}
+
+@media (max-width: 412px) {
+
+    .boletinText h6 {
+
+        font-size: 14px;
+
+    }
+}
+
+@media (max-width: 390px) {
+
+    .boletinText h6 {
+
+        font-size: 13px;
+
+    }
+}
+
+@media (max-width: 360px) {
+
+    .boletinText h6 {
+
+        font-size: 12px;
+
+    }
 }
