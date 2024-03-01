@@ -95,3 +95,30 @@
         height: 100px;
       }
 }
+
+@media (max-width: 412px){
+
+    .boletinText h6 {
+
+        font-size: 14px;
+        
+    }
+}
+
+@media (max-width: 390px){
+
+    .boletinText h6 {
+
+        font-size: 13px;
+        
+    }
+}
+
+@media (max-width: 360px){
+
+    .boletinText h6 {
+
+        font-size: 12px;
+        
+    }
+}

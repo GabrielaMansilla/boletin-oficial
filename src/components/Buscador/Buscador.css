@@ -9,7 +9,7 @@
     background-color: #0066ff;
     /* background-color: #ffff; */
     padding-bottom: 20px !important;
-    /* box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12); */
+        /* box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12); */
 
 }
 
@@ -27,7 +27,9 @@
     align-items: center;
     width: 100% !important;
     flex-direction: row !important;
-}
+    }
+
+
 
 .inputsBuscadores {
     display: flex;
@@ -40,6 +42,7 @@
 .inputBuscador {
     width: 100%;
     margin-left: 15px !important;
+    /* filter: invert(1); */
 }
 
 .botonesBuscadores {
@@ -52,13 +55,19 @@
 }
 
 .MuiOutlinedInput-notchedOutline {
-    border-color: #ffff !important;
+    border-color: #ffffff !important;
+    
 }
 
-.MuiInputLabel-root.Mui-focused,
-.MuiInputLabel-root,
+.MuiInputLabel-root.Mui-focused{
+    color: #ffffff !important
+}
+.MuiInputLabel-root {
+    color: #ffffff !important
+}
 .MuiOutlinedInput-input {
-    color: #ffff !important
+    color: #ffffff !important;
+    /* filter: invert(1) */
 }
 
 .btnBuscador,
@@ -88,6 +97,7 @@
     width: fit-content !important;
 
 }
+
 
 @media (max-width: 775px) {
     .inputCont{
@@ -131,6 +141,7 @@
     .buscador {
         height: auto;
         align-items: center !important;
+
     }
 
     .inputCont {
@@ -165,3 +176,22 @@
     }
   }
 
+  @media (max-width: 767px) {
+
+    .inputBuscador{
+
+        margin-bottom: 10px !important;
+
+    }
+
+  }
+
+  @media (max-width: 500px) {
+
+    .inputBuscador{
+
+        margin-bottom: 10px !important;
+
+    }
+
+  }
