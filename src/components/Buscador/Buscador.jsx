@@ -61,6 +61,7 @@ const Buscador = () => {
         return;
       } else if (boletin.nroBoletinBusqueda || boletin.fechaBusqueda) {
         handleSearchBoletin(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
+        // console.log(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
         setValues(BUSCADOR_VALUES);
         setBusquedaRealizada(true);
         return;
@@ -122,12 +123,14 @@ const Buscador = () => {
           setOpen(true);
           setMensaje(`No existe boletin Nº ${nro_boletin}`);
           setError("error");
+          console.log("Boletín no encontrado:", error);
           setBoletinEncontrado(false);
         }
       } else if (!nro_boletin && fecha_publicacion) {
         const respuesta = await axios.get(
           `/boletin/buscarFecha/${fecha_publicacion}`
         );
+        console.log(fecha_publicacion, respuesta, respuesta.data.length);
         if (respuesta.data.length > 0) {
           setValues(
             Array.isArray(respuesta.data) ? respuesta.data : [respuesta.data]
@@ -136,6 +139,7 @@ const Buscador = () => {
           setOpen(true);
           setMensaje(`Boletín encontrado fecha: ${fecha_publicacion}`);
           setError("success");
+          console.log("Boletín encontrado:", respuesta.data);
           setBoletinEncontrado(true);
         } else {
           setValues(BUSCADOR_VALUES);
@@ -143,6 +147,7 @@ const Buscador = () => {
           setOpen(true);
           setMensaje(`No existe boletin para la fecha ${fecha_publicacion}`);
           setError("error");
+          console.log("Boletín no encontrado:", error);
           setBoletinEncontrado(false);
         }
       }
@@ -160,23 +165,27 @@ const Buscador = () => {
     try {
       console.log(boletin.id_boletin);
       const response = await axios.get(
-        `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         // `IP SERVIDOR DESARROLLO:PUERTO DEL BACK-END/boletin/listarDescarga/${boletin.id_boletin}`,
+        `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         // `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         {
-          responseType: "blob",
+          responseType: "blob", // Especifica el tipo de respuesta como Blob
         }
       );
+      console.log(boletin.id_boletin);
+
       const blob = response.data;
       const url = URL.createObjectURL(blob);
 
+      // Crear un elemento de enlace temporal para iniciar la descarga
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute(
         "download",
         `Boletin_Oficial_Municipal Nº ${boletin.nro_boletin}.pdf`
-      );
+      ); // Establecer el nombre de archivo
 
+      // Hacer clic en el enlace para iniciar la descarga
       link.click();
     } catch (error) {
       setOpen(true);

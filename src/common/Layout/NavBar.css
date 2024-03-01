@@ -42,8 +42,8 @@
     width: auto;
     height: 60px !important;
     margin-left: 6px;
-}
-
+    }
+    
 
 @media (max-width: 500px) {
 
@@ -54,5 +54,22 @@
     .contLogo h4 {
         margin-left: -10px;
     }
+    .logoNav {
 
+        width: 400px;
+        height: 60px !important;
+       
+    }
+}
+
+@media (max-width: 430px){
+
+    .logoNav {
+
+        width: 200px;
+        height: 30px !important;
+       
+    }
+
+  
 }

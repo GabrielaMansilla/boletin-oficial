@@ -65,16 +65,11 @@ const ListarBoletines = () => {
                 />
                 <Skeleton
                   height={110}
-                  animation="wave"
                   variant="rounded"
-                  // style={{border: "solid 3px", backgroundColor: "lightgray", color: "#0066ff", &.css-1hirv1y-MuiSkeleton-root::after{
-                  //   background: "linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.04)",color: "#422e93");}}
-                  // }
-                  className="pindonga mb-2"
+                  className=" boletin mb-2 "
                 />
                 <Skeleton
                   height={110}
-                  animation="false"
                   variant="rounded"
                   className="boletin mb-2"
                 />

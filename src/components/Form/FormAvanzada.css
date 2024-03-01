@@ -61,7 +61,6 @@
 }
 
 .btnAvanzada {
-    height: 50px;
     background-color: #2197db !important;
     width: fit-content !important;
     margin-bottom: 10px;
@@ -73,7 +72,6 @@
 @media (max-width: 1200px) {
     .busqueda {
         width: 270px !important;
-        height: 50px !important;
         margin-right: -16px !important;
         padding-left: 30px !important;
         padding-right: 30px !important;
@@ -83,7 +81,6 @@
 
 @media (max-width: 990px) {
     .busqueda {
-        height: 50px !important;
         margin-right: -20px !important;
     }
 }
@@ -91,7 +88,6 @@
 @media (max-width: 775px) {
     .busqueda {
         width: 350px !important;
-        height: 50px !important;
         margin-right: -20px !important;
         padding-left: 90px !important;
         padding-right: 90px !important;
@@ -102,7 +98,6 @@
 @media (max-width: 765px) {
     .busqueda {
         margin-left: -23px !important;
-        height: 50px !important;
         margin-right: -20px !important;
         padding-left: 50px !important;
         padding-right: 50px !important;
@@ -112,14 +107,30 @@
 @media (max-width: 730px) {
     .busqueda {
         margin-left: -49px !important;
-        height: 50px !important;
     }
 }
 
 @media (max-width: 540px) {
     .busqueda {
         width: 140px !important;
-        height: 50px !important;
+        margin-right: -20px !important;
+        padding-left: 40px !important;
+        padding-right: 40px !important;
+    }
+}
+
+@media (max-width: 730px) {
+    .busqueda {
+        width: 160% !important;
+        margin-right: -20px !important;
+        padding-left: 45px !important;
+        padding-right: 45px !important;
+    }
+}
+
+@media (max-width: 540px) {
+    .busqueda {
+        width: 140% !important;
         margin-right: -20px !important;
         padding-left: 40px !important;
         padding-right: 40px !important;
@@ -128,9 +139,37 @@
 
 @media (max-width: 500px) {
     .busqueda {
-        height: 50px !important;
+        width: 230px !important;
         margin-right: -20px !important;
         padding-left: 30px !important;
         padding-right: 30px !important;
     }
+}
+
+@media (max-width: 430px) {
+
+    .busqueda {
+        margin-right: -20px !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+}
+
+@media (max-width: 412px) {
+
+    .busqueda {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+}
+@media (max-width: 390px) {
+
+    .busqueda {
+        margin-right: -20px !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
 }

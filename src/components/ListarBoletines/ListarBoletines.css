@@ -14,8 +14,8 @@
     border-color: #0066ff;
 }
 
-.css-1hirv1y-MuiSkeleton-root::after {
-    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.04),  #2eb1ff) !important;
+.css-1u5xo4f-MuiSkeleton-root {
+    background-color:transparent !important
 }
 
 .boletin {
@@ -94,5 +94,32 @@
     .logoMuniColor {
         width: 120px;
         height: 100px;
+    }
+}
+
+@media (max-width: 412px) {
+
+    .boletinText h6 {
+
+        font-size: 14px;
+
+    }
+}
+
+@media (max-width: 390px) {
+
+    .boletinText h6 {
+
+        font-size: 13px;
+
+    }
+}
+
+@media (max-width: 360px) {
+
+    .boletinText h6 {
+
+        font-size: 12px;
+
     }
 }
