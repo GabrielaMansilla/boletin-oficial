@@ -11,7 +11,6 @@ import {
   TextField,
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
-
 import "./FormAvanzada.css";
 import axios from "../../config/axios";
 import { BUSCADOR_AVANZADA_VALUES } from "../../helpers/constantes";
@@ -79,7 +78,6 @@ export default function FormAvanzada({ busquedaAvanzada }) {
         values.nroDeNorma !== ""
       ) {
         setOpen(true);
-        console.log(values.tipoDeNorma, values.nroDeNorma);
         setMensaje("Debe Seleccionar el Tipo de Norma");
         setError("error");
       } else if (
@@ -94,7 +92,6 @@ export default function FormAvanzada({ busquedaAvanzada }) {
         const response = await axios.get(
           `/boletin/buscarPorTipo/${tipoDeNorma}/${nroDeNorma}`
         );
-        console.log(response.data);
         response.data.length > 0 ? (
           <>
             {callback(response.data)}
@@ -112,14 +109,11 @@ export default function FormAvanzada({ busquedaAvanzada }) {
           </>
         );
       } else if (values.tipoDeNorma !== "" && values.nroDeNorma !== "") {
-        console.log(tipoDeNorma, nroDeNorma);
         callback([]);
 
         const response = await axios.get(
           `/boletin/buscarPorTipo/${tipoDeNorma}/${nroDeNorma}`
         );
-        console.log(response.data.length);
-
         response.data.length > 0 ? (
           <>
             {callback(response.data)}
@@ -141,8 +135,6 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       setOpen(true);
       setMensaje("Error en la conexión");
       setError("warning");
-      console.log(typeof tipoDeNorma);
-      console.log(tipoDeNorma);
       console.log("algo explotó! :(", error);
     }
     handleCloseModal();
@@ -165,7 +157,6 @@ export default function FormAvanzada({ busquedaAvanzada }) {
         const resp = await axios.get(
           `/boletin/buscarPorFecha/${fecha}/${tipo}`
         );
-        console.log(resp.data);
         resp.data.length > 0 ? (
           <>
             {callback(resp.data)}
@@ -188,7 +179,6 @@ export default function FormAvanzada({ busquedaAvanzada }) {
         const resp = await axios.get(
           `/boletin/buscarPorFecha/${fecha}/${tipo}`
         );
-        console.log(resp.data);
         resp.data.length > 0 ? (
           <>
             {callback(resp.data)}
@@ -218,7 +208,6 @@ export default function FormAvanzada({ busquedaAvanzada }) {
   const handleBuscarPorTodo = async (fecha, tipo, nroNorma, callback) => {
     try {
       callback([]);
-      console.log(fecha, tipo, nroNorma);
       if (
         (!fecha || fecha === "") &&
         !tipo &&

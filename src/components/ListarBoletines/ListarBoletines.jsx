@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import "./ListarBoletines.css";
 import axios from "../../config/axios";
 import useGet from "../../hook/useGet";
-import { Alert, Button, Grid, Snackbar } from "@mui/material";
+import { Alert, Button, Grid, Skeleton, Snackbar } from "@mui/material";
 import logoMuniColor from "../../assets/logo-SMT.png";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 
@@ -26,8 +26,8 @@ const ListarBoletines = () => {
   const funcionDescarga = async (boletin) => {
     try {
       const response = await axios.get(
-        // `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
-        `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
+        `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
+        // `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         {
           responseType: "blob", // Especifica el tipo de respuesta como Blob
         }
@@ -57,7 +57,28 @@ const ListarBoletines = () => {
         <Grid container spacing={2} className="d-flex contGrid">
           <Grid className="contBoletines " item xs={12} md={12}>
             {loading ? (
-              <p>cargando Boletines</p>
+              <>
+                <Skeleton
+                  height={110}
+                  variant="rounded"
+                  className="boletin mb-2"
+                />
+                <Skeleton
+                  height={110}
+                  animation="wave"
+                  variant="rounded"
+                  // style={{border: "solid 3px", backgroundColor: "lightgray", color: "#0066ff", &.css-1hirv1y-MuiSkeleton-root::after{
+                  //   background: "linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.04)",color: "#422e93");}}
+                  // }
+                  className="pindonga mb-2"
+                />
+                <Skeleton
+                  height={110}
+                  animation="false"
+                  variant="rounded"
+                  className="boletin mb-2"
+                />
+              </>
             ) : (
               boletinesInvertidos.map((boletin, index) => (
                 <div className="boletin mb-2 " key={boletin.id_boletin}>
@@ -73,7 +94,6 @@ const ListarBoletines = () => {
                           ? `ÚLTIMA EDICIÓN | BOLETÍN Nº ${boletin.nro_boletin}`
                           : `BOLETÍN Nº ${boletin.nro_boletin}`}
                       </h2>
-                      {/* <h2>Boletin Nº {boletin.nroBoletin}</h2> */}
                       <div className="contBtn">
                         <Button
                           variant="contained"

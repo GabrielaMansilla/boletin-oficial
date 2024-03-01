@@ -1,5 +1,4 @@
 .buscadorAvanzada {
-
     align-items: center;
     justify-content: center;
     align-self: center;
@@ -8,24 +7,18 @@
     padding-bottom: 20px !important;
     padding: 0;
     border-radius: 20px;
-    /* background-color: #ffff; */
     background-color: #0066ff;
     box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-
-
 }
-
-
 
 .busqueda {
-    width: 269px!important;
+    width: 269px !important;
     margin-left: 0px !important;
-    height: 60px !important;
-    
+    height: 50px !important;
+    padding-left: 55px !important;
+    padding-right: 51px !important;
+    margin-right: -16px !important;
 }
-
-
-
 
 .tituloBusquedaAvanzada {
     color: #fff;
@@ -61,14 +54,11 @@
     padding-bottom: 20px !important;
     padding: 0;
     border-radius: 20px;
-    /* background-color: #ffff; */
     border-top: solid 1px !important;
     border-color: #0066ff !important;
     background-color: #0066ff;
 
 }
-/* .selectBusquedaAvanzada{
-margin} */
 
 .btnAvanzada {
     height: 50px;
@@ -81,63 +71,66 @@ margin} */
 }
 
 @media (max-width: 1200px) {
-.busqueda{
-    width: 270px !important;
-    height: 60px !important;
-}
+    .busqueda {
+        width: 270px !important;
+        height: 50px !important;
+        margin-right: -16px !important;
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+
+    }
 }
 
 @media (max-width: 990px) {
-    .busqueda{
-        width: 165px !important;
-        /* margin-left: -15px !important; */
-        height: 60px !important;
-        /* margin-right: 56px !important; */
+    .busqueda {
+        height: 50px !important;
+        margin-right: -20px !important;
     }
+}
+
+@media (max-width: 775px) {
+    .busqueda {
+        width: 350px !important;
+        height: 50px !important;
+        margin-right: -20px !important;
+        padding-left: 90px !important;
+        padding-right: 90px !important;
+
     }
+}
 
-    @media (max-width: 775px) {
-        .busqueda{
-            width: 350px !important;
-            /* margin-left: -80px !important; */
-            height: 60px !important;
-            /* margin-right: 90px !important; */
-        }
-        }
+@media (max-width: 765px) {
+    .busqueda {
+        margin-left: -23px !important;
+        height: 50px !important;
+        margin-right: -20px !important;
+        padding-left: 50px !important;
+        padding-right: 50px !important;
+    }
+}
 
-        @media (max-width: 765px) {
-            .busqueda{
-                width:120% !important;
-                margin-left: -23px !important;
-                height: 60px !important;
-                margin-right: 100px !important;
-            }
-            }
+@media (max-width: 730px) {
+    .busqueda {
+        margin-left: -49px !important;
+        height: 50px !important;
+    }
+}
 
+@media (max-width: 540px) {
+    .busqueda {
+        width: 140px !important;
+        height: 50px !important;
+        margin-right: -20px !important;
+        padding-left: 40px !important;
+        padding-right: 40px !important;
+    }
+}
 
-        @media (max-width: 730px) {
-            .busqueda{
-                width:160% !important;
-                margin-left: -49px !important;
-                height: 60px !important;
-                margin-right: 34px !important;
-            }
-            }
-
-            @media (max-width: 540px) {
-                .busqueda{
-                    width:140% !important;
-                    margin-left: -35px !important;
-                    height: 60px !important;
-                    margin-right: 33px !important;
-                }
-                }
-
-                @media (max-width: 500px) {
-                    .busqueda{
-                        width: 120 !important;
-                        /* margin-left: -26px !important; */
-                        height: 60px !important;
-                        /* margin-right: 19px !important; */
-                    }
-                    }
+@media (max-width: 500px) {
+    .busqueda {
+        height: 50px !important;
+        margin-right: -20px !important;
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+}

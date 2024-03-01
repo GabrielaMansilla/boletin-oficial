@@ -26,7 +26,6 @@
 .formGroup {
     width: 50%;
     display: flex;
-    /* align-items: start; */
     flex: start;
     margin-bottom: 30px;
     flex-direction: column;
@@ -37,7 +36,6 @@
     width: 100;
     display: flex;
     color: #ffffff;
-    /* align-items: start; */
     flex:start
 }
 

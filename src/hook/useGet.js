@@ -19,7 +19,6 @@ const useGet = (url, axios) => {
       setState(data.data || data);
       setLoading(false);
     } catch (error) {
-      // toast.error("Error en la conexión");
       <Snackbar
         open={open}
         autoHideDuration={6000}

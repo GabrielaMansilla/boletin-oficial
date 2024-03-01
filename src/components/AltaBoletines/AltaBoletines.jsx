@@ -7,7 +7,6 @@ import {
   Input,
   Snackbar,
   TextField,
-  // TextareaAutosize,
 } from "@mui/material";
 import { ALTA_BOLETIN_VALUES } from "../../helpers/constantes";
 import FileUp from "@mui/icons-material/FileUpload";
@@ -67,7 +66,7 @@ const AltaBoletines = () => {
       setMensaje("El archivo solo puede ser PDF");
       setError("warning");
     } else {
-      setOpen(false); // Cerrar la advertencia si el archivo es un PDF
+      setOpen(false); 
     }
     const aux = e.target.files[0];
     setArchivoSeleccionado(aux);
@@ -81,7 +80,7 @@ const AltaBoletines = () => {
     getboletin();
   }, []);
   useEffect(() => {
-    const nuevoNumeroBoletin = values.nroBoletin; // Supongamos que este es el nuevo número de boletín que quieres verificar
+    const nuevoNumeroBoletin = values.nroBoletin; 
     // eslint-disable-next-line 
     const existe = numeroBoletinExiste(nuevoNumeroBoletin);
     setNroBoletinExistente(existe);
@@ -235,7 +234,6 @@ const AltaBoletines = () => {
     <Box
       component="form"
       id="form"
-      // sx={{ '& > :not(style)': { m: 1, width: '25ch' }, }}
       noValidate
       enctype="multipart/form-data"
       autoComplete="off"
