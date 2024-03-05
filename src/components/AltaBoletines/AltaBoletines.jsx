@@ -30,26 +30,6 @@ const AltaBoletines = () => {
   // eslint-disable-next-line
   const [nroBoletinExistente, setNroBoletinExistente] = useState(false);
 
-  const obternerLista = (inicio, fin) => {
-    const inicioNum = parseInt(inicio, 10);
-    const finNum = parseInt(fin, 10);
-    if (!isNaN(inicioNum) && !isNaN(finNum)) {
-      return Array.from(
-        { length: finNum - inicioNum + 1 },
-        (_, index) => inicioNum + index
-      );
-    } else if (!isNaN(inicioNum)) {
-      return [inicioNum];
-    } else {
-      return [];
-    }
-  };
-  const obtenerDecretos = () => {
-    return obternerLista(values.nroDecretoInicial, values.nroDecretoFinal);
-  };
-  const obtenerOrdenanzas = () => {
-    return obternerLista(values.nroOrdenanzaInicial, values.nroOrdenanzaFinal);
-  };
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -131,13 +111,6 @@ const AltaBoletines = () => {
     }
   };
 
-  // const esNumeroDeResolucionValido = () => {
-  //   return (
-  //     formattedValue === undefined ||
-  //     /\d{4}$/.test(formattedValue) !== false ||
-  //     formattedValue.length === 0
-  //   );
-  // };
   const esNumeroDeResolucionValido = (formattedValue) => {
     return (
       formattedValue === undefined ||
@@ -249,6 +222,7 @@ const AltaBoletines = () => {
       const requestData = {
         nroBoletin: parseInt(values.nroBoletin, 10),
         fechaBoletin: values.fechaBoletin,
+        fechaNormaBoletin: values.fechaNormaBoletin,
         fechaNormaBoletin: values.fechaNormaBoletin,
         nroDecreto: decretos,
         nroOrdenanza: ordenanzas,
