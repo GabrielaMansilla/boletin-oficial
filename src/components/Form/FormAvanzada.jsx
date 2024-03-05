@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Box,
@@ -14,6 +14,7 @@ import Modal from "@mui/material/Modal";
 import "./FormAvanzada.css";
 import axios from "../../config/axios";
 import { BUSCADOR_AVANZADA_VALUES } from "../../helpers/constantes";
+import useGet from "../../hook/useGet";
 
 export default function FormAvanzada({ busquedaAvanzada }) {
   const [values, setValues] = useState([BUSCADOR_AVANZADA_VALUES]);
@@ -37,7 +38,11 @@ export default function FormAvanzada({ busquedaAvanzada }) {
     setValues({ ...values, [name]: updatedValue });
   };
 
-  const handleMensaje = () => {
+  const [tiposNorma, loadingNorma, getTiposNoma] = useGet("/norma/listar", axios);
+
+  
+  
+  const handleMensaje = async () => {
     if (
       values.tipoBusquedaAvanzada === "" &&
       values.nroNormaBusquedaAvanzada === "" &&
@@ -88,7 +93,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
           !nroDeNorma)
       ) {
         callback([]);
-        nroDeNorma = "undefined"
+        nroDeNorma = "undefined";
         const response = await axios.get(
           `/boletin/buscarPorTipo/${tipoDeNorma}/${nroDeNorma}`
         );
@@ -382,9 +387,13 @@ export default function FormAvanzada({ busquedaAvanzada }) {
                 <MenuItem value="">
                   <em>--Seleccione--</em>
                 </MenuItem>
-                <MenuItem value={"Decreto"}>Decreto</MenuItem>
-                <MenuItem value={"Ordenanza"}>Ordenanza</MenuItem>
-                <MenuItem value={"Resolucion"}>Resolución</MenuItem>
+                {tiposNorma.map((tipo) => (
+                  <MenuItem key={tipo.id_norma} value={tipo.tipo_norma}>
+                    {tipo.tipo_norma}
+                  </MenuItem>
+                ))}
+                {/* <MenuItem value={"Ordenanza"}>Ordenanza</MenuItem>
+                <MenuItem value={"Resolucion"}>Resolución</MenuItem> */}
               </Select>
             </FormControl>
             <TextField
