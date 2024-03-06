@@ -10,8 +10,6 @@ const Layout = ({ children }) => {
 
   if (location.pathname !== "/login") {
   
-
-    
       return (
       <div>
         <NavBar />

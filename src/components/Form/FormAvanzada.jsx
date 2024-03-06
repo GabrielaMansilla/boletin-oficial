@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Box,
@@ -11,10 +11,10 @@ import {
   TextField,
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
-
 import "./FormAvanzada.css";
 import axios from "../../config/axios";
 import { BUSCADOR_AVANZADA_VALUES } from "../../helpers/constantes";
+import useGet from "../../hook/useGet";
 
 export default function FormAvanzada({ busquedaAvanzada }) {
   const [values, setValues] = useState([BUSCADOR_AVANZADA_VALUES]);
@@ -29,6 +29,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
+  // eslint-disable-next-line
   const [loading, setLoading] = useState(true);
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,7 +38,11 @@ export default function FormAvanzada({ busquedaAvanzada }) {
     setValues({ ...values, [name]: updatedValue });
   };
 
-  const handleMensaje = () => {
+  const [tiposNorma, loadingNorma, getTiposNoma] = useGet("/norma/listar", axios);
+
+  
+  
+  const handleMensaje = async () => {
     if (
       values.tipoBusquedaAvanzada === "" &&
       values.nroNormaBusquedaAvanzada === "" &&
@@ -78,20 +83,20 @@ export default function FormAvanzada({ busquedaAvanzada }) {
         values.nroDeNorma !== ""
       ) {
         setOpen(true);
-        console.log(values.tipoDeNorma, values.nroDeNorma);
         setMensaje("Debe Seleccionar el Tipo de Norma");
         setError("error");
       } else if (
         values.tipoDeNorma !== "" &&
+        values.tipoDeNorma !== "undefined" &&
         (values.nroDeNorma === "" ||
           values.nroDeNorma === "undefined" ||
           !nroDeNorma)
       ) {
         callback([]);
+        nroDeNorma = "undefined";
         const response = await axios.get(
           `/boletin/buscarPorTipo/${tipoDeNorma}/${nroDeNorma}`
         );
-        console.log(response.data);
         response.data.length > 0 ? (
           <>
             {callback(response.data)}
@@ -109,14 +114,11 @@ export default function FormAvanzada({ busquedaAvanzada }) {
           </>
         );
       } else if (values.tipoDeNorma !== "" && values.nroDeNorma !== "") {
-        console.log(tipoDeNorma, nroDeNorma);
         callback([]);
 
         const response = await axios.get(
           `/boletin/buscarPorTipo/${tipoDeNorma}/${nroDeNorma}`
         );
-        console.log(response.data.length);
-
         response.data.length > 0 ? (
           <>
             {callback(response.data)}
@@ -138,7 +140,6 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       setOpen(true);
       setMensaje("Error en la conexión");
       setError("warning");
-      console.log(typeof nroDeNorma);
       console.log("algo explotó! :(", error);
     }
     handleCloseModal();
@@ -161,7 +162,6 @@ export default function FormAvanzada({ busquedaAvanzada }) {
         const resp = await axios.get(
           `/boletin/buscarPorFecha/${fecha}/${tipo}`
         );
-        console.log(resp.data);
         resp.data.length > 0 ? (
           <>
             {callback(resp.data)}
@@ -184,7 +184,6 @@ export default function FormAvanzada({ busquedaAvanzada }) {
         const resp = await axios.get(
           `/boletin/buscarPorFecha/${fecha}/${tipo}`
         );
-        console.log(resp.data);
         resp.data.length > 0 ? (
           <>
             {callback(resp.data)}
@@ -208,13 +207,12 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       setError("warning");
       console.log("algo explotó! :(", error);
     }
-    handleCloseModal()
+    handleCloseModal();
   };
 
   const handleBuscarPorTodo = async (fecha, tipo, nroNorma, callback) => {
     try {
       callback([]);
-      console.log(fecha, tipo, nroNorma);
       if (
         (!fecha || fecha === "") &&
         !tipo &&
@@ -250,7 +248,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       setError("warning");
       console.log("algo explotó! :(", error);
     }
-    handleCloseModal()
+    handleCloseModal();
   };
 
   const handlebuscarBoletinAvanzado = async (callback) => {
@@ -356,7 +354,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       setError("warning");
       console.log("algo explotó! :(", error);
     }
-    handleCloseModal()
+    handleCloseModal();
   };
   return (
     <div>
@@ -389,9 +387,13 @@ export default function FormAvanzada({ busquedaAvanzada }) {
                 <MenuItem value="">
                   <em>--Seleccione--</em>
                 </MenuItem>
-                <MenuItem value={"Decreto"}>Decreto</MenuItem>
-                <MenuItem value={"Ordenanza"}>Ordenanza</MenuItem>
-                <MenuItem value={"Resolucion"}>Resolución</MenuItem>
+                {tiposNorma.map((tipo) => (
+                  <MenuItem key={tipo.id_norma} value={tipo.tipo_norma}>
+                    {tipo.tipo_norma}
+                  </MenuItem>
+                ))}
+                {/* <MenuItem value={"Ordenanza"}>Ordenanza</MenuItem>
+                <MenuItem value={"Resolucion"}>Resolución</MenuItem> */}
               </Select>
             </FormControl>
             <TextField

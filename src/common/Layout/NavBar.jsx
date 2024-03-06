@@ -1,8 +1,7 @@
 import "./NavBar.css";
 import { Container } from "@mui/material";
 import logoMuni from "../../assets/Logo-SMT-Blanco  completo.png";
-import LogIcono from "@mui/icons-material/AccountCircleOutlined";
-import React, { useState } from "react";
+import React from "react";
 
 export const NavBar = () => {
   return (
@@ -13,12 +12,6 @@ export const NavBar = () => {
             {" "}
             <img src={logoMuni} alt="logo Muni" className="logoNav" />
           </a>
-          {/* <div className='ms-2'>
-                        <h4 className='text-light mb-0'>CIUDAD</h4>
-                        <div className='textMuni'>
-                            <h1>San Miguel Tucumán </h1>
-                        </div>
-                    </div> */}
         </div>
         <div className="boletinNavCont">
           <h1 className="boletinNav">Boletín Oficial Municipal </h1>
