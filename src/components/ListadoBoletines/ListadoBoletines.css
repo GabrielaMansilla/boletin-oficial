@@ -1,10 +1,30 @@
+/* ListadoBoletines.css */
+
 .tituloListado {
-    color:0066ff;
-    font-weight: 600;
+    background-color: #f0f0f0;
+  }
+  
+  .tableCellHeader {
     background-color: #0066ff;
-    width: 100%;
-    height: auto;
-    max-width: 100% !important;
-    
-    
-}
+    font-weight: bold; /* Añadir negrita al texto del encabezado */
+  }
+  
+  .tableRowOdd {
+    background-color: #f9f9f9;
+  }
+  
+  .tableRowEven {
+    background-color: white;
+  }
+  
+  .iconEdit {
+    cursor: pointer;
+    color: #0066ff;
+    margin-right: 8px;
+  }
+  
+  .iconDelete {
+    cursor: pointer;
+    color: red;
+  }
+  
