@@ -8,14 +8,14 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import TextField from '@mui/material/TextField'; // Importa TextField para los campos de entrada
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import './ListadoBoletines.css';
-import useGet from "../../hook/useGet"; 
-import axios from "../../config/axios";
+import useGet from '../../hook/useGet';
+import axios from '../../config/axios';
 
 export default function ColumnGroupingTable() {
-  const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
+  const [boletines, loading, getboletin] = useGet('/boletin/listar', axios);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [editingBoletin, setEditingBoletin] = useState(null);
@@ -34,13 +34,12 @@ export default function ColumnGroupingTable() {
   };
 
   const handleSave = () => {
-    // Aquí puedes implementar la lógica para guardar los cambios en la base de datos
     console.log('Guardando cambios:', editingBoletin);
-    setEditingBoletin(null); // Sale del modo de edición después de guardar
+    setEditingBoletin(null);
   };
 
   const handleCancel = () => {
-    setEditingBoletin(null); // Sale del modo de edición sin guardar cambios
+    setEditingBoletin(null);
   };
 
   const handleInputChange = (e) => {
@@ -59,7 +58,7 @@ export default function ColumnGroupingTable() {
   ];
 
   return (
-    <Paper sx={{ width: '100%' }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -98,6 +97,9 @@ export default function ColumnGroupingTable() {
                           name={column.id}
                           value={editingBoletin[column.id]}
                           onChange={handleInputChange}
+                          variant="filled"
+                          color="primary" focused 
+                          size="small"
                         />
                       ) : column.id === 'acciones' ? (
                         <>
@@ -116,10 +118,14 @@ export default function ColumnGroupingTable() {
                     </TableCell>
                   ))}
                   {editingBoletin && editingBoletin.nro_boletin === boletin.nro_boletin && (
-                    <>
-                      <button onClick={handleSave}>Guardar</button>
-                      <button onClick={handleCancel}>Cancelar</button>
-                    </>
+                    <TableCell align="right" colSpan={1}>
+                      <Button onClick={handleSave} variant="contained" color="primary">
+                        Guardar
+                      </Button>
+                      <Button onClick={handleCancel} variant="contained" color="primary">
+                        Cancelar
+                      </Button>
+                    </TableCell>
                   )}
                 </TableRow>
               ))}
