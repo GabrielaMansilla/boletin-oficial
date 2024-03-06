@@ -131,6 +131,7 @@ const AltaBoletines = () => {
     esNumeroDeResolucionValido(values.nroOrdenanzaInicial) &&
     values.fechaBoletin !== "" &&
     values.nroBoletin !== "";
+
   const handleMensaje = () => {
     let mensaje = "";
     let fileName = archivoSeleccionado?.name || "";
@@ -237,6 +238,7 @@ const AltaBoletines = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+      console.log("modongo");
       console.log(respuesta);
       setValues(ALTA_BOLETIN_VALUES);
       setSelectedFileName("Seleccione un Archivo");
