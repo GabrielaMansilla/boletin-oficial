@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./AltaBoletines.css";
-import { Alert, Box, Button, Input, Snackbar, TextField } from "@mui/material";
+import { Alert, Box, Button, FormControl, Input, InputLabel, MenuItem, Select, Snackbar, TextField } from "@mui/material";
 import { ALTA_BOLETIN_VALUES } from "../../helpers/constantes";
 import FileUp from "@mui/icons-material/FileUpload";
 import File from "@mui/icons-material/UploadFileRounded";
@@ -29,6 +29,8 @@ const AltaBoletines = () => {
   const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
   // eslint-disable-next-line
   const [nroBoletinExistente, setNroBoletinExistente] = useState(false);
+  const [tiposOrigen, loadingOrigen, getTiposOrigen] = useGet("/boletin/listarOrigen", axios);
+  
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -265,6 +267,9 @@ const AltaBoletines = () => {
           <div className="contRango">
             <h5>Boletin:</h5>
             <div>
+              <div className="d-flex flex-column">
+              <div>
+
               <TextField
                 label="Nro de Boletín"
                 variant="outlined"
@@ -274,7 +279,7 @@ const AltaBoletines = () => {
                 onChange={handleChange}
                 inputProps={{ min: "0" }}
                 name="nroBoletin"
-              />
+                />
               <TextField
                 label="Fecha Boletin"
                 variant="outlined"
@@ -284,17 +289,46 @@ const AltaBoletines = () => {
                 value={values.fechaBoletin}
                 onChange={handleChange}
                 InputLabelProps={{ shrink: true }}
-              />
+                />
+                </div>
+              <div >
               <TextField
                 label="Fecha Norma"
                 variant="outlined"
                 name="fechaNormaBoletin"
                 type="date"
-                className="inputAltaBoletin ms-3"
+                className="inputAltaBoletin mb-2"
                 value={values.fechaNormaBoletin}
                 onChange={handleChange}
                 InputLabelProps={{ shrink: true }}
               />
+              <FormControl sx={{ m: 1, minWidth: 80 }} className="ms-3 me-0">
+              <InputLabel id="demo-simple-select-autowidth-label">
+                Tipo de Origen
+              </InputLabel>
+              <Select 
+                labeld="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                value={values.origen}
+                onChange={handleChange}
+                autoWidth
+                label="Tipo de Origen"
+                name="tipoOrigen"
+              >
+                <MenuItem value="">
+                  <em>--Seleccione--</em>
+                </MenuItem>
+                {tiposOrigen.map((origen) => (
+                  <MenuItem key={origen.id_origen} value={origen.nombre_origen}>
+                    {origen.nombre_origen}
+                  </MenuItem>
+                ))}
+                {/* <MenuItem value={"Ordenanza"}>Ordenanza</MenuItem>
+                <MenuItem value={"Resolucion"}>Resolución</MenuItem> */}
+              </Select>
+            </FormControl>
+            </div>
+            </div>
             </div>
           </div>
           <div className="contRango">
@@ -376,7 +410,8 @@ const AltaBoletines = () => {
                 name="nroResolucion"
               />
             </div>
-          </div>
+            </div>
+            
         </Box>
 
         {/* <TextareaAutosize

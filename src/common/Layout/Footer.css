@@ -30,25 +30,12 @@
   justify-content: center;
 }
 
-.logoFooter img {
-  margin-top: -20px;
-  width: 100px;
+.logoFooter img{
+  
+  width: 65%;
+ 
 }
 
-.logoFooter h1 {
-  font-size: 45px !important;
-  font-weight: 600 !important;
-
-}
-
-.logoFooter h4 {
-  height: 20px;
-  text-align: left;
-  color: #fff;
-  margin-top: 0 !important;
-  font-size: 20px !important;
-  margin-bottom: 0 !important;
-}
 
 .logoRedesFooter {
   height: 20px;

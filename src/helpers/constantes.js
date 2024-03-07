@@ -22,6 +22,7 @@ export const ALTA_BOLETIN_VALUES = {
   // nroDecretoFinal: "",
   nroOrdenanzaInicial: "",
   // nroOrdenanzaFinal: "",
+  origen: "",
   nroResolucion: "",
   nroDecreto: "",
   nroOrdenanza: "",

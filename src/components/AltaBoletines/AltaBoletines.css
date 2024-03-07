@@ -104,6 +104,13 @@ label {
     background-color: rgba(255, 255, 255, 0.288);
 }
 
+.selectOrigen {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+}
+
 @media (max-width: 768px) {
     .contAltaBoletines {
         align-items: center;
