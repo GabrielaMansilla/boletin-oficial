@@ -4,11 +4,12 @@
   width: 100%;
   height: 100%;
   display: flex;
-  border-color: #3333 !important;
+  background-color: #0066ff;
   border-top: solid 1px;
   justify-content: center;
   margin-top: 20px !important;
-  font-family: 13px ;
+  font-family: 13px;
+  color: #fff;
 }
 
 .iconosRedes {
@@ -18,6 +19,10 @@
   justify-content: center;
 }
 
+.iconosRedes i {
+  color: #fff;
+}
+
 .logoFooter {
   display: flex;
   flex-direction: row;
@@ -25,20 +30,12 @@
   justify-content: center;
 }
 
-.logoFooter h1 {
-  font-size: 45px !important;
-
+.logoFooter img{
+  
+  width: 65%;
+ 
 }
 
-.logoFooter h4 {
-  height: 20px;
-  text-align: left;
-  color: #333 !important;
-  margin-top: 0 !important;
-  font-size: 20px !important;
-  font-weight: 600 !important;
-  margin-bottom: 0 !important;
-}
 
 .logoRedesFooter {
   height: 20px;
@@ -49,9 +46,9 @@
   margin-left: 50px !important;
   display: flex;
   justify-content: end;
-  /* flex:end; */
+  color: #fff;
   align-items: center !important;
-  
+
 
 }
 
@@ -63,17 +60,27 @@
 }
 
 @media (max-width: 430px) {
-  .seguinos h5{
+  .seguinos h5 {
     margin-right: 0 !important;
     justify-content: center !important;
-     font-size: 18px !important;
+    font-size: 18px !important;
   }
 }
 
 @media (max-width: 390px) {
-  .seguinos h5{
+  .seguinos h5 {
     margin-right: 0 !important;
     justify-content: center !important;
-     font-size: 13px !important;
+    font-size: 13px !important;
+  }
+
+  .logoFooter h4 {
+    font-size: 100% !important;
+  }
+.logoFooter{
+  width: 100% !important;
+}
+  .logoFooter h1 {
+    font-size: 30px !important;
   }
 }

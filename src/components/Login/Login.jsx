@@ -1,19 +1,19 @@
 import "./Login.css";
 import logoMuni from "../../assets/logo-SMT-Login.png";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@mui/material";
 // import useStore from "../../Zustand/Zustand";
 import { LOGIN_VALUES } from "../../helpers/constantes";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import React from 'react';
 
 const Login = () => {
   //   const { authenticated, botonState, login } = useStore();
   const [showPassword, setShowPassword] = useState(false);
   const [values, setValues] = useState(LOGIN_VALUES);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
