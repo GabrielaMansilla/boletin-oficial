@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./AltaBoletines.css";
-import { Alert, Box, Button, FormControl, Input, InputLabel, MenuItem, Select, Snackbar, TextField } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  FormControl,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
+  Snackbar,
+  TextField,
+} from "@mui/material";
 import { ALTA_BOLETIN_VALUES } from "../../helpers/constantes";
 import FileUp from "@mui/icons-material/FileUpload";
 import File from "@mui/icons-material/UploadFileRounded";
@@ -29,8 +40,11 @@ const AltaBoletines = () => {
   const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
   // eslint-disable-next-line
   const [nroBoletinExistente, setNroBoletinExistente] = useState(false);
-  const [tiposOrigen, loadingOrigen, getTiposOrigen] = useGet("/boletin/listarOrigen", axios);
-  
+  // eslint-disable-next-line
+  const [tiposOrigen, loadingOrigen, getTiposOrigen] = useGet(
+    "/boletin/listarOrigen",
+    axios
+  );
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -55,7 +69,6 @@ const AltaBoletines = () => {
   useEffect(() => {}, [formattedValue]);
 
   useEffect(() => {
-    // eslint-disable-next-line
     getboletin();
   }, []);
 
@@ -63,7 +76,9 @@ const AltaBoletines = () => {
     const nuevoNumeroBoletin = values.nroBoletin;
     // eslint-disable-next-line
     const existe = numeroBoletinExiste(nuevoNumeroBoletin);
+    // eslint-disable-next-line
     setNroBoletinExistente(existe);
+    // eslint-disable-next-line
   }, [boletines, values.nroBoletin]);
 
   const formatNroResolucion = (inputValue) => {
@@ -124,14 +139,13 @@ const AltaBoletines = () => {
   const puedeEnviarFormulario =
     selectedFileName !== "Seleccione un Archivo" &&
     (values.nroDecretoInicial !== "" ||
-      // values.nroDecretoFinal !== "" ||
       values.nroOrdenanzaInicial !== "" ||
-      // values.nroOrdenanzaFinal !== "" ||
       formattedValue !== "") &&
     esNumeroDeResolucionValido(formattedValue) &&
     esNumeroDeResolucionValido(values.nroDecretoInicial) &&
     esNumeroDeResolucionValido(values.nroOrdenanzaInicial) &&
     values.fechaBoletin !== "" &&
+    values.origen !== "" &&
     values.nroBoletin !== "";
 
   const handleMensaje = () => {
@@ -184,6 +198,9 @@ const AltaBoletines = () => {
     } else if (!fileName.toLowerCase().endsWith(".pdf")) {
       console.log(8);
       mensaje = "El archivo solo puede ser PDF";
+    } else if (!values.origen || values.origen === "") {
+      console.log(9);
+      mensaje = "Debe ingresar la Secretaría";
     } else {
       mensaje = "Recarga la pagina";
       return;
@@ -226,7 +243,7 @@ const AltaBoletines = () => {
         nroBoletin: parseInt(values.nroBoletin, 10),
         fechaBoletin: values.fechaBoletin,
         fechaNormaBoletin: values.fechaNormaBoletin,
-        fechaNormaBoletin: values.fechaNormaBoletin,
+        origen: values.origen,
         nroDecreto: decretos,
         nroOrdenanza: ordenanzas,
         nroResolucion: resolucionSinGuiones,
@@ -268,133 +285,97 @@ const AltaBoletines = () => {
             <h5>Boletin:</h5>
             <div>
               <div className="d-flex flex-column">
-              <div>
-
-              <TextField
-                label="Nro de Boletín"
-                variant="outlined"
-                className="inputAltaBoletin"
-                type="number"
-                value={values.nroBoletin}
-                onChange={handleChange}
-                inputProps={{ min: "0" }}
-                name="nroBoletin"
-                />
-              <TextField
-                label="Fecha Boletin"
-                variant="outlined"
-                name="fechaBoletin"
-                type="date"
-                className="inputAltaBoletin ms-3"
-                value={values.fechaBoletin}
-                onChange={handleChange}
-                InputLabelProps={{ shrink: true }}
-                />
+                <div>
+                  <TextField
+                    label="Nro de Boletín"
+                    variant="outlined"
+                    className="inputAltaBoletin"
+                    type="number"
+                    value={values.nroBoletin}
+                    onChange={handleChange}
+                    inputProps={{ min: "0" }}
+                    name="nroBoletin"
+                  />
+                  <TextField
+                    label="Fecha Boletin"
+                    variant="outlined"
+                    name="fechaBoletin"
+                    type="date"
+                    className="inputAltaBoletin ms-3"
+                    value={values.fechaBoletin}
+                    onChange={handleChange}
+                    InputLabelProps={{ shrink: true }}
+                  />
                 </div>
-              <div >
-              <TextField
-                label="Fecha Norma"
-                variant="outlined"
-                name="fechaNormaBoletin"
-                type="date"
-                className="inputAltaBoletin mb-2"
-                value={values.fechaNormaBoletin}
-                onChange={handleChange}
-                InputLabelProps={{ shrink: true }}
-              />
-              <FormControl sx={{ m: 1, minWidth: 80 }} className="ms-3 me-0">
-              <InputLabel id="demo-simple-select-autowidth-label">
-                Tipo de Origen
-              </InputLabel>
-              <Select 
-                labeld="demo-simple-select-autowidth-label"
-                id="demo-simple-select-autowidth"
-                value={values.origen}
-                onChange={handleChange}
-                autoWidth
-                label="Tipo de Origen"
-                name="tipoOrigen"
-              >
-                <MenuItem value="">
-                  <em>--Seleccione--</em>
-                </MenuItem>
-                {tiposOrigen.map((origen) => (
-                  <MenuItem key={origen.id_origen} value={origen.nombre_origen}>
-                    {origen.nombre_origen}
-                  </MenuItem>
-                ))}
-                {/* <MenuItem value={"Ordenanza"}>Ordenanza</MenuItem>
-                <MenuItem value={"Resolucion"}>Resolución</MenuItem> */}
-              </Select>
-            </FormControl>
-            </div>
-            </div>
+                <div>
+                  <TextField
+                    label="Fecha Norma"
+                    variant="outlined"
+                    name="fechaNormaBoletin"
+                    type="date"
+                    className="inputAltaBoletin mb-2"
+                    value={values.fechaNormaBoletin}
+                    onChange={handleChange}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                  <FormControl
+                    sx={{ m: 1, minWidth: 80 }}
+                    className="ms-3 me-0"
+                  >
+                    <InputLabel id="demo-simple-select-autowidth-label">
+                      Secretaría de Origen
+                    </InputLabel>
+                    <Select
+                      labeld="demo-simple-select-autowidth-label"
+                      id="demo-simple-select-autowidth"
+                      value={values.origen}
+                      onChange={handleChange}
+                      autoWidth
+                      label="Secretaría de Origen"
+                      name="origen"
+                      disabled
+                    >
+                      <MenuItem value="">
+                        <em>--Seleccione--</em>
+                      </MenuItem>
+                      {tiposOrigen.map((origen) => (
+                        <MenuItem
+                          key={origen.id_origen}
+                          value={origen.id_origen}
+                        >
+                          {origen.nombre_origen}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+              </div>
             </div>
           </div>
           <div className="contRango">
             <h5>Decretos:</h5>
             <div>
               <TextField
-                label="Nº de Decreto inicial"
+                label="Nº de Decreto"
                 className="inputAltaBoletin"
                 type="text"
                 value={values.nroDecretoInicial}
                 onChange={handleDecretoChange}
-                // inputProps={{
-                //   min: "1000",
-                //   max: "999999",
-                //   minLength: 4,
-                //   maxLength: 6,
-                // }}
-                name="nroDecretoInicial"
+                name="nroDecreto"
               />
-              {/* <TextField
-                label="Nº de Decreto Final"
-                className="inputAltaBoletin ms-3"
-                type="number"
-                value={values.nroDecretoFinal}
-                onChange={handleChange}
-                inputProps={{
-                  min: "1000",
-                  max: "999999",
-                  minLength: 4,
-                  maxLength: 6,
-                }}
-                name="nroDecretoFinal"
-              /> */}
             </div>
           </div>
           <div className="contRango">
             <h5>Ordenanza:</h5>
             <div>
               <TextField
-                label="Nº de Ordenanza Inicial"
+                label="Nº de Ordenanza"
                 className="inputAltaBoletin"
                 type="text"
                 value={values.nroOrdenanzaInicial}
                 onChange={handleOrdenanzaChange}
-                // inputProps={{
-                //   min: "1000",
-                //   max: "999999",
-                //   minLength: 4,
-                //   maxLength: 6,
-                // }}
-                name="nroOrdenanzaInicial"
+                name="nroOrdenanza"
               />
-              {/* <TextField
-                label="Nº de Ordenanza Final"
-                className="inputAltaBoletin ms-3"
-                type="number"
-                value={values.nroOrdenanzaFinal}
-                onChange={handleChange}
-                inputProps={{
-                  min: "1000",
-                  max: "999999",
-                  minLength: 4,
-                  maxLength: 6,
-                }}
-                name="nroOrdenanzaFinal"
-              /> */}
             </div>
           </div>
           <div className="contRango">
@@ -404,19 +385,13 @@ const AltaBoletines = () => {
                 label="Nº de Resolución"
                 className="inputAltaBoletin"
                 type="text"
-                // value={values.nroResolucion}
                 value={formattedValue}
                 onChange={handleResolucionChange}
                 name="nroResolucion"
               />
             </div>
-            </div>
-            
+          </div>
         </Box>
-
-        {/* <TextareaAutosize
-        minRows={10} className='textAreaBoletines' /> */}
-
         <Box className="contInputFileBoletin col-4 W-100 pt-5 pb-4">
           <label className="fileNameDisplay flex-column">
             {selectedFileName}
@@ -478,11 +453,7 @@ const AltaBoletines = () => {
         </Alert>
       </Snackbar>
       {mostrarModal && (
-        <ModalAltaBoletin
-          // datosCorrectos={bandera}
-          abrir={mostrarModal}
-          onConfirm={handleConfirm}
-        />
+        <ModalAltaBoletin abrir={mostrarModal} onConfirm={handleConfirm} />
       )}
     </Box>
   );
