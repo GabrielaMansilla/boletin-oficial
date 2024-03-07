@@ -18,11 +18,11 @@ const EditForm = ({ boletin, onSave, onCancel }) => {
   return (
     <div>
       <h3>Editar Boletín</h3>
-      <label>Nro de Boletin:</label>
+      <label>Habilita:</label>
       <input
         type="text"
-        name="nro_boletin"
-        value={editedBoletin.nro_boletin}
+        name="habilita"
+        value={editedBoletin.habilita}
         onChange={handleInputChange}
       />
       {/* Otros campos del formulario */}

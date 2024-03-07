@@ -9,8 +9,11 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
 import TextField from '@mui/material/TextField';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CancelIcon from '@mui/icons-material/Cancel';
 import Button from '@mui/material/Button';
 import './ListadoBoletines.css';
+
 import useGet from '../../hook/useGet';
 import axios from '../../config/axios';
 
@@ -30,10 +33,11 @@ export default function ColumnGroupingTable() {
   };
 
   const handleEdit = (boletin) => {
-    setEditingBoletin(boletin);
+    setEditingBoletin({ ...boletin });
   };
 
   const handleSave = () => {
+    // Realizar la lógica de guardado aquí
     console.log('Guardando cambios:', editingBoletin);
     setEditingBoletin(null);
   };
@@ -53,7 +57,7 @@ export default function ColumnGroupingTable() {
   const columns = [
     { id: 'nro_boletin', label: 'Nro de Boletin', minWidth: 170 },
     { id: 'fecha_publicacion', label: 'Fecha de Publicacion', minWidth: 100 },
-    { id: 'habilitado', label: 'Habilitado', minWidth: 170, align: 'right', format: (value) => value.toLocaleString('en-US') },
+    { id: 'habilita', label: 'Habilita', minWidth: 170, align: 'right' },
     { id: 'acciones', label: 'Acciones', minWidth: 100, align: 'right' },
   ];
 
@@ -69,14 +73,17 @@ export default function ColumnGroupingTable() {
             </TableRow>
             <TableRow>
               {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  className="tableCellHeader"
-                >
-                  {column.label}
-                </TableCell>
+                column.id !== 'acciones' && (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    className="tableCellHeader"
+                  >
+                    {column.label}
+                  </TableCell>
+                )
               ))}
+              <TableCell align="center">Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -91,42 +98,48 @@ export default function ColumnGroupingTable() {
                   className={rowIndex % 2 === 0 ? 'tableRowEven' : 'tableRowOdd'}
                 >
                   {columns.map((column) => (
-                    <TableCell key={column.id} align={column.align}>
-                      {editingBoletin && editingBoletin.nro_boletin === boletin.nro_boletin ? (
-                        <TextField
-                          name={column.id}
-                          value={editingBoletin[column.id]}
-                          onChange={handleInputChange}
-                          variant="filled"
-                          color="primary" focused 
-                          size="small"
-                        />
-                      ) : column.id === 'acciones' ? (
-                        <>
-                          <EditIcon
-                            onClick={() => handleEdit(boletin)}
-                            className="iconEdit"
+                    column.id !== 'acciones' && (
+                      <TableCell key={column.id} align={column.align}>
+                        {editingBoletin && editingBoletin.nro_boletin === boletin.nro_boletin && column.id === 'habilita' ? (
+                          <TextField
+                            name={column.id}
+                            value={editingBoletin[column.id]}
+                            onChange={handleInputChange}
+                            variant="filled"
+                            inputProps={{
+                                 min: "0",
+                                max: "1",
+                               }}
+                            color="primary"
+                            size="small"
                           />
-                        </>
-                      ) : column.id === 'habilitado' ? (
-                        boletin[column.id] ? '1' : '0'
-                      ) : (
-                        column.format && typeof boletin[column.id] === 'number'
-                          ? column.format(boletin[column.id])
-                          : column.id === 'fecha_publicacion' ? boletin[column.id].slice(0, 10) : boletin[column.id]
-                      )}
-                    </TableCell>
+                        ) : column.id === 'habilita' ? (
+                          boletin[column.id] ? '1' : '0'
+                        ) : (
+                          column.format && typeof boletin[column.id] === 'number'
+                            ? column.format(boletin[column.id])
+                            : column.id === 'fecha_publicacion' ? boletin[column.id].slice(0, 10) : boletin[column.id]
+                        )}
+                      </TableCell>
+                    )
                   ))}
-                  {editingBoletin && editingBoletin.nro_boletin === boletin.nro_boletin && (
-                    <TableCell align="right" colSpan={1}>
-                      <Button onClick={handleSave} variant="contained" color="primary">
-                        Guardar
-                      </Button>
-                      <Button onClick={handleCancel} variant="contained" color="primary">
-                        Cancelar
-                      </Button>
-                    </TableCell>
-                  )}
+                  <TableCell align="center">
+                    {editingBoletin && editingBoletin.nro_boletin === boletin.nro_boletin ? (
+                      <>
+                        <Button onClick={handleSave} color="primary">
+                          <CheckCircleOutlineIcon fontSize="small" />
+                        </Button>
+                        <Button onClick={handleCancel} color="error">
+                          <CancelIcon fontSize="small" />
+                        </Button>
+                      </>
+                    ) : (
+                      <EditIcon
+                        onClick={() => handleEdit(boletin)}
+                        className="iconEdit"
+                      />
+                    )}
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>
