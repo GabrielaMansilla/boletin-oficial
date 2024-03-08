@@ -285,7 +285,7 @@ const AltaBoletines = () => {
             <h5>Boletin:</h5>
             <div>
               <div className="d-flex flex-column">
-                <div>
+                <div className="mb-1">
                   <TextField
                     label="Nro de Boletín"
                     variant="outlined"
