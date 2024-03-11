@@ -19,11 +19,11 @@
 
 /* INPUTFILE*/
 .css-1x51dt5-MuiInputBase-input-MuiInput-input {
-    height: 365px !important;
+    height: 60px !important;
 }
 
 .formGroup {
-    width: 50%;
+    width: 100%;
     display: flex;
     flex: start;
     margin-bottom: 30px;
@@ -31,10 +31,22 @@
 
 }
 
+.encabezadoBoletin {
+    border-radius: 20px;
+}
+
 .cuerpoBoletin {
     display: flex;
     flex-direction: column !important;
-    width: 200px !important;
+    width: 100% !important;
+}
+.listadoNormas{
+    height:250px;
+    margin-left: 10px;
+    border-radius: 20px;
+    border: solid 1px;
+    padding: 7px;
+    overflow-y: scroll;
 }
 
 .nroBoletin {
@@ -52,8 +64,8 @@
 
 .contRango div {
     width: 100%;
-    display: flex;
-    flex-direction: row;
+    /* display: flex; */
+    /* flex-direction: row; */
     margin-top: 5px;
 
 }
@@ -96,8 +108,7 @@ label {
 }
 
 .fileNameDisplay {
-    width: 100%;
-    height: 100%;
+    width: 250px;
     padding: 8px;
     display: flex;
     border-radius: 4px;
@@ -107,6 +118,7 @@ label {
     border: 1px solid #ccc;
     cursor: pointer !important;
     background-color: rgba(255, 255, 255, 0.288);
+    background-color: red;
 }
 
 .selectOrigen {
@@ -128,7 +140,6 @@ label {
     }
 
     .css-1x51dt5-MuiInputBase-input-MuiInput-input {
-        height: 25vh !important;
         margin-bottom: 2px !important;
     }
 

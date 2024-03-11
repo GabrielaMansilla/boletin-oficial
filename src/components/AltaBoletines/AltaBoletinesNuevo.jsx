@@ -283,82 +283,115 @@ const AltaBoletinesNuevo = () => {
       <div className="contAltaBoletines">
         <Box className="formGroup flex-col ">
           <div className="contRango">
-            <h5>Boletin:</h5>
             <div>
-              <div className="d-flex flex-column">
-                <div className="mb-1 ">
-                  <TextField
-                    label="Nro de Boletín"
-                    variant="outlined"
-                    className="inputAltaBoletin"
-                    type="number"
-                    value={values.nroBoletin}
-                    onChange={handleChange}
-                    inputProps={{ min: "0" }}
-                    name="nroBoletin"
-                  />
-                  <TextField
-                    label="Fecha Boletin"
-                    variant="outlined"
-                    name="fechaBoletin"
-                    type="date"
-                    className="inputAltaBoletin ms-3"
-                    value={values.fechaBoletin}
-                    onChange={handleChange}
-                    InputLabelProps={{ shrink: true }}
-                  />
+              <div className="d-flex flex-column ">
+                <div className="mb-1 encabezadoBoletin">
+                  <h5>Boletin:</h5>
+                  <div className="d-flex flex-row">
+                    <TextField
+                      label="Nro de Boletín"
+                      variant="outlined"
+                      className="inputAltaBoletin"
+                      type="number"
+                      value={values.nroBoletin}
+                      onChange={handleChange}
+                      inputProps={{ min: "0" }}
+                      name="nroBoletin"
+                    />
+                    <TextField
+                      label="Fecha Boletin"
+                      variant="outlined"
+                      name="fechaBoletin"
+                      type="date"
+                      className="inputAltaBoletin ms-3"
+                      value={values.fechaBoletin}
+                      onChange={handleChange}
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </div>
+                  <hr />
                 </div>
                 <div className="cuerpoBoletin">
-                  <FormControl sx={{ minWidth: 80 }} className="mb-2">
-                    <InputLabel id="demo-simple-select-autowidth-label">
-                      Secretaría de Origen
-                    </InputLabel>
-                    <Select
-                      labeld="demo-simple-select-autowidth-label"
-                      id="demo-simple-select-autowidth"
-                      value={values.origen}
-                      onChange={handleChange}
-                      autoWidth
-                      label="Secretaría de Origen"
-                      name="origen"
-                      //   disabled
-                    >
-                      <MenuItem value="">
-                        <em>--Seleccione--</em>
-                      </MenuItem>
-                      {tiposOrigen.map((origen) => (
-                        <MenuItem
-                          key={origen.id_origen}
-                          value={origen.id_origen}
+                  <div className="d-flex flex-row">
+                    <div className="d-flex flex-column">
+                      <FormControl sx={{ minWidth: 80 }} className="mb-2">
+                        <InputLabel id="demo-simple-select-autowidth-label">
+                          Secretaría de Origen
+                        </InputLabel>
+                        <Select
+                          labeld="demo-simple-select-autowidth-label"
+                          id="demo-simple-select-autowidth"
+                          value={values.origen}
+                          onChange={handleChange}
+                          autoWidth
+                          label="Secretaría de Origen"
+                          name="origen"
+                          //   disabled
                         >
-                          {origen.nombre_origen}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <TextField
-                    label="Fecha Norma"
-                    variant="outlined"
-                    name="fechaNormaBoletin"
-                    type="date"
-                    className="inputAltaBoletin mb-2"
-                    value={values.fechaNormaBoletin}
-                    onChange={handleChange}
-                    InputLabelProps={{ shrink: true }}
-                  />
-                  <TextField
-                    label="Nº de Nroma"
-                    className="inputAltaBoletin"
-                    type="text"
-                    value={values.nroDecretoInicial}
-                    onChange={handleDecretoChange}
-                    name="nroNorma"
-                  />
+                          <MenuItem value="">
+                            <em>--Seleccione--</em>
+                          </MenuItem>
+                          {tiposOrigen.map((origen) => (
+                            <MenuItem
+                              key={origen.id_origen}
+                              value={origen.id_origen}
+                            >
+                              {origen.nombre_origen}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <TextField
+                        label="Fecha Norma"
+                        variant="outlined"
+                        name="fechaNormaBoletin"
+                        type="date"
+                        className="inputAltaBoletin mb-2"
+                        value={values.fechaNormaBoletin}
+                        onChange={handleChange}
+                        InputLabelProps={{ shrink: true }}
+                      />
+                      <TextField
+                        label="Nº de Nroma"
+                        className="inputAltaBoletin mb-2"
+                        type="text"
+                        value={values.nroDecretoInicial}
+                        onChange={handleDecretoChange}
+                        name="nroNorma"
+                      />
+                    </div>
+                    <div className="listadoNormas">
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi magnam soluta facilis placeat commodi nostrum libero cupiditate, doloremque saepe quod dolorum aliquid ipsa totam earum consequuntur blanditiis minima nam quos!
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi magnam soluta facilis placeat commodi nostrum libero cupiditate, doloremque saepe quod dolorum aliquid ipsa totam earum consequuntur blanditiis minima nam quos!
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi magnam soluta facilis placeat commodi nostrum libero cupiditate, doloremque saepe quod dolorum aliquid ipsa totam earum consequuntur blanditiis minima nam quos!
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi magnam soluta facilis placeat commodi nostrum libero cupiditate, doloremque saepe quod dolorum aliquid ipsa totam earum consequuntur blanditiis minima nam quos!
+                    </div>
+                  </div>
+                  <Box className="contInputFileBoletin col-2 ">
+                  {/* <Box className="contInputFileBoletin  "> */}
+                    <label className="fileNameDisplay flex-column">
+                      {selectedFileName}
+                      <Input
+                        className="inputFileAltaBoletin"
+                        type="file"
+                        id="fileBoletin"
+                        name="archivoBoletin"
+                        value={values.archivoBoletin}
+                        onChange={handleChangeFile}
+                        accept="application/pdf"
+                        required
+                      />
+                      {selectedFileName === "Seleccione un Archivo" ? (
+                        <FileUp />
+                      ) : (
+                        <File />
+                      )}
+                    </label>
+                  </Box>
                 </div>
               </div>
             </div>
           </div>
-          <div></div>
           {/* <div className="contRango"> */}
           {/* <h5>Norma</h5> */}
           {/* </div> */}
@@ -388,26 +421,6 @@ const AltaBoletinesNuevo = () => {
               />
             </div>
           </div> */}
-        </Box>
-        <Box className="contInputFileBoletin col-4 W-100 pt-5 pb-4">
-          <label className="fileNameDisplay flex-column">
-            {selectedFileName}
-            <Input
-              className="inputFileAltaBoletin"
-              type="file"
-              id="fileBoletin"
-              name="archivoBoletin"
-              value={values.archivoBoletin}
-              onChange={handleChangeFile}
-              accept="application/pdf"
-              required
-            />
-            {selectedFileName === "Seleccione un Archivo" ? (
-              <FileUp />
-            ) : (
-              <File />
-            )}
-          </label>
         </Box>
       </div>
       {puedeEnviarFormulario ? (
