@@ -8,14 +8,16 @@
     padding-bottom: 25px;
     flex-direction: column;
     border-bottom: solid 1px;
-    background-color: #0066ff;
+    background-color: #1789f6;
+    /* background-color: #0066ff; */
     max-width: 100% !important;
     border-color: transparent !important;
     justify-content: center !important;
 }
 .fondo {
 
-    background-color: #0066ff;
+    background-color: #1789f6;
+    /* background-color: #0066ff; */
 }
 
 .contLogo {
