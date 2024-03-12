@@ -40,13 +40,38 @@
     flex-direction: column !important;
     width: 100% !important;
 }
-.listadoNormas{
-    height:250px;
-    margin-left: 10px;
+.btnAgregar{
+    min-width: 64px;
+    max-width: 230px;
+}
+.listadoNormas {
+    height: 230px;
+    padding: 10px;
+    overflow-y: scroll;
+    margin-right: 30px !important;
+    margin-bottom: 10px;
+    margin-top: 10px !important;
+}
+
+.listadoPrueba {
     border-radius: 20px;
     border: solid 1px;
-    padding: 7px;
-    overflow-y: scroll;
+    padding-right: 8px;
+    margin-left: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: -10px !important;
+    background-color: #0066ff;
+    border-radius: 200px !important;
+
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #1789f6;
+    border-radius: 200px !important;
+
 }
 
 .nroBoletin {

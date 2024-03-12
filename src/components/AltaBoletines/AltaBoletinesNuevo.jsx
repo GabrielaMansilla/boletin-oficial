@@ -12,7 +12,8 @@ import {
   Snackbar,
   TextField,
 } from "@mui/material";
-import { ALTA_BOLETIN_VALUES } from "../../helpers/constantes";
+import { ALTA_CABECERA_BOLETIN_VALUES } from "../../helpers/constantes";
+import { ALTA_CONTENIDO_BOLETIN_VALUES } from "../../helpers/constantes";
 import FileUp from "@mui/icons-material/FileUpload";
 import File from "@mui/icons-material/UploadFileRounded";
 import axios from "../../config/axios";
@@ -23,7 +24,12 @@ const AltaBoletinesNuevo = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
   const [formattedValue, setFormattedValue] = useState(" ");
-  const [values, setValues] = useState(ALTA_BOLETIN_VALUES);
+  const [valuesCabecera, setValuesCabecera] = useState(
+    ALTA_CABECERA_BOLETIN_VALUES
+  );
+  const [valuesContenido, setValuesContenido] = useState(
+    ALTA_CONTENIDO_BOLETIN_VALUES
+  );
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [selectedFileName, setSelectedFileName] = useState(
     "Seleccione un Archivo"
@@ -46,10 +52,37 @@ const AltaBoletinesNuevo = () => {
     "/boletin/listarOrigen",
     axios
   );
+  const [tiposNorma, loadingNorma, getTiposNoma] = useGet(
+    "/norma/listar",
+    axios
+  );
+  const [normasAgregadas, setNormasAgregadas] = useState([]);
+
+  const handleAgregarNorma = () => {
+    console.log(valuesContenido)
+    const nuevaNorma = {
+      norma: valuesContenido.norma,
+      numero: valuesContenido.nroNorma,
+      origen: valuesContenido.origen,
+      año: new Date(valuesContenido.fechaNormaBoletin).getFullYear(),
+    };
+    setNormasAgregadas([...normasAgregadas, nuevaNorma]);
+    // Limpiar campos después de agregar la norma
+    setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
+  };
 
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setValuesCabecera({
+      ...valuesCabecera,
+      [name]: value,
+    });
+    setValuesContenido({
+      ...valuesContenido,
+      [name]: value,
+    });
   };
+
   const handleChangeFile = (e) => {
     const fileName = e.target.files[0]?.name || "";
     setSelectedFileName(fileName);
@@ -63,143 +96,147 @@ const AltaBoletinesNuevo = () => {
     const aux = e.target.files[0];
     setArchivoSeleccionado(aux);
   };
-  useEffect(() => {
-    setFormattedValue(formatNroResolucion(values.nroResolucion));
-  }, [values.nroResolucion]);
+  // useEffect(() => {
+  //   setFormattedValue(formatNroResolucion(values.nroResolucion));
+  // }, [values.nroResolucion]);
 
-  useEffect(() => {}, [formattedValue]);
+  // useEffect(() => {}, [formattedValue]);
 
   useEffect(() => {
     getboletin();
   }, []);
 
   useEffect(() => {
-    const nuevoNumeroBoletin = values.nroBoletin;
+    const nuevoNumeroBoletin = valuesCabecera.nroBoletin;
     // eslint-disable-next-line
     const existe = numeroBoletinExiste(nuevoNumeroBoletin);
     // eslint-disable-next-line
     setNroBoletinExistente(existe);
     // eslint-disable-next-line
-  }, [boletines, values.nroBoletin]);
+  }, [boletines, valuesCabecera.nroBoletin]);
 
-  const formatNroResolucion = (inputValue) => {
-    if (typeof inputValue === "string") {
-      const formatted = inputValue
-        .replace(/[^\d]/g, "") // Elimina caracteres no numéricos
-        .replace(/(\d{4})(?!$)/g, "$1-"); // Inserta un guion después de cada grupo de 4 dígitos, excepto al final
-      return formatted;
-    } else {
-      return inputValue;
-    }
-  };
+  // const formatNroResolucion = (inputValue) => {
+  //   if (typeof inputValue === "string") {
+  //     const formatted = inputValue
+  //       .replace(/[^\d]/g, "") // Elimina caracteres no numéricos
+  //       .replace(/(\d{4})(?!$)/g, "$1-"); // Inserta un guion después de cada grupo de 4 dígitos, excepto al final
+  //     return formatted;
+  //   } else {
+  //     return inputValue;
+  //   }
+  // };
 
-  const handleResolucionChange = (e) => {
-    const inputValue = e.target.value;
-    if (typeof inputValue === "string") {
-      if (inputValue?.length < 150) {
-        const formatted = inputValue
-          .replace(/[^\d]/g, "") // Elimina caracteres no numéricos
-          .replace(/(\d{4})(?!$)/g, "$1-"); // Inserta un guion después de cada grupo de 4 dígitos, excepto al final
-        setFormattedValue(formatted);
-        setResolucionArray(formatted.split("-").filter(Boolean));
-      }
-    }
-  };
-  const handleDecretoChange = (e) => {
-    const inputValue = e.target.value;
-    if (typeof inputValue === "string") {
-      if (inputValue?.length < 150) {
-        const formatted = formatNroResolucion(inputValue);
-        setValues({ ...values, nroDecretoInicial: formatted });
-        setDecretoArray(formatted.split("-").filter(Boolean));
-      }
-    }
-  };
+  // const handleResolucionChange = (e) => {
+  //   const inputValue = e.target.value;
+  //   if (typeof inputValue === "string") {
+  //     if (inputValue?.length < 150) {
+  //       const formatted = inputValue
+  //         .replace(/[^\d]/g, "") // Elimina caracteres no numéricos
+  //         .replace(/(\d{4})(?!$)/g, "$1-"); // Inserta un guion después de cada grupo de 4 dígitos, excepto al final
+  //       setFormattedValue(formatted);
+  //       setResolucionArray(formatted.split("-").filter(Boolean));
+  //     }
+  //   }
+  // };
+  // const handleDecretoChange = (e) => {
+  //   const inputValue = e.target.value;
+  //   if (typeof inputValue === "string") {
+  //     if (inputValue?.length < 150) {
+  //       const formatted = formatNroResolucion(inputValue);
+  //       setValues({ ...values, nroDecretoInicial: formatted });
+  //       setDecretoArray(formatted.split("-").filter(Boolean));
+  //     }
+  //   }
+  // };
 
-  const handleOrdenanzaChange = (e) => {
-    const inputValue = e.target.value;
-    if (typeof inputValue === "string") {
-      if (inputValue?.length < 150) {
-        const formatted = formatNroResolucion(inputValue);
-        setValues({ ...values, nroOrdenanzaInicial: formatted });
-        setOrdenanzaArray(formatted.split("-").filter(Boolean));
-        console.log(esNumeroDeResolucionValido(formatted));
-        console.log(ordenanzaArray);
-      }
-    }
-  };
+  // const handleOrdenanzaChange = (e) => {
+  //   const inputValue = e.target.value;
+  //   if (typeof inputValue === "string") {
+  //     if (inputValue?.length < 150) {
+  //       const formatted = formatNroResolucion(inputValue);
+  //       setValues({ ...values, nroOrdenanzaInicial: formatted });
+  //       setOrdenanzaArray(formatted.split("-").filter(Boolean));
+  //       console.log(esNumeroDeResolucionValido(formatted));
+  //       console.log(ordenanzaArray);
+  //     }
+  //   }
+  // };
 
-  const esNumeroDeResolucionValido = (formattedValue) => {
-    return (
-      formattedValue === undefined ||
-      /\d{4}$/.test(formattedValue) !== false ||
-      formattedValue.length === 0
-    );
-  };
+  // const esNumeroDeResolucionValido = (formattedValue) => {
+  //   return (
+  //     formattedValue === undefined ||
+  //     /\d{4}$/.test(formattedValue) !== false ||
+  //     formattedValue.length === 0
+  //   );
+  // };
 
   const puedeEnviarFormulario =
     selectedFileName !== "Seleccione un Archivo" &&
-    (values.nroDecretoInicial !== "" ||
-      values.nroOrdenanzaInicial !== "" ||
-      formattedValue !== "") &&
-    esNumeroDeResolucionValido(formattedValue) &&
-    esNumeroDeResolucionValido(values.nroDecretoInicial) &&
-    esNumeroDeResolucionValido(values.nroOrdenanzaInicial) &&
-    values.fechaBoletin !== "" &&
-    values.origen !== "" &&
-    values.nroBoletin !== "";
+    //(
+    //   values.nroDecretoInicial !== "" ||
+    //   values.nroOrdenanzaInicial !== "" ||
+    //   formattedValue !== "") &&
+    // esNumeroDeResolucionValido(formattedValue) &&
+    // esNumeroDeResolucionValido(values.nroDecretoInicial) &&
+    // esNumeroDeResolucionValido(values.nroOrdenanzaInicial) &&
+    valuesCabecera.fechaPublicacion !== "" &&
+    valuesContenido.origen !== "" &&
+    valuesCabecera.nroBoletin !== "";
 
   const handleMensaje = () => {
     let mensaje = "";
     let fileName = archivoSeleccionado?.name || "";
-    if (!/^\d{4}$/.test(formattedValue?.split("-")) && formattedValue !== "") {
-      console.log(1);
-      mensaje = "El último número de resolución debe tener 4 dígitos";
-      setError("warning");
-    } else if (
-      !/^\d{4}$/.test(values.nroDecretoInicial?.split("-")) &&
-      values.nroDecretoInicial !== ""
-    ) {
-      console.log(2);
-      console.log(values.nroDecretoInicial);
-      mensaje = "El último número de decreto debe tener 4 dígitos";
-      setError("warning");
-    } else if (
-      !/^\d{4}$/.test(values.nroOrdenanzaInicial?.split("-")) &&
-      values.nroOrdenanzaInicial !== ""
-    ) {
-      console.log(9);
-      console.log(values.nroOrdenanzaInicial);
-      mensaje = "El último número de ordenanza debe tener 4 dígitos";
-      setError("warning");
-    } else if (values.nroBoletin === "") {
+    // if (!/^\d{4}$/.test(formattedValue?.split("-")) && formattedValue !== "") {
+    //   console.log(1);
+    //   mensaje = "El último número de resolución debe tener 4 dígitos";
+    //   setError("warning");
+    // } else if (
+    //   !/^\d{4}$/.test(values.nroDecretoInicial?.split("-")) &&
+    //   values.nroDecretoInicial !== ""
+    // ) {
+    //   console.log(2);
+    //   console.log(values.nroDecretoInicial);
+    //   mensaje = "El último número de decreto debe tener 4 dígitos";
+    //   setError("warning");
+    // } else if (
+    //   !/^\d{4}$/.test(values.nroOrdenanzaInicial?.split("-")) &&
+    //   values.nroOrdenanzaInicial !== ""
+    // ) {
+    //   console.log(9);
+    //   console.log(values.nroOrdenanzaInicial);
+    //   mensaje = "El último número de ordenanza debe tener 4 dígitos";
+    //   setError("warning");
+    // } else
+    if (valuesCabecera.nroBoletin === "") {
       console.log(3);
       mensaje = "Debe ingresar el Nº de Boletín";
       setError("error");
-    } else if (numeroBoletinExiste(values.nroBoletin)) {
+    } else if (numeroBoletinExiste(valuesCabecera.nroBoletin)) {
       console.log(4);
-      mensaje = `El Nº de Boletín ${values.nroBoletin} ya existe!`;
+      mensaje = `El Nº de Boletín ${valuesCabecera.nroBoletin} ya existe!`;
       setError("error");
-    } else if (values.fechaBoletin === "") {
+    } else if (valuesCabecera.fechaPublicacion === "") {
       console.log(5);
       mensaje = "Debe ingresar la fecha del Boletín";
       setError("warning");
-    } else if (
-      !values.nroDecretoInicial &&
-      !values.nroOrdenanzaInicial &&
-      !formattedValue
-    ) {
-      console.log(6);
-      mensaje = "Debe llenar al menos un campo y adjuntar un archivo .pdf";
-      setError("error");
-    } else if (fileName === "") {
+    }
+    // else if (
+    //   !values.nroDecretoInicial &&
+    //   !values.nroOrdenanzaInicial &&
+    //   !formattedValue
+    // ) {
+    //   console.log(6);
+    //   mensaje = "Debe llenar al menos un campo y adjuntar un archivo .pdf";
+    //   setError("error");
+    // } else
+    if (fileName === "") {
       console.log(7);
       mensaje = "Debe seleccionar un archivo";
       setError("warning");
     } else if (!fileName.toLowerCase().endsWith(".pdf")) {
       console.log(8);
       mensaje = "El archivo solo puede ser PDF";
-    } else if (!values.origen || values.origen === "") {
+    } else if (!valuesContenido.origen || valuesContenido.origen === "") {
       console.log(9);
       mensaje = "Debe ingresar la Secretaría";
     } else {
@@ -235,19 +272,19 @@ const AltaBoletinesNuevo = () => {
   };
   const enviarDatos = async () => {
     try {
-      const resolucionSinGuiones = resolucionArray.map((item) =>
-        parseInt(item)
-      );
-      const decretos = decretoArray.map((item) => parseInt(item));
-      const ordenanzas = ordenanzaArray.map((item) => parseInt(item));
+      // const resolucionSinGuiones = resolucionArray.map((item) =>
+      //   parseInt(item)
+      // );
+      // const decretos = decretoArray.map((item) => parseInt(item));
+      // const ordenanzas = ordenanzaArray.map((item) => parseInt(item));
       const requestData = {
-        nroBoletin: parseInt(values.nroBoletin, 10),
-        fechaBoletin: values.fechaBoletin,
-        fechaNormaBoletin: values.fechaNormaBoletin,
-        origen: values.origen,
-        nroDecreto: decretos,
-        nroOrdenanza: ordenanzas,
-        nroResolucion: resolucionSinGuiones,
+        nroBoletin: parseInt(valuesCabecera.nroBoletin, 10),
+        fechaPublicacion: valuesCabecera.fechaPublicacion,
+        fechaNormaBoletin: valuesContenido.fechaNormaBoletin,
+        origen: valuesContenido.origen,
+        // nroDecreto: decretos,
+        // nroOrdenanza: ordenanzas,
+        // nroResolucion: resolucionSinGuiones,
       };
       formData.append("requestData", JSON.stringify(requestData));
       formData.append("archivoBoletin", archivoSeleccionado);
@@ -260,7 +297,8 @@ const AltaBoletinesNuevo = () => {
       });
       console.log("modongo");
       console.log(respuesta);
-      setValues(ALTA_BOLETIN_VALUES);
+      setValuesCabecera(ALTA_CABECERA_BOLETIN_VALUES);
+      setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
       setSelectedFileName("Seleccione un Archivo");
       setFormattedValue("");
       setOpen(true);
@@ -285,7 +323,7 @@ const AltaBoletinesNuevo = () => {
           <div className="contRango">
             <div>
               <div className="d-flex flex-column ">
-                <div className="mb-1 encabezadoBoletin">
+                <div className="encabezadoBoletin">
                   <h5>Boletin:</h5>
                   <div className="d-flex flex-row">
                     <TextField
@@ -293,35 +331,62 @@ const AltaBoletinesNuevo = () => {
                       variant="outlined"
                       className="inputAltaBoletin"
                       type="number"
-                      value={values.nroBoletin}
+                      value={valuesCabecera.nroBoletin}
                       onChange={handleChange}
                       inputProps={{ min: "0" }}
                       name="nroBoletin"
                     />
                     <TextField
-                      label="Fecha Boletin"
+                      label="Fecha Publicación"
                       variant="outlined"
-                      name="fechaBoletin"
+                      name="fechaPublicacion"
                       type="date"
                       className="inputAltaBoletin ms-3"
-                      value={values.fechaBoletin}
+                      value={valuesCabecera.fechaPublicacion}
                       onChange={handleChange}
                       InputLabelProps={{ shrink: true }}
                     />
                   </div>
-                  <hr />
+                  <hr className="mt-4 mb-3" />
                 </div>
                 <div className="cuerpoBoletin">
                   <div className="d-flex flex-row">
                     <div className="d-flex flex-column">
-                      <FormControl sx={{ minWidth: 80 }} className="mb-2">
+                      <FormControl sx={{ minWidth: 80 }} className="mb-3">
+                        <InputLabel id="demo-simple-select-autowidth-label">
+                          Norma
+                        </InputLabel>
+                        <Select
+                          labeld="demo-simple-select-autowidth-label"
+                          id="demo-simple-select-autowidth"
+                          value={valuesContenido.norma}
+                          onChange={handleChange}
+                          autoWidth
+                          label="Norma"
+                          name="norma"
+                          //   disabled
+                        >
+                          <MenuItem value="">
+                            <em>--Seleccione--</em>
+                          </MenuItem>
+                          {tiposNorma.map((norma) => (
+                            <MenuItem
+                              key={norma.id_norma}
+                              value={norma.id_norma}
+                            >
+                              {norma.tipo_norma}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <FormControl sx={{ minWidth: 80 }} className="mb-3">
                         <InputLabel id="demo-simple-select-autowidth-label">
                           Secretaría de Origen
                         </InputLabel>
                         <Select
                           labeld="demo-simple-select-autowidth-label"
                           id="demo-simple-select-autowidth"
-                          value={values.origen}
+                          value={valuesContenido.origen}
                           onChange={handleChange}
                           autoWidth
                           label="Secretaría de Origen"
@@ -346,85 +411,68 @@ const AltaBoletinesNuevo = () => {
                         variant="outlined"
                         name="fechaNormaBoletin"
                         type="date"
-                        className="inputAltaBoletin mb-2"
-                        value={values.fechaNormaBoletin}
+                        className="inputAltaBoletin mb-3"
+                        value={valuesContenido.fechaNormaBoletin}
                         onChange={handleChange}
                         InputLabelProps={{ shrink: true }}
                       />
                       <TextField
                         label="Nº de Nroma"
-                        className="inputAltaBoletin mb-2"
+                        className="inputAltaBoletin mb-3"
                         type="text"
-                        value={values.nroDecretoInicial}
-                        onChange={handleDecretoChange}
+                        value={valuesContenido.nroNorma}
+                        onChange={handleChange}
                         name="nroNorma"
                       />
+                      <Button
+                        type="button"
+                        className="btnAgregar"
+                        variant="contained"
+                        onClick={handleAgregarNorma}
+                      >
+                        Agregar Norma
+                      </Button>
                     </div>
-                    <div className="listadoNormas">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi magnam soluta facilis placeat commodi nostrum libero cupiditate, doloremque saepe quod dolorum aliquid ipsa totam earum consequuntur blanditiis minima nam quos!
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi magnam soluta facilis placeat commodi nostrum libero cupiditate, doloremque saepe quod dolorum aliquid ipsa totam earum consequuntur blanditiis minima nam quos!
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi magnam soluta facilis placeat commodi nostrum libero cupiditate, doloremque saepe quod dolorum aliquid ipsa totam earum consequuntur blanditiis minima nam quos!
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi magnam soluta facilis placeat commodi nostrum libero cupiditate, doloremque saepe quod dolorum aliquid ipsa totam earum consequuntur blanditiis minima nam quos!
+                    <div className="listadoPrueba">
+                      <div className="listadoNormas">
+                        {normasAgregadas.map((norma, index) => (
+                          <div key={index} className="norma">
+                            {norma.norma} Nº {norma.numero}/{norma.origen}/{norma.año}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                  <Box className="contInputFileBoletin col-2 ">
-                  {/* <Box className="contInputFileBoletin  "> */}
-                    <label className="fileNameDisplay flex-column">
-                      {selectedFileName}
-                      <Input
-                        className="inputFileAltaBoletin"
-                        type="file"
-                        id="fileBoletin"
-                        name="archivoBoletin"
-                        value={values.archivoBoletin}
-                        onChange={handleChangeFile}
-                        accept="application/pdf"
-                        required
-                      />
-                      {selectedFileName === "Seleccione un Archivo" ? (
-                        <FileUp />
-                      ) : (
-                        <File />
-                      )}
-                    </label>
-                  </Box>
                 </div>
+                <hr className="mt-4 mb-3" />
+
+                <Box className="contInputFileBoletin col-2 ">
+                  <label className="fileNameDisplay flex-column">
+                    {selectedFileName}
+                    <Input
+                      className="inputFileAltaBoletin"
+                      type="file"
+                      id="fileBoletin"
+                      name="archivoBoletin"
+                      value={valuesCabecera.archivoBoletin}
+                      onChange={handleChangeFile}
+                      accept="application/pdf"
+                      required
+                    />
+                    {selectedFileName === "Seleccione un Archivo" ? (
+                      <FileUp />
+                    ) : (
+                      <File />
+                    )}
+                  </label>
+                </Box>
               </div>
             </div>
           </div>
-          {/* <div className="contRango"> */}
-          {/* <h5>Norma</h5> */}
-          {/* </div> */}
-          {/* <div className="contRango">
-            <h5>Ordenanza:</h5>
-            <div>
-              <TextField
-                label="Nº de Ordenanza"
-                className="inputAltaBoletin"
-                type="text"
-                value={values.nroOrdenanzaInicial}
-                onChange={handleOrdenanzaChange}
-                name="nroOrdenanza"
-              />
-            </div>
-          </div> */}
-          {/* <div className="contRango">
-            <h5>Resolución:</h5>
-            <div>
-              <TextField
-                label="Nº de Resolución"
-                className="inputAltaBoletin"
-                type="text"
-                value={formattedValue}
-                onChange={handleResolucionChange}
-                name="nroResolucion"
-              />
-            </div>
-          </div> */}
         </Box>
       </div>
       {puedeEnviarFormulario ? (
-        !numeroBoletinExiste(values.nroBoletin) &&
+        !numeroBoletinExiste(valuesCabecera.nroBoletin) &&
         selectedFileName !== "" &&
         selectedFileName.toLowerCase().endsWith(".pdf") ? (
           <>
