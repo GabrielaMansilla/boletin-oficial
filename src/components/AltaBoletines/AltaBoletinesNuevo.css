@@ -45,7 +45,7 @@
     max-width: 230px;
 }
 .listadoNormas {
-    height: 230px;
+    height: 300px;
     padding: 10px;
     overflow-y: scroll;
     margin-right: 30px !important;
@@ -54,10 +54,14 @@
 }
 
 .listadoPrueba {
-    border-radius: 20px;
+    border-radius: 10px;
     border: solid 1px;
     padding-right: 8px;
     margin-left: 10px;
+    height: 316px;
+    margin-top: 14px !important;
+
+    
 }
 
 ::-webkit-scrollbar {
