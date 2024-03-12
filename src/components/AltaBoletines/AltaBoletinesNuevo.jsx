@@ -23,7 +23,7 @@ import useGet from "../../hook/useGet";
 const AltaBoletinesNuevo = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
-  const [formattedValue, setFormattedValue] = useState(" ");
+  // const [formattedValue, setFormattedValue] = useState(" ");
   const [valuesCabecera, setValuesCabecera] = useState(
     ALTA_CABECERA_BOLETIN_VALUES
   );
@@ -36,9 +36,9 @@ const AltaBoletinesNuevo = () => {
   );
   const [archivoSeleccionado, setArchivoSeleccionado] = useState(null);
   const [formData, setFormData] = useState(new FormData());
-  const [resolucionArray, setResolucionArray] = useState([]);
-  const [decretoArray, setDecretoArray] = useState([]);
-  const [ordenanzaArray, setOrdenanzaArray] = useState([]);
+  // const [resolucionArray, setResolucionArray] = useState([]);
+  // const [decretoArray, setDecretoArray] = useState([]);
+  // const [ordenanzaArray, setOrdenanzaArray] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   // eslint-disable-next-line
   const [bandera, setBandera] = useState(false);
@@ -58,6 +58,7 @@ const AltaBoletinesNuevo = () => {
   );
   console.log(tiposNorma);
   console.log(tiposOrigen);
+
   const [normasAgregadas, setNormasAgregadas] = useState([]);
 
   const handleAgregarNorma = () => {
@@ -70,7 +71,12 @@ const AltaBoletinesNuevo = () => {
     setNormasAgregadas([...normasAgregadas, nuevaNorma]);
     // Limpiar campos después de agregar la norma
     setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
+    console.log(normasAgregadas);
   };
+
+  useEffect(() => {
+    console.log(normasAgregadas);
+  }, [normasAgregadas]);
 
   const handleEliminarNorma = (index) => {
     const nuevasNormas = [...normasAgregadas];
@@ -126,28 +132,61 @@ const AltaBoletinesNuevo = () => {
     let mensaje = "";
     let fileName = archivoSeleccionado?.name || "";
     if (valuesCabecera.nroBoletin === "") {
-      console.log(3);
+      console.log(1);
       mensaje = "Debe ingresar el Nº de Boletín";
       setError("error");
     } else if (numeroBoletinExiste(valuesCabecera.nroBoletin)) {
-      console.log(4);
+      console.log(2);
       mensaje = `El Nº de Boletín ${valuesCabecera.nroBoletin} ya existe!`;
       setError("error");
     } else if (valuesCabecera.fechaPublicacion === "") {
-      console.log(5);
+      console.log(3);
       mensaje = "Debe ingresar la fecha del Boletín";
       setError("warning");
-    }
-    if (fileName === "") {
-      console.log(7);
+    } else if (normasAgregadas !== "") {
+      console.log(4);
+      mensaje = "Debe ingresar al menos una norma";
+      setError("warning");
+    } else if (fileName === "") {
+      console.log(8);
       mensaje = "Debe seleccionar un archivo";
       setError("warning");
     } else if (!fileName.toLowerCase().endsWith(".pdf")) {
-      console.log(8);
-      mensaje = "El archivo solo puede ser PDF";
-    } else if (!valuesContenido.origen || valuesContenido.origen === "") {
       console.log(9);
+      mensaje = "El archivo solo puede ser PDF";
+    } else {
+      mensaje = "Recarga la pagina";
+      return;
+    }
+    setOpen(true);
+    setMensaje(mensaje);
+  };
+
+  const handleMensajeContenido = () => {
+    let mensaje = "";
+    // if (numeroBoletinExiste(valuesCabecera.nroBoletin)) {
+    //   console.log(2);
+    //   mensaje = `El Nº de Boletín ${valuesCabecera.nroBoletin} ya existe!`;
+    //   setError("error");
+    // } else
+    if (!valuesContenido.norma || valuesContenido.norma === "") {
+      console.log(4);
+      mensaje = "Debe seleccionar la Norma";
+      setError("warning");
+    } else if (!valuesContenido.origen || valuesContenido.origen === "") {
+      console.log(5);
       mensaje = "Debe ingresar la Secretaría";
+    } else if (
+      !valuesContenido.fechaNormaBoletin ||
+      valuesContenido.fechaNormaBoletin === ""
+    ) {
+      console.log(6);
+      mensaje = "Debe ingresar la fecha de Norma";
+      setError("warning");
+    } else if (!valuesContenido.nroNorma || valuesContenido.nroNorma === "") {
+      console.log(7);
+      mensaje = "Debe ingresar el Nro de norma";
+      setError("warning");
     } else {
       mensaje = "Recarga la pagina";
       return;
@@ -209,7 +248,6 @@ const AltaBoletinesNuevo = () => {
       setValuesCabecera(ALTA_CABECERA_BOLETIN_VALUES);
       setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
       setSelectedFileName("Seleccione un Archivo");
-      setFormattedValue("");
       setOpen(true);
       setMensaje("Boletin generado con éxito!");
       setError("success");
@@ -327,14 +365,29 @@ const AltaBoletinesNuevo = () => {
                         onChange={handleChange}
                         name="nroNorma"
                       />
-                      <Button
-                        type="button"
-                        className="btnAgregar"
-                        variant="contained"
-                        onClick={handleAgregarNorma}
-                      >
-                        Agregar Norma
-                      </Button>
+
+                      {valuesContenido.nroNorma !== "" &&
+                      valuesContenido.origen !== "" &&
+                      valuesContenido.fechaNormaBoletin !== "" &&
+                      valuesContenido.norma !== "" ? (
+                        <Button
+                          type="button"
+                          className="btnAgregar"
+                          variant="contained"
+                          onClick={handleAgregarNorma}
+                        >
+                          Agregar Norma
+                        </Button>
+                      ) : (
+                        <Button
+                          type="button"
+                          className="btnAgregar"
+                          variant="contained"
+                          onClick={handleMensajeContenido}
+                        >
+                          Agregar Norma
+                        </Button>
+                      )}
                     </div>
                     <div className="listadoPrueba">
                       <div className="listadoNormas">
