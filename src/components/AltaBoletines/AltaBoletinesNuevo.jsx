@@ -56,19 +56,26 @@ const AltaBoletinesNuevo = () => {
     "/norma/listar",
     axios
   );
+  console.log(tiposNorma);
+  console.log(tiposOrigen);
   const [normasAgregadas, setNormasAgregadas] = useState([]);
 
   const handleAgregarNorma = () => {
-    console.log(valuesContenido)
     const nuevaNorma = {
-      norma: valuesContenido.norma,
+      norma: valuesContenido.norma.tipo_norma,
       numero: valuesContenido.nroNorma,
-      origen: valuesContenido.origen,
+      origen: valuesContenido.origen.nombre_origen,
       año: new Date(valuesContenido.fechaNormaBoletin).getFullYear(),
     };
     setNormasAgregadas([...normasAgregadas, nuevaNorma]);
     // Limpiar campos después de agregar la norma
     setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
+  };
+
+  const handleEliminarNorma = (index) => {
+    const nuevasNormas = [...normasAgregadas];
+    nuevasNormas.splice(index, 1);
+    setNormasAgregadas(nuevasNormas);
   };
 
   const handleChange = (e) => {
@@ -96,12 +103,6 @@ const AltaBoletinesNuevo = () => {
     const aux = e.target.files[0];
     setArchivoSeleccionado(aux);
   };
-  // useEffect(() => {
-  //   setFormattedValue(formatNroResolucion(values.nroResolucion));
-  // }, [values.nroResolucion]);
-
-  // useEffect(() => {}, [formattedValue]);
-
   useEffect(() => {
     getboletin();
   }, []);
@@ -115,70 +116,8 @@ const AltaBoletinesNuevo = () => {
     // eslint-disable-next-line
   }, [boletines, valuesCabecera.nroBoletin]);
 
-  // const formatNroResolucion = (inputValue) => {
-  //   if (typeof inputValue === "string") {
-  //     const formatted = inputValue
-  //       .replace(/[^\d]/g, "") // Elimina caracteres no numéricos
-  //       .replace(/(\d{4})(?!$)/g, "$1-"); // Inserta un guion después de cada grupo de 4 dígitos, excepto al final
-  //     return formatted;
-  //   } else {
-  //     return inputValue;
-  //   }
-  // };
-
-  // const handleResolucionChange = (e) => {
-  //   const inputValue = e.target.value;
-  //   if (typeof inputValue === "string") {
-  //     if (inputValue?.length < 150) {
-  //       const formatted = inputValue
-  //         .replace(/[^\d]/g, "") // Elimina caracteres no numéricos
-  //         .replace(/(\d{4})(?!$)/g, "$1-"); // Inserta un guion después de cada grupo de 4 dígitos, excepto al final
-  //       setFormattedValue(formatted);
-  //       setResolucionArray(formatted.split("-").filter(Boolean));
-  //     }
-  //   }
-  // };
-  // const handleDecretoChange = (e) => {
-  //   const inputValue = e.target.value;
-  //   if (typeof inputValue === "string") {
-  //     if (inputValue?.length < 150) {
-  //       const formatted = formatNroResolucion(inputValue);
-  //       setValues({ ...values, nroDecretoInicial: formatted });
-  //       setDecretoArray(formatted.split("-").filter(Boolean));
-  //     }
-  //   }
-  // };
-
-  // const handleOrdenanzaChange = (e) => {
-  //   const inputValue = e.target.value;
-  //   if (typeof inputValue === "string") {
-  //     if (inputValue?.length < 150) {
-  //       const formatted = formatNroResolucion(inputValue);
-  //       setValues({ ...values, nroOrdenanzaInicial: formatted });
-  //       setOrdenanzaArray(formatted.split("-").filter(Boolean));
-  //       console.log(esNumeroDeResolucionValido(formatted));
-  //       console.log(ordenanzaArray);
-  //     }
-  //   }
-  // };
-
-  // const esNumeroDeResolucionValido = (formattedValue) => {
-  //   return (
-  //     formattedValue === undefined ||
-  //     /\d{4}$/.test(formattedValue) !== false ||
-  //     formattedValue.length === 0
-  //   );
-  // };
-
   const puedeEnviarFormulario =
     selectedFileName !== "Seleccione un Archivo" &&
-    //(
-    //   values.nroDecretoInicial !== "" ||
-    //   values.nroOrdenanzaInicial !== "" ||
-    //   formattedValue !== "") &&
-    // esNumeroDeResolucionValido(formattedValue) &&
-    // esNumeroDeResolucionValido(values.nroDecretoInicial) &&
-    // esNumeroDeResolucionValido(values.nroOrdenanzaInicial) &&
     valuesCabecera.fechaPublicacion !== "" &&
     valuesContenido.origen !== "" &&
     valuesCabecera.nroBoletin !== "";
@@ -186,27 +125,6 @@ const AltaBoletinesNuevo = () => {
   const handleMensaje = () => {
     let mensaje = "";
     let fileName = archivoSeleccionado?.name || "";
-    // if (!/^\d{4}$/.test(formattedValue?.split("-")) && formattedValue !== "") {
-    //   console.log(1);
-    //   mensaje = "El último número de resolución debe tener 4 dígitos";
-    //   setError("warning");
-    // } else if (
-    //   !/^\d{4}$/.test(values.nroDecretoInicial?.split("-")) &&
-    //   values.nroDecretoInicial !== ""
-    // ) {
-    //   console.log(2);
-    //   console.log(values.nroDecretoInicial);
-    //   mensaje = "El último número de decreto debe tener 4 dígitos";
-    //   setError("warning");
-    // } else if (
-    //   !/^\d{4}$/.test(values.nroOrdenanzaInicial?.split("-")) &&
-    //   values.nroOrdenanzaInicial !== ""
-    // ) {
-    //   console.log(9);
-    //   console.log(values.nroOrdenanzaInicial);
-    //   mensaje = "El último número de ordenanza debe tener 4 dígitos";
-    //   setError("warning");
-    // } else
     if (valuesCabecera.nroBoletin === "") {
       console.log(3);
       mensaje = "Debe ingresar el Nº de Boletín";
@@ -220,15 +138,6 @@ const AltaBoletinesNuevo = () => {
       mensaje = "Debe ingresar la fecha del Boletín";
       setError("warning");
     }
-    // else if (
-    //   !values.nroDecretoInicial &&
-    //   !values.nroOrdenanzaInicial &&
-    //   !formattedValue
-    // ) {
-    //   console.log(6);
-    //   mensaje = "Debe llenar al menos un campo y adjuntar un archivo .pdf";
-    //   setError("error");
-    // } else
     if (fileName === "") {
       console.log(7);
       mensaje = "Debe seleccionar un archivo";
@@ -370,10 +279,7 @@ const AltaBoletinesNuevo = () => {
                             <em>--Seleccione--</em>
                           </MenuItem>
                           {tiposNorma.map((norma) => (
-                            <MenuItem
-                              key={norma.id_norma}
-                              value={norma.id_norma}
-                            >
+                            <MenuItem key={norma.id_norma} value={norma}>
                               {norma.tipo_norma}
                             </MenuItem>
                           ))}
@@ -397,10 +303,7 @@ const AltaBoletinesNuevo = () => {
                             <em>--Seleccione--</em>
                           </MenuItem>
                           {tiposOrigen.map((origen) => (
-                            <MenuItem
-                              key={origen.id_origen}
-                              value={origen.id_origen}
-                            >
+                            <MenuItem key={origen.id_origen} value={origen}>
                               {origen.nombre_origen}
                             </MenuItem>
                           ))}
@@ -437,7 +340,15 @@ const AltaBoletinesNuevo = () => {
                       <div className="listadoNormas">
                         {normasAgregadas.map((norma, index) => (
                           <div key={index} className="norma">
-                            {norma.norma} Nº {norma.numero}/{norma.origen}/{norma.año}
+                            {norma.norma} Nº {norma.numero}/{norma.origen}/
+                            {norma.año}{" "}
+                            <Button
+                              variant="outlined"
+                              color="secondary"
+                              onClick={() => handleEliminarNorma(index)}
+                            >
+                              X
+                            </Button>
                           </div>
                         ))}
                       </div>
