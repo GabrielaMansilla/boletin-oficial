@@ -1,6 +1,6 @@
 import "./NavBar.css";
 import { Container } from "@mui/material";
-import logoMuni from "../../assets/Logo-SMT-Blanco  completo.png";
+import logoMuni from "../../assets/Logo-completo-muni.png";
 import React from "react";
 
 export const NavBar = () => {
