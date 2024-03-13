@@ -4,7 +4,9 @@ import {
   Alert,
   Box,
   Button,
+  Checkbox,
   FormControl,
+  FormControlLabel,
   Input,
   InputLabel,
   MenuItem,
@@ -19,6 +21,7 @@ import File from "@mui/icons-material/UploadFileRounded";
 import axios from "../../config/axios";
 import { ModalAltaBoletin } from "../ModalAltaBoletines/ModalAltaBoletin.jsx";
 import useGet from "../../hook/useGet";
+import { pink, red } from "@mui/material/colors";
 
 const AltaBoletinesNuevo = () => {
   const [open, setOpen] = useState(false);
@@ -62,11 +65,17 @@ const AltaBoletinesNuevo = () => {
   const [normasAgregadas, setNormasAgregadas] = useState([]);
 
   const handleAgregarNorma = () => {
+    console.log(
+      valuesContenido.norma,
+      valuesContenido.nroNorma,
+      valuesContenido.origen,
+      valuesContenido.fechaNormaBoletin
+    );
     const nuevaNorma = {
-      norma: valuesContenido.norma.tipo_norma,
+      norma: valuesContenido.norma,
       numero: valuesContenido.nroNorma,
-      origen: valuesContenido.origen.nombre_origen,
-      año: new Date(valuesContenido.fechaNormaBoletin).getFullYear(),
+      origen: valuesContenido.origen,
+      año: valuesContenido.fechaNormaBoletin,
     };
     setNormasAgregadas([...normasAgregadas, nuevaNorma]);
     // Limpiar campos después de agregar la norma
@@ -95,6 +104,18 @@ const AltaBoletinesNuevo = () => {
       [name]: value,
     });
   };
+
+  const handleCheckboxChange = (e) => {
+    const isChecked = e.target.checked;
+    setValuesCabecera((prevValues) => ({
+      ...prevValues,
+      habilita: isChecked,
+    }));
+  };
+  
+  useEffect(() => {
+  }, [valuesCabecera.habilita]);
+  
 
   const handleChangeFile = (e) => {
     const fileName = e.target.files[0]?.name || "";
@@ -125,7 +146,7 @@ const AltaBoletinesNuevo = () => {
   const puedeEnviarFormulario =
     selectedFileName !== "Seleccione un Archivo" &&
     valuesCabecera.fechaPublicacion !== "" &&
-    valuesContenido.origen !== "" &&
+    normasAgregadas.length > 0 &&
     valuesCabecera.nroBoletin !== "";
 
   const handleMensaje = () => {
@@ -143,7 +164,7 @@ const AltaBoletinesNuevo = () => {
       console.log(3);
       mensaje = "Debe ingresar la fecha del Boletín";
       setError("warning");
-    } else if (normasAgregadas !== "") {
+    } else if (normasAgregadas.length <= 0) {
       console.log(4);
       mensaje = "Debe ingresar al menos una norma";
       setError("warning");
@@ -154,10 +175,13 @@ const AltaBoletinesNuevo = () => {
     } else if (!fileName.toLowerCase().endsWith(".pdf")) {
       console.log(9);
       mensaje = "El archivo solo puede ser PDF";
+      setError("warning");
     } else {
       mensaje = "Recarga la pagina";
+      setError("warning");
       return;
     }
+    console.log("aaa");
     setOpen(true);
     setMensaje(mensaje);
   };
@@ -201,7 +225,7 @@ const AltaBoletinesNuevo = () => {
     setOpen(false);
   };
   const numeroBoletinExiste = (nuevoNumeroBoletin) => {
-    const numero = parseInt(nuevoNumeroBoletin, 10); // Convertir a número
+    const numero = parseInt(nuevoNumeroBoletin, 10); 
     return boletines.some((boletin) => boletin.nroBoletin === numero);
   };
   const handleGuardarBoletin = async () => {
@@ -220,23 +244,17 @@ const AltaBoletinesNuevo = () => {
   };
   const enviarDatos = async () => {
     try {
-      // const resolucionSinGuiones = resolucionArray.map((item) =>
-      //   parseInt(item)
-      // );
-      // const decretos = decretoArray.map((item) => parseInt(item));
-      // const ordenanzas = ordenanzaArray.map((item) => parseInt(item));
+      
       const requestData = {
         nroBoletin: parseInt(valuesCabecera.nroBoletin, 10),
         fechaPublicacion: valuesCabecera.fechaPublicacion,
-        fechaNormaBoletin: valuesContenido.fechaNormaBoletin,
-        origen: valuesContenido.origen,
-        // nroDecreto: decretos,
-        // nroOrdenanza: ordenanzas,
-        // nroResolucion: resolucionSinGuiones,
-      };
+        habilita: valuesCabecera.habilita,
+        arrayContenido: normasAgregadas,
+       };
       formData.append("requestData", JSON.stringify(requestData));
       formData.append("archivoBoletin", archivoSeleccionado);
       setFormData(formData);
+      console.log(requestData);
       console.log(...formData.entries());
       const respuesta = await axios.post("/boletin/alta", formData, {
         headers: {
@@ -247,6 +265,7 @@ const AltaBoletinesNuevo = () => {
       console.log(respuesta);
       setValuesCabecera(ALTA_CABECERA_BOLETIN_VALUES);
       setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
+      setNormasAgregadas([]);
       setSelectedFileName("Seleccione un Archivo");
       setOpen(true);
       setMensaje("Boletin generado con éxito!");
@@ -293,6 +312,24 @@ const AltaBoletinesNuevo = () => {
                       onChange={handleChange}
                       InputLabelProps={{ shrink: true }}
                     />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          defaultChecked
+                          sx={{
+                            color: "white",
+                            "&.Mui-checked": {
+                              color: "white",
+                            },
+                          }}
+                          checked={valuesCabecera.habilita}
+                          onChange={handleCheckboxChange}
+                        />
+                      }
+                      label="Habilitado"
+                      labelPlacement="start"
+                    />
+                    {console.log(valuesCabecera.habilita)}
                   </div>
                   <hr className="mt-4 mb-3" />
                 </div>
@@ -358,9 +395,9 @@ const AltaBoletinesNuevo = () => {
                         InputLabelProps={{ shrink: true }}
                       />
                       <TextField
-                        label="Nº de Nroma"
+                        label="Nº de Norma"
                         className="inputAltaBoletin mb-3"
-                        type="text"
+                        type="number"
                         value={valuesContenido.nroNorma}
                         onChange={handleChange}
                         name="nroNorma"
@@ -393,8 +430,8 @@ const AltaBoletinesNuevo = () => {
                       <div className="listadoNormas">
                         {normasAgregadas.map((norma, index) => (
                           <div key={index} className="norma">
-                            {norma.norma} Nº {norma.numero}/{norma.origen}/
-                            {norma.año}{" "}
+                            {norma.norma.tipo_norma} Nº {norma.numero}/
+                            {norma.origen.nombre_origen}/{norma.año.slice(0, 4)}{" "}
                             <Button
                               variant="outlined"
                               color="secondary"
@@ -456,9 +493,11 @@ const AltaBoletinesNuevo = () => {
           </>
         )
       ) : (
-        <Button type="button" variant="contained" onClick={handleMensaje}>
-          Guardar Boletín
-        </Button>
+        <>
+          <Button type="button" variant="contained" onClick={handleMensaje}>
+            Guardar Boletín
+          </Button>
+        </>
       )}
       <Snackbar
         open={open}

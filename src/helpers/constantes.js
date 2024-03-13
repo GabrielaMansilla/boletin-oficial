@@ -30,6 +30,7 @@ export const ALTA_CABECERA_BOLETIN_VALUES = {
   nroBoletin: "",
   fechaPublicacion: "",
   archivoBoletin: "", 
+  habilita:true,
   // nroDecretoInicial: "",
   // nroDecretoInicial: "",
   // nroDecretoFinal: "",
