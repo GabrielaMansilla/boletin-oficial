@@ -21,12 +21,10 @@ import File from "@mui/icons-material/UploadFileRounded";
 import axios from "../../config/axios";
 import { ModalAltaBoletin } from "../ModalAltaBoletines/ModalAltaBoletin.jsx";
 import useGet from "../../hook/useGet";
-import { pink, red } from "@mui/material/colors";
 
 const AltaBoletinesNuevo = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
-  // const [formattedValue, setFormattedValue] = useState(" ");
   const [valuesCabecera, setValuesCabecera] = useState(
     ALTA_CABECERA_BOLETIN_VALUES
   );
@@ -39,13 +37,9 @@ const AltaBoletinesNuevo = () => {
   );
   const [archivoSeleccionado, setArchivoSeleccionado] = useState(null);
   const [formData, setFormData] = useState(new FormData());
-  // const [resolucionArray, setResolucionArray] = useState([]);
-  // const [decretoArray, setDecretoArray] = useState([]);
-  // const [ordenanzaArray, setOrdenanzaArray] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   // eslint-disable-next-line
   const [bandera, setBandera] = useState(false);
-  // const [datosBoletin, setDatosBoletin] = useState({});
   // eslint-disable-next-line
   const [boletines, loading, getboletin] = useGet("/boletin/listar", axios);
   // eslint-disable-next-line
@@ -63,24 +57,28 @@ const AltaBoletinesNuevo = () => {
   console.log(tiposOrigen);
 
   const [normasAgregadas, setNormasAgregadas] = useState([]);
+  const [nroNormaExistente, setNroNormaExistente] = useState(false);
 
   const handleAgregarNorma = () => {
-    console.log(
-      valuesContenido.norma,
-      valuesContenido.nroNorma,
-      valuesContenido.origen,
-      valuesContenido.fechaNormaBoletin
-    );
-    const nuevaNorma = {
-      norma: valuesContenido.norma,
-      numero: valuesContenido.nroNorma,
-      origen: valuesContenido.origen,
-      año: valuesContenido.fechaNormaBoletin,
-    };
-    setNormasAgregadas([...normasAgregadas, nuevaNorma]);
-    // Limpiar campos después de agregar la norma
-    setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
-    console.log(normasAgregadas);
+    const nuevoNumeroNorma = valuesContenido.nroNorma;
+    const nuevoIdNorma = valuesContenido.norma.id_norma;
+    const existeNorma = numeroNormaDisponible(nuevoNumeroNorma, nuevoIdNorma);
+
+    if (existeNorma) {
+      const nuevaNorma = {
+        norma: valuesContenido.norma,
+        numero: valuesContenido.nroNorma,
+        origen: valuesContenido.origen,
+        año: valuesContenido.fechaNormaBoletin,
+      };
+      setNormasAgregadas([...normasAgregadas, nuevaNorma]);
+      // Limpiar campos después de agregar la norma
+      setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
+      console.log(normasAgregadas);
+    } else {
+      // Mostrar mensaje de error o realizar alguna otra acción
+      console.log(`El Nº de Norma ${nuevoNumeroNorma} ya existe.`);
+    }
   };
 
   useEffect(() => {
@@ -112,10 +110,8 @@ const AltaBoletinesNuevo = () => {
       habilita: isChecked,
     }));
   };
-  
-  useEffect(() => {
-  }, [valuesCabecera.habilita]);
-  
+
+  useEffect(() => {}, [valuesCabecera.habilita]);
 
   const handleChangeFile = (e) => {
     const fileName = e.target.files[0]?.name || "";
@@ -137,11 +133,23 @@ const AltaBoletinesNuevo = () => {
   useEffect(() => {
     const nuevoNumeroBoletin = valuesCabecera.nroBoletin;
     // eslint-disable-next-line
-    const existe = numeroBoletinExiste(nuevoNumeroBoletin);
+    const existe = numeroBoletinDisponible(nuevoNumeroBoletin);
     // eslint-disable-next-line
     setNroBoletinExistente(existe);
+    console.log(existe, "mave");
     // eslint-disable-next-line
   }, [boletines, valuesCabecera.nroBoletin]);
+
+  useEffect(() => {
+    const nuevoNumeroNorma = valuesContenido.nroNorma;
+    const nuevoIdNorma = valuesContenido.norma.id_norma;
+    const existeNorma = numeroNormaDisponible(nuevoNumeroNorma, nuevoIdNorma);
+    setNroNormaExistente(!existeNorma); // Negamos el valor porque queremos que sea true si el número de norma NO está disponible
+  }, [
+    normasAgregadas,
+    valuesContenido.nroNorma,
+    valuesContenido.norma.id_norma,
+  ]);
 
   const puedeEnviarFormulario =
     selectedFileName !== "Seleccione un Archivo" &&
@@ -156,7 +164,7 @@ const AltaBoletinesNuevo = () => {
       console.log(1);
       mensaje = "Debe ingresar el Nº de Boletín";
       setError("error");
-    } else if (numeroBoletinExiste(valuesCabecera.nroBoletin)) {
+    } else if (!numeroBoletinDisponible(valuesCabecera.nroBoletin)) {
       console.log(2);
       mensaje = `El Nº de Boletín ${valuesCabecera.nroBoletin} ya existe!`;
       setError("error");
@@ -188,27 +196,31 @@ const AltaBoletinesNuevo = () => {
 
   const handleMensajeContenido = () => {
     let mensaje = "";
-    // if (numeroBoletinExiste(valuesCabecera.nroBoletin)) {
-    //   console.log(2);
-    //   mensaje = `El Nº de Boletín ${valuesCabecera.nroBoletin} ya existe!`;
-    //   setError("error");
-    // } else
-    if (!valuesContenido.norma || valuesContenido.norma === "") {
-      console.log(4);
+    if (
+      !numeroNormaDisponible(
+        valuesContenido.nroNorma,
+        valuesContenido.norma.id_norma
+      )
+    ) {
+      console.log(10);
+      mensaje = `El Nº de Norma ${valuesContenido.nroNorma} ya existe para la norma ${valuesContenido.norma.tipo_norma}!`;
+      setError("error");
+    } else if (!valuesContenido.norma || valuesContenido.norma === "") {
+      console.log(11);
       mensaje = "Debe seleccionar la Norma";
       setError("warning");
     } else if (!valuesContenido.origen || valuesContenido.origen === "") {
-      console.log(5);
+      console.log(12);
       mensaje = "Debe ingresar la Secretaría";
     } else if (
       !valuesContenido.fechaNormaBoletin ||
       valuesContenido.fechaNormaBoletin === ""
     ) {
-      console.log(6);
+      console.log(13);
       mensaje = "Debe ingresar la fecha de Norma";
       setError("warning");
     } else if (!valuesContenido.nroNorma || valuesContenido.nroNorma === "") {
-      console.log(7);
+      console.log(14);
       mensaje = "Debe ingresar el Nro de norma";
       setError("warning");
     } else {
@@ -218,19 +230,43 @@ const AltaBoletinesNuevo = () => {
     setOpen(true);
     setMensaje(mensaje);
   };
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpen(false);
   };
-  const numeroBoletinExiste = (nuevoNumeroBoletin) => {
-    const numero = parseInt(nuevoNumeroBoletin, 10); 
+
+  const numeroBoletinDisponible = (nuevoNumeroBoletin) => {
+    const numero = parseInt(nuevoNumeroBoletin, 10);
     return boletines.some((boletin) => boletin.nroBoletin === numero);
   };
+  // const numeroNormaDisponible = (nuevoNumeroNorma, idNorma) => {
+  //   const numero = parseInt(nuevoNumeroNorma, 10);
+  //   return normasAgregadas.some(nroNorma => nroNorma.nroNorma === numero && nroNorma.norma.id_norma === idNorma);
+  // };
+
+  const numeroNormaDisponible = (numeroNorma, idNorma) => {
+    // Supongamos que normasAgregadas es tu array de objetos
+    for (let i = 0; i < normasAgregadas.length; i++) {
+      // Verificamos si hay un objeto con el mismo número de norma y norma
+      if (
+        normasAgregadas[i].nroNorma === numeroNorma &&
+        normasAgregadas[i].norma.id_norma === idNorma
+      ) {
+        // Si encontramos una coincidencia, devolvemos false
+        return false;
+      }
+    }
+    // Si no encontramos ninguna coincidencia, devolvemos true
+    return true;
+  };
+
   const handleGuardarBoletin = async () => {
     setMostrarModal(true);
   };
+
   const handleConfirm = async (confirmado) => {
     setBandera(confirmado);
     setMostrarModal(false);
@@ -242,15 +278,15 @@ const AltaBoletinesNuevo = () => {
       setError("warning");
     }
   };
+
   const enviarDatos = async () => {
     try {
-      
       const requestData = {
         nroBoletin: parseInt(valuesCabecera.nroBoletin, 10),
         fechaPublicacion: valuesCabecera.fechaPublicacion,
         habilita: valuesCabecera.habilita,
         arrayContenido: normasAgregadas,
-       };
+      };
       formData.append("requestData", JSON.stringify(requestData));
       formData.append("archivoBoletin", archivoSeleccionado);
       setFormData(formData);
@@ -290,7 +326,27 @@ const AltaBoletinesNuevo = () => {
             <div>
               <div className="d-flex flex-column ">
                 <div className="encabezadoBoletin">
-                  <h5>Boletin:</h5>
+                  <div className="d-flex justify-content-between text-align-start">
+                    <h5 className="mt-2">Boletin:</h5>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          defaultChecked
+                          sx={{
+                            color: "white",
+                            "&.Mui-checked": {
+                              color: "white",
+                            },
+                          }}
+                          checked={valuesCabecera.habilita}
+                          onChange={handleCheckboxChange}
+                        />
+                      }
+                      label="Habilitado"
+                      labelPlacement="start"
+                    />
+                    {console.log(valuesCabecera.habilita)}
+                  </div>
                   <div className="d-flex flex-row">
                     <TextField
                       label="Nro de Boletín"
@@ -312,24 +368,6 @@ const AltaBoletinesNuevo = () => {
                       onChange={handleChange}
                       InputLabelProps={{ shrink: true }}
                     />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          defaultChecked
-                          sx={{
-                            color: "white",
-                            "&.Mui-checked": {
-                              color: "white",
-                            },
-                          }}
-                          checked={valuesCabecera.habilita}
-                          onChange={handleCheckboxChange}
-                        />
-                      }
-                      label="Habilitado"
-                      labelPlacement="start"
-                    />
-                    {console.log(valuesCabecera.habilita)}
                   </div>
                   <hr className="mt-4 mb-3" />
                 </div>
@@ -402,8 +440,33 @@ const AltaBoletinesNuevo = () => {
                         onChange={handleChange}
                         name="nroNorma"
                       />
-
-                      {valuesContenido.nroNorma !== "" &&
+                      {
+                        ((console.log(
+                          "valuesContenido.nroNorma:",
+                          valuesContenido.nroNorma
+                        ),
+                        console.log(
+                          "valuesContenido.origen:",
+                          valuesContenido.origen
+                        ),
+                        console.log(
+                          "valuesContenido.fechaNormaBoletin:",
+                          valuesContenido.fechaNormaBoletin
+                        ),
+                        console.log(
+                          "valuesContenido.norma:",
+                          valuesContenido.norma
+                        )),
+                        console.log(
+                          numeroNormaDisponible(
+                            valuesContenido.nroNorma,
+                            valuesContenido.norma.id_norma
+                          ),
+                          "aaaa"
+                        ))
+                      }
+                      {!nroNormaExistente &&
+                      valuesContenido.nroNorma !== "" &&
                       valuesContenido.origen !== "" &&
                       valuesContenido.fechaNormaBoletin !== "" &&
                       valuesContenido.norma !== "" ? (
@@ -473,7 +536,7 @@ const AltaBoletinesNuevo = () => {
         </Box>
       </div>
       {puedeEnviarFormulario ? (
-        !numeroBoletinExiste(valuesCabecera.nroBoletin) &&
+        !numeroBoletinDisponible(valuesCabecera.nroBoletin) &&
         selectedFileName !== "" &&
         selectedFileName.toLowerCase().endsWith(".pdf") ? (
           <>

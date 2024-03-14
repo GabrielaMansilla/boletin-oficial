@@ -27,6 +27,7 @@
     display: flex;
     flex: start;
     padding: 30px;
+    padding-top: 0px;
     flex-direction: column;
 
 }
@@ -47,10 +48,10 @@
 }
 
 .listadoNormas {
+    display: contents;
     height: 300px;
     padding: 10px;
     overflow-y: scroll;
-    margin-right: 30px !important;
     margin-bottom: 10px;
     margin-top: 10px !important;
 }
@@ -62,8 +63,6 @@
     margin-left: 10px;
     height: 316px;
     margin-top: 14px !important;
-
-
 }
 
 ::-webkit-scrollbar {
@@ -74,7 +73,7 @@
 
 }
 
-::-webkit-scrollbar-thumb {
+:-webkit-scrollbar-thumb {
     background-color: #1789f6;
     border-radius: 200px !important;
 
@@ -89,7 +88,6 @@
 
 .contRango {
     width: 100%;
-    margin-top: 10px;
     color: #ffffff;
 }
 
@@ -119,7 +117,7 @@ label {
 
 }
 
-.textAreaBoletines {
+/* .textAreaBoletines {
     width: 80%;
     resize: none;
     height: 100vh;
@@ -127,7 +125,7 @@ label {
     padding-left: 10px;
     border-radius: 25px;
     margin-bottom: 30px;
-}
+} */
 
 
 ::-webkit-file-upload-button {
@@ -139,6 +137,9 @@ label {
     opacity: 0;
     position: absolute;
     cursor: pointer !important;
+    height: 60px !important;
+    /* color: red !important;
+    background-color: red !important; */
 }
 
 .fileNameDisplay {
@@ -173,6 +174,7 @@ label {
 
     .css-1x51dt5-MuiInputBase-input-MuiInput-input {
         margin-bottom: 2px !important;
+
     }
 
     .contInputFileBoletin {
@@ -182,9 +184,9 @@ label {
     }
 }
 
-@media (min-width: 660px) and (max-width: 767px) {
+@media (max-width: 767px) {
     .css-1x51dt5-MuiInputBase-input-MuiInput-input {
-        height: 25vh !important;
+        /* height: 25vh !important; */
         margin-bottom: 2px !important;
 
     }
@@ -192,8 +194,16 @@ label {
     .fileNameDisplay {
         width: 60vw;
         align-self: center;
-        background-color: red;
+
+    }
+    
+    .cuerpoBoletin div{
+        flex-direction: column !important;
 
     }
 
+    .formGroup {
+        padding-left: 35px;
+        padding-top: 0;
+    }
 }
