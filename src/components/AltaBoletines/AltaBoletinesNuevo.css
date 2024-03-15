@@ -3,6 +3,7 @@
     padding: 20px;
     border-radius: 25px;
     margin-top: 20px;
+    /* width: 70% !important; */
     align-items: center;
     flex-direction: column;
     background-color: #0066ff;
@@ -52,17 +53,33 @@
     height: 300px;
     padding: 10px;
     overflow-y: scroll;
+    margin-right: -30px !important;
     margin-bottom: 10px;
     margin-top: 10px !important;
+    display: ruby-base-container;
+    justify-self: left !important;
+}
+
+.norma {
+    display: flex;
+    border: solid 1px;
+    border-radius: 5px;
+    border-color: rgb(255, 255, 255);
+    margin-left: 5px;
+    width: max-content !important;
+    padding: 5px;
+    font-size: small;
+    align-items: center !important;
 }
 
 .listadoPrueba {
     border-radius: 10px;
     border: solid 1px;
-    padding-right: 8px;
     margin-left: 10px;
-    height: 316px;
-    margin-top: 14px !important;
+    margin-right: 10px;
+    height: 312px;
+    margin-top: 15px !important;
+    width: 600px !important;
 }
 
 ::-webkit-scrollbar {
@@ -80,14 +97,14 @@
 }
 
 .nroBoletin {
-    width: 100;
+    width: 100%;
     display: flex;
     color: #ffffff;
     flex: start
 }
 
 .contRango {
-    width: 100%;
+    margin-top: 10px;
     color: #ffffff;
 }
 
@@ -167,6 +184,18 @@ label {
     margin-top: 5px;
 }
 
+.X {
+background-color: red;
+border-radius: 5px;
+margin-left: 10px;
+;
+}
+
+.X:hover {
+
+    cursor: pointer;
+}
+
 @media (max-width: 768px) {
     .contAltaBoletines {
         align-items: center;
@@ -195,13 +224,22 @@ label {
         margin-bottom: 2px !important;
 
     }
-
+.norma{
+    font-size: x-small;
+}
+    
     .fileNameDisplay {
         width: 60vw;
         align-self: center;
 
     }
-
+    .norma{
+        margin-left: 0px;
+    }
+    .listadoPrueba{
+        background-color: red !important;
+        width: 100% !important  ;
+    }
     .cuerpoBoletin div {
         flex-direction: column !important;
 

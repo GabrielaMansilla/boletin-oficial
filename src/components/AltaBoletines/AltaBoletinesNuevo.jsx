@@ -21,6 +21,7 @@ import File from "@mui/icons-material/UploadFileRounded";
 import axios from "../../config/axios";
 import { ModalAltaBoletin } from "../ModalAltaBoletines/ModalAltaBoletin.jsx";
 import useGet from "../../hook/useGet";
+import CloseIcon from "@mui/icons-material/Close";
 
 const AltaBoletinesNuevo = () => {
   const [open, setOpen] = useState(false);
@@ -322,7 +323,7 @@ const AltaBoletinesNuevo = () => {
     >
       <div className="contAltaBoletines">
         <Box className="formGroup flex-col ">
-          <div className="contRango">
+          <div className="contRango d-flex align-items-center">
             <div>
               <div className="d-flex flex-column ">
                 <div className="encabezadoBoletin">
@@ -347,7 +348,7 @@ const AltaBoletinesNuevo = () => {
                     />
                     {console.log(valuesCabecera.habilita)}
                   </div>
-                  <div className="d-flex flex-row">
+                  <div className="d-flex flex-row pe-2">
                     <TextField
                       label="Nro de Boletín"
                       variant="outlined"
@@ -440,7 +441,7 @@ const AltaBoletinesNuevo = () => {
                         onChange={handleChange}
                         name="nroNorma"
                       />
-                      {
+                      {/* {
                         ((console.log(
                           "valuesContenido.nroNorma:",
                           valuesContenido.nroNorma
@@ -464,8 +465,11 @@ const AltaBoletinesNuevo = () => {
                           ),
                           "aaaa"
                         ))
-                      }
-                      {numeroNormaDisponible(valuesContenido.nroNorma, valuesContenido.norma.id_norma) !== true &&
+                      } */}
+                      {!numeroNormaDisponible(
+                        valuesContenido.nroNorma,
+                        valuesContenido.norma.id_norma
+                      ) !== true &&
                       valuesContenido.nroNorma !== "" &&
                       valuesContenido.origen !== "" &&
                       valuesContenido.fechaNormaBoletin !== "" &&
@@ -489,19 +493,17 @@ const AltaBoletinesNuevo = () => {
                         </Button>
                       )}
                     </div>
-                    <div className="listadoPrueba">
+                    <div className="listadoPrueba container">
                       <div className="listadoNormas">
                         {normasAgregadas.map((norma, index) => (
                           <div key={index} className="norma">
                             {norma.norma.tipo_norma} Nº {norma.numero}/
                             {norma.origen.nombre_origen}/{norma.año.slice(0, 4)}{" "}
-                            <Button
-                              variant="outlined"
-                              color="secondary"
+                            <CloseIcon
+                              className="X"
+                              fontSize="small"
                               onClick={() => handleEliminarNorma(index)}
-                            >
-                              X
-                            </Button>
+                            />
                           </div>
                         ))}
                       </div>
