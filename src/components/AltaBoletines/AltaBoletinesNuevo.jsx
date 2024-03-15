@@ -19,6 +19,7 @@ import File from "@mui/icons-material/UploadFileRounded";
 import axios from "../../config/axios";
 import { ModalAltaBoletin } from "../ModalAltaBoletines/ModalAltaBoletin.jsx";
 import useGet from "../../hook/useGet";
+import CloseIcon from '@mui/icons-material/Close';
 
 const AltaBoletinesNuevo = () => {
   const [open, setOpen] = useState(false);
@@ -229,12 +230,12 @@ const AltaBoletinesNuevo = () => {
     >
       <div className="contAltaBoletines">
         <Box className="formGroup flex-col ">
-          <div className="contRango">
+          <div className="contRango d-flex align-items-center">
             <div>
               <div className="d-flex flex-column ">
                 <div className="encabezadoBoletin">
                   <h5>Boletin:</h5>
-                  <div className="d-flex flex-row">
+                  <div className="d-flex flex-row pe-2">
                     <TextField
                       label="Nro de Boletín"
                       variant="outlined"
@@ -342,13 +343,9 @@ const AltaBoletinesNuevo = () => {
                           <div key={index} className="norma">
                             {norma.norma} Nº {norma.numero}/{norma.origen}/
                             {norma.año}{" "}
-                            <Button
-                              variant="outlined"
-                              color="secondary"
-                              onClick={() => handleEliminarNorma(index)}
-                            >
-                              X
-                            </Button>
+                              
+                              <CloseIcon className="X" fontSize="small" onClick={() => handleEliminarNorma(index)}/>
+                           
                           </div>
                         ))}
                       </div>

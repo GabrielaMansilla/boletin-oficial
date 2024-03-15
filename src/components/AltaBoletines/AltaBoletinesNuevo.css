@@ -3,6 +3,7 @@
     padding: 20px;
     border-radius: 25px;
     margin-top: 20px;
+    width: 60% !important;
     align-items: center;
     flex-direction: column;
     background-color: #0066ff;
@@ -48,20 +49,32 @@
     height: 300px;
     padding: 10px;
     overflow-y: scroll;
-    margin-right: 30px !important;
+    margin-right: -30px !important;
     margin-bottom: 10px;
     margin-top: 10px !important;
+    display: ruby-base-container;
+    justify-self: left !important;
+    
+}
+
+.norma {
+    border: solid 1px;
+    border-radius: 5px;
+    border-color: rgb(255, 255, 255);
+    margin-left: 5px;
+    width: max-content !important;
+    padding: 5px;
+    font-size: small;
 }
 
 .listadoPrueba {
     border-radius: 10px;
     border: solid 1px;
-    padding-right: 8px;
     margin-left: 10px;
-    height: 316px;
-    margin-top: 14px !important;
-
-    
+    margin-right: 10px;
+    height: 312px;
+    margin-top: 15px !important;
+    width: 600px !important;
 }
 
 ::-webkit-scrollbar {
@@ -79,14 +92,13 @@
 }
 
 .nroBoletin {
-    width: 100;
+    width: 100%;
     display: flex;
     color: #ffffff;
     flex: start
 }
 
 .contRango {
-    width: 100%;
     margin-top: 10px;
     color: #ffffff;
 }
@@ -155,6 +167,18 @@ label {
     display: flex;
     flex-direction: row;
     margin-top: 5px;
+}
+
+.X {
+background-color: red;
+border-radius: 5px;
+margin-left: 10px;
+;
+}
+
+.X:hover {
+
+    cursor: pointer;
 }
 
 @media (max-width: 768px) {
