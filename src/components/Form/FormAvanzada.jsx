@@ -38,10 +38,11 @@ export default function FormAvanzada({ busquedaAvanzada }) {
     setValues({ ...values, [name]: updatedValue });
   };
 
-  const [tiposNorma, loadingNorma, getTiposNoma] = useGet("/norma/listar", axios);
+  const [tiposNorma, loadingNorma, getTiposNoma] = useGet(
+    "/norma/listar",
+    axios
+  );
 
-  
-  
   const handleMensaje = async () => {
     if (
       values.tipoBusquedaAvanzada === "" &&
@@ -68,34 +69,32 @@ export default function FormAvanzada({ busquedaAvanzada }) {
   const handleBuscarPorNorma = async (tipoDeNorma, nroDeNorma, callback) => {
     try {
       if (
-        (values.tipoDeNorma === "" && values.nroDeNorma === "") ||
+        (tipoDeNorma === "" && values.nroDeNorma === "") ||
         (!tipoDeNorma && !nroDeNorma) ||
-        (values.tipoDeNorma === "undefined" &&
-          values.nroDeNorma === "undefined")
+        (tipoDeNorma === "undefined" && values.nroDeNorma === "undefined")
       ) {
         setOpen(true);
         setMensaje("Debe llenar al menos un campo");
         setError("error");
       } else if (
-        (values.tipoDeNorma === "" ||
-          values.tipoDeNorma === "undefined" ||
-          !tipoDeNorma) &&
+        (tipoDeNorma === "" || tipoDeNorma === "undefined" || !tipoDeNorma) &&
         values.nroDeNorma !== ""
       ) {
         setOpen(true);
         setMensaje("Debe Seleccionar el Tipo de Norma");
         setError("error");
       } else if (
-        values.tipoDeNorma !== "" &&
-        values.tipoDeNorma !== "undefined" &&
+        tipoDeNorma !== "" &&
+        tipoDeNorma !== "undefined" &&
         (values.nroDeNorma === "" ||
           values.nroDeNorma === "undefined" ||
           !nroDeNorma)
       ) {
         callback([]);
         nroDeNorma = "undefined";
+        console.log(tipoDeNorma.id_norma);
         const response = await axios.get(
-          `/boletin/buscarPorTipo/${tipoDeNorma}/${nroDeNorma}`
+          `/boletin/buscarPorTipo/${tipoDeNorma.id_norma}/${nroDeNorma}`
         );
         response.data.length > 0 ? (
           <>
@@ -113,11 +112,11 @@ export default function FormAvanzada({ busquedaAvanzada }) {
             {setError("error")}
           </>
         );
-      } else if (values.tipoDeNorma !== "" && values.nroDeNorma !== "") {
+      } else if (tipoDeNorma !== "" && values.nroDeNorma !== "") {
         callback([]);
 
         const response = await axios.get(
-          `/boletin/buscarPorTipo/${tipoDeNorma}/${nroDeNorma}`
+          `/boletin/buscarPorTipo/${tipoDeNorma.id_norma}/${nroDeNorma}`
         );
         response.data.length > 0 ? (
           <>
@@ -182,7 +181,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
         callback([]);
 
         const resp = await axios.get(
-          `/boletin/buscarPorFecha/${fecha}/${tipo}`
+          `/boletin/buscarPorFecha/${fecha}/${tipo.id_norma}`
         );
         resp.data.length > 0 ? (
           <>
@@ -228,7 +227,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
         nroNorma !== undefined
       ) {
         const response = await axios.get(
-          `boletin/buscarPorTodo/${fecha}/${tipo}/${nroNorma}`
+          `boletin/buscarPorTodo/${fecha}/${tipo.id_norma}/${nroNorma}`
         );
 
         if (response.data.length > 0) {
@@ -259,7 +258,6 @@ export default function FormAvanzada({ busquedaAvanzada }) {
         nroNormaBusquedaAvanzada,
         fechaBusquedaAvanzada,
       } = values;
-
       if (
         !tipoBusquedaAvanzada &&
         !nroNormaBusquedaAvanzada &&
@@ -388,7 +386,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
                   <em>--Seleccione--</em>
                 </MenuItem>
                 {tiposNorma.map((tipo) => (
-                  <MenuItem key={tipo.id_norma} value={tipo.tipo_norma}>
+                  <MenuItem key={tipo.id_norma} value={tipo}>
                     {tipo.tipo_norma}
                   </MenuItem>
                 ))}

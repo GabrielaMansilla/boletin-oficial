@@ -465,7 +465,7 @@ const AltaBoletinesNuevo = () => {
                           "aaaa"
                         ))
                       }
-                      {!nroNormaExistente &&
+                      {numeroNormaDisponible(valuesContenido.nroNorma, valuesContenido.norma.id_norma) !== true &&
                       valuesContenido.nroNorma !== "" &&
                       valuesContenido.origen !== "" &&
                       valuesContenido.fechaNormaBoletin !== "" &&
