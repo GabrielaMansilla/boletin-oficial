@@ -92,7 +92,7 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       ) {
         callback([]);
         nroDeNorma = "undefined";
-        console.log(tipoDeNorma.id_norma);
+        // console.log(tipoDeNorma.id_norma);
         const response = await axios.get(
           `/boletin/buscarPorTipo/${tipoDeNorma.id_norma}/${nroDeNorma}`
         );

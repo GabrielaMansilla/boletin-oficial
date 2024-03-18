@@ -54,32 +54,21 @@ const AltaBoletinesNuevo = () => {
     "/norma/listar",
     axios
   );
-  console.log(tiposNorma);
-  console.log(tiposOrigen);
+  // console.log(tiposNorma);
+  // console.log(tiposOrigen);
 
   const [normasAgregadas, setNormasAgregadas] = useState([]);
   const [nroNormaExistente, setNroNormaExistente] = useState(false);
 
   const handleAgregarNorma = () => {
-    const nuevoNumeroNorma = valuesContenido.nroNorma;
-    const nuevoIdNorma = valuesContenido.norma.id_norma;
-    const existeNorma = numeroNormaDisponible(nuevoNumeroNorma, nuevoIdNorma);
-
-    if (existeNorma) {
-      const nuevaNorma = {
-        norma: valuesContenido.norma,
-        numero: valuesContenido.nroNorma,
-        origen: valuesContenido.origen,
-        año: valuesContenido.fechaNormaBoletin,
-      };
-      setNormasAgregadas([...normasAgregadas, nuevaNorma]);
-      // Limpiar campos después de agregar la norma
-      setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
-      console.log(normasAgregadas);
-    } else {
-      // Mostrar mensaje de error o realizar alguna otra acción
-      console.log(`El Nº de Norma ${nuevoNumeroNorma} ya existe.`);
-    }
+    const nuevaNorma = {
+      norma: valuesContenido.norma,
+      numero: valuesContenido.nroNorma,
+      origen: valuesContenido.origen,
+      año: valuesContenido.fechaNormaBoletin,
+    };
+    setNormasAgregadas([...normasAgregadas, nuevaNorma]);
+    setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
   };
 
   useEffect(() => {
@@ -90,6 +79,7 @@ const AltaBoletinesNuevo = () => {
     const nuevasNormas = [...normasAgregadas];
     nuevasNormas.splice(index, 1);
     setNormasAgregadas(nuevasNormas);
+    setNroNormaExistente(false);
   };
 
   const handleChange = (e) => {
@@ -137,20 +127,23 @@ const AltaBoletinesNuevo = () => {
     const existe = numeroBoletinDisponible(nuevoNumeroBoletin);
     // eslint-disable-next-line
     setNroBoletinExistente(existe);
-    console.log(existe, "mave");
+    // console.log(numeroBoletinDisponible(nuevoNumeroBoletin), "mave");
     // eslint-disable-next-line
   }, [boletines, valuesCabecera.nroBoletin]);
 
-  useEffect(() => {
-    const nuevoNumeroNorma = valuesContenido.nroNorma;
-    const nuevoIdNorma = valuesContenido.norma.id_norma;
-    const existeNorma = numeroNormaDisponible(nuevoNumeroNorma, nuevoIdNorma);
-    setNroNormaExistente(!existeNorma); // Negamos el valor porque queremos que sea true si el número de norma NO está disponible
-  }, [
-    normasAgregadas,
-    valuesContenido.nroNorma,
-    valuesContenido.norma.id_norma,
-  ]);
+  const validarNormasAgregadas = () => {
+    const normasRepetidas = normasAgregadas.filter((norma, index) => {
+      return normasAgregadas.some(
+        (otraNorma, otroIndex) =>
+          otraNorma.norma.id_norma === norma.norma.id_norma &&
+          otraNorma.numero === norma.numero &&
+          index !== otroIndex
+      );
+    });
+  console.log(normasRepetidas)
+    return normasRepetidas;
+  };
+  
 
   const puedeEnviarFormulario =
     selectedFileName !== "Seleccione un Archivo" &&
@@ -159,30 +152,35 @@ const AltaBoletinesNuevo = () => {
     valuesCabecera.nroBoletin !== "";
 
   const handleMensaje = () => {
-    let mensaje = "";
+    let mensaje = ""; 
     let fileName = archivoSeleccionado?.name || "";
-    if (valuesCabecera.nroBoletin === "") {
-      console.log(1);
+    if (validarNormasAgregadas().length > 0 ) {
+      // console.log(10);
+      console.log(validarNormasAgregadas() === true);
+      mensaje =
+        "No puede estar la misma Norma con el mismo Nº de Norma repetido ";
+      setError("warning");
+    } else if (valuesCabecera.nroBoletin === "") {
+      // console.log(1);
       mensaje = "Debe ingresar el Nº de Boletín";
       setError("error");
-    } else if (!numeroBoletinDisponible(valuesCabecera.nroBoletin)) {
-      console.log(2);
+    } else if (numeroBoletinDisponible(valuesCabecera.nroBoletin)) {
       mensaje = `El Nº de Boletín ${valuesCabecera.nroBoletin} ya existe!`;
       setError("error");
     } else if (valuesCabecera.fechaPublicacion === "") {
-      console.log(3);
+      // console.log(3);
       mensaje = "Debe ingresar la fecha del Boletín";
       setError("warning");
     } else if (normasAgregadas.length <= 0) {
-      console.log(4);
+      // console.log(4);
       mensaje = "Debe ingresar al menos una norma";
       setError("warning");
     } else if (fileName === "") {
-      console.log(8);
+      // console.log(8);
       mensaje = "Debe seleccionar un archivo";
       setError("warning");
     } else if (!fileName.toLowerCase().endsWith(".pdf")) {
-      console.log(9);
+      // console.log(9);
       mensaje = "El archivo solo puede ser PDF";
       setError("warning");
     } else {
@@ -190,38 +188,38 @@ const AltaBoletinesNuevo = () => {
       setError("warning");
       return;
     }
-    console.log("aaa");
     setOpen(true);
     setMensaje(mensaje);
   };
 
   const handleMensajeContenido = () => {
     let mensaje = "";
-    if (
-      !numeroNormaDisponible(
-        valuesContenido.nroNorma,
-        valuesContenido.norma.id_norma
-      )
-    ) {
-      console.log(10);
-      mensaje = `El Nº de Norma ${valuesContenido.nroNorma} ya existe para la norma ${valuesContenido.norma.tipo_norma}!`;
-      setError("error");
-    } else if (!valuesContenido.norma || valuesContenido.norma === "") {
-      console.log(11);
+    // if (
+    //   !numeroNormaDisponible(
+    //     valuesContenido.nroNorma,
+    //     valuesContenido.norma.id_norma
+    //   )
+    // ) {
+    //   // console.log(10);
+    //   mensaje = `El Nº de Norma ${valuesContenido.nroNorma} ya existe para la norma ${valuesContenido.norma.tipo_norma}!`;
+    //   setError("error");
+    // } else
+    if (!valuesContenido.norma || valuesContenido.norma === "") {
+      // console.log(11);
       mensaje = "Debe seleccionar la Norma";
       setError("warning");
     } else if (!valuesContenido.origen || valuesContenido.origen === "") {
-      console.log(12);
+      // console.log(12);
       mensaje = "Debe ingresar la Secretaría";
     } else if (
       !valuesContenido.fechaNormaBoletin ||
       valuesContenido.fechaNormaBoletin === ""
     ) {
-      console.log(13);
+      // console.log(13);
       mensaje = "Debe ingresar la fecha de Norma";
       setError("warning");
     } else if (!valuesContenido.nroNorma || valuesContenido.nroNorma === "") {
-      console.log(14);
+      // console.log(14);
       mensaje = "Debe ingresar el Nro de norma";
       setError("warning");
     } else {
@@ -240,28 +238,9 @@ const AltaBoletinesNuevo = () => {
   };
 
   const numeroBoletinDisponible = (nuevoNumeroBoletin) => {
-    const numero = parseInt(nuevoNumeroBoletin, 10);
-    return boletines.some((boletin) => boletin.nroBoletin === numero);
-  };
-  // const numeroNormaDisponible = (nuevoNumeroNorma, idNorma) => {
-  //   const numero = parseInt(nuevoNumeroNorma, 10);
-  //   return normasAgregadas.some(nroNorma => nroNorma.nroNorma === numero && nroNorma.norma.id_norma === idNorma);
-  // };
-
-  const numeroNormaDisponible = (numeroNorma, idNorma) => {
-    // Supongamos que normasAgregadas es tu array de objetos
-    for (let i = 0; i < normasAgregadas.length; i++) {
-      // Verificamos si hay un objeto con el mismo número de norma y norma
-      if (
-        normasAgregadas[i].nroNorma === numeroNorma &&
-        normasAgregadas[i].norma.id_norma === idNorma
-      ) {
-        // Si encontramos una coincidencia, devolvemos false
-        return false;
-      }
-    }
-    // Si no encontramos ninguna coincidencia, devolvemos true
-    return true;
+    const numero = nuevoNumeroBoletin.toString();
+    const existe = boletines.some((boletin) => boletin.nro_boletin === numero);
+    return existe;
   };
 
   const handleGuardarBoletin = async () => {
@@ -291,15 +270,15 @@ const AltaBoletinesNuevo = () => {
       formData.append("requestData", JSON.stringify(requestData));
       formData.append("archivoBoletin", archivoSeleccionado);
       setFormData(formData);
-      console.log(requestData);
-      console.log(...formData.entries());
+      // console.log(requestData);
+      // console.log(...formData.entries());
       const respuesta = await axios.post("/boletin/alta", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("modongo");
-      console.log(respuesta);
+      // console.log("modongo");
+      // console.log(respuesta);
       setValuesCabecera(ALTA_CABECERA_BOLETIN_VALUES);
       setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
       setNormasAgregadas([]);
@@ -346,7 +325,7 @@ const AltaBoletinesNuevo = () => {
                       label="Habilitado"
                       labelPlacement="start"
                     />
-                    {console.log(valuesCabecera.habilita)}
+                    {/* {console.log(valuesCabecera.habilita)} */}
                   </div>
                   <div className="d-flex flex-row pe-2">
                     <TextField
@@ -374,7 +353,7 @@ const AltaBoletinesNuevo = () => {
                 </div>
                 <div className="cuerpoBoletin">
                   <div className="d-flex flex-row">
-                    <div className="d-flex flex-column">
+                    <div className=" cuerpoBoletinForm ">
                       <FormControl sx={{ minWidth: 80 }} className="mb-3">
                         <InputLabel id="demo-simple-select-autowidth-label">
                           Norma
@@ -466,11 +445,7 @@ const AltaBoletinesNuevo = () => {
                           "aaaa"
                         ))
                       } */}
-                      {!numeroNormaDisponible(
-                        valuesContenido.nroNorma,
-                        valuesContenido.norma.id_norma
-                      ) !== true &&
-                      valuesContenido.nroNorma !== "" &&
+                      {valuesContenido.nroNorma !== "" &&
                       valuesContenido.origen !== "" &&
                       valuesContenido.fechaNormaBoletin !== "" &&
                       valuesContenido.norma !== "" ? (
@@ -496,7 +471,10 @@ const AltaBoletinesNuevo = () => {
                     <div className="listadoPrueba container">
                       <div className="listadoNormas">
                         {normasAgregadas.map((norma, index) => (
-                          <div key={index} className="norma">
+                          <div
+                            key={index}
+                            className={`norma ${validarNormasAgregadas().some(n => n === norma) ? 'normaRepetida' : 'norma'}`}
+                          >
                             {norma.norma.tipo_norma} Nº {norma.numero}/
                             {norma.origen.nombre_origen}/{norma.año.slice(0, 4)}{" "}
                             <CloseIcon
@@ -538,7 +516,8 @@ const AltaBoletinesNuevo = () => {
         </Box>
       </div>
       {puedeEnviarFormulario ? (
-        !numeroBoletinDisponible(valuesCabecera.nroBoletin) &&
+       validarNormasAgregadas().length <= 0  &&
+        numeroBoletinDisponible(valuesCabecera.nroBoletin) === false &&
         selectedFileName !== "" &&
         selectedFileName.toLowerCase().endsWith(".pdf") ? (
           <>
@@ -549,6 +528,7 @@ const AltaBoletinesNuevo = () => {
             >
               Guardar Boletín
             </Button>
+            console.log(validarNormasAgregadas)
           </>
         ) : (
           <>
