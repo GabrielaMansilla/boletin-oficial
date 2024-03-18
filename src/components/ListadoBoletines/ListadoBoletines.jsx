@@ -36,9 +36,20 @@ export default function ColumnGroupingTable() {
   };
 
   const handleEdit = (boletin) => {
-    setEditingBoletin({ ...boletin });
+    // Copia el boletín para evitar mutaciones no deseadas
+    const editedBoletin = { ...boletin };
+  
+    // Si la fecha de publicación existe y no está vacía, conviértela al formato deseado
+    if (editedBoletin.fecha_publicacion) {
+      // Convierte la fecha al formato 'YYYY-MM-DD'
+      editedBoletin.fecha_publicacion = editedBoletin.fecha_publicacion.slice(0, 10);
+    }
+  
+    // Establece el boletín editado en el estado de edición
+    setEditingBoletin(editedBoletin);
     setOpenDialog(true);
   };
+  
 
   const handleCancel = (event, reason) => {
     if (reason === "clickaway") {
