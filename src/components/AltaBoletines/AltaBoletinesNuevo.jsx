@@ -354,8 +354,9 @@ const AltaBoletinesNuevo = () => {
                 <div className="cuerpoBoletin">
                   <div className="d-flex flex-row">
                     <div className=" cuerpoBoletinForm ">
-                      <FormControl sx={{ minWidth: 80 }} className="mb-3">
-                        <InputLabel id="demo-simple-select-autowidth-label">
+                      <FormControl sx={{ minWidth: 80 }} className="mb-3 ">
+                        <InputLabel id="demo-simple-select-autowidth-label
+                        ">
                           Norma
                         </InputLabel>
                         <Select

@@ -236,6 +236,7 @@ label {
     .css-1x51dt5-MuiInputBase-input-MuiInput-input {
         margin-bottom: 2px !important;
 
+
     }
 
     .contInputFileBoletin {
@@ -249,7 +250,10 @@ label {
     .css-1x51dt5-MuiInputBase-input-MuiInput-input {
         /* height: 25vh !important; */
         margin-bottom: 2px !important;
+    }
 
+    .inputAltaBoletin label {
+        font-size: 13px !important;
     }
 
     .norma {
@@ -278,6 +282,16 @@ label {
     .cuerpoBoletinForm {
         padding-left: 18px;
     }
+
+    .css-qiwgdb,
+    /* .css-1v4ccyo, */
+    .css-1x5jdmq {
+        width: 85% !important;
+    }
+
+    /* .css-1x5jdmq {
+        width: 90% !important;
+    } */
 
     .formGroup {
         padding-left: 35px;
