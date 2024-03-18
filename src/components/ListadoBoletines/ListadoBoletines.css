@@ -1,30 +1,60 @@
-/* ListadoBoletines.css */
+/* Estilos para el Dialog */
+.MuiDialog-paper {
+  align-items: center;
+  justify-content: center;
+   align-self: center;
+   height: auto;
+   width: 35%;
+   padding: 0;
+  background-color: #0066ff !important;
+  border-radius: 20px;
+  padding-bottom: 20px !important;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
 
-.tituloListado {
-    background-color: #f0f0f0;
-  }
+/* Estilos para el DialogTitle */
+.MuiDialogTitle-root {
+  color: #fff;
+  border-bottom: 1px solid #0066ff !important;
+
   
-  .tableCellHeader {
-    background-color: #0066ff;
-    font-weight: bold; /* Añadir negrita al texto del encabezado */
-  }
+}
+/* Estilos para los Button dentro del DialogActions */
+.MuiButton-root {
+  color: #fff;
+}
+
+
+
+/* Estilos específicos para el botón "Guardar" */
+.MuiButton-root:nth-child(1) {
+  background-color: #2197db !important;
+    width: fit-content !important;
+    margin-bottom: 10px;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px; background-color: #2197db !important;
+}
+
+/* Estilos específicos para el botón "Cancelar" */
+.MuiButton-root:nth-child(2) {
+  background-color: #2197db !important;
+  width: fit-content !important;
+  margin-bottom: 10px;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
   
-  .tableRowOdd {
-    background-color: #f9f9f9;
+}
+
+
+/* Media queries para responsividad */
+@media (max-width: 500px) {
+  .MuiDialog-paper {
+    width: 100%;
   }
-  
-  .tableRowEven {
-    background-color: white;
+
+  .MuiTextField-root {
+    width: 100%;
   }
-  
-  .iconEdit {
-    cursor: pointer;
-    color: #0066ff;
-    margin-right: 8px;
-  }
-  
-  .iconDelete {
-    cursor: pointer;
-    color: red;
-  }
-  
+}

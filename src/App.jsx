@@ -7,6 +7,7 @@ import Login from './components/Login/Login';
 import Buscador from './components/Buscador/Buscador';
 import ListadoBoletines from './components/ListadoBoletines/ListadoBoletines';
 
+
 const App = () => {
   return (
     <Router>
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/altaBoletines" element={<AltaBoletines />} />
           <Route path="/listadoBoletines" element={<ListadoBoletines />} />
+         
         </Routes>
       </Layout>
     </Router>
