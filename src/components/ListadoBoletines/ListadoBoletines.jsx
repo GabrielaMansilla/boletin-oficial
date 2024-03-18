@@ -58,13 +58,17 @@ export default function ColumnGroupingTable() {
     setOpenDialog(false);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+ // Modifica la función handleInputChange para que no actualice la ID de Boletín
+const handleInputChange = (e) => {
+  const { name, value } = e.target;
+  // Si el campo de entrada no es la ID de Boletín, actualiza el estado de edición
+  if (name !== 'id_boletin') {
     setEditingBoletin((prevBoletin) => ({
       ...prevBoletin,
       [name]: value,
     }));
-  };
+  }
+};
 
 
   const cargarBoletines = () => {
