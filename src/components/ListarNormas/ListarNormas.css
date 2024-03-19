@@ -1,125 +1,55 @@
-.contBoletines {
-    height: auto;
-}
+/* Estilos para el Dialog */
 
-.calendarioBoletines {
-    display: flex;
-    padding-top: 20px;
+  .modal_content {
+    width: 100%;
+    overflow-x: hidden;
+    align-items: center;
     justify-content: center;
+    align-self: center;
+    height: auto;
+    width: 98%;
+    padding-bottom: 20px !important;
+    padding: 0;
+    border-radius: 20px;
+    border-top: solid 1px !important;
+    border-color: #0066ff !important;
+    background-color: #0066ff;
 
 }
 
-.pindonga {
-    border: solid 3px;
-    border-color: #0066ff;
-}
-
-.css-1u5xo4f-MuiSkeleton-root {
-    background-color:transparent !important
-}
-
-.boletin {
-    display: flex;
-    height: 150px;
-    min-width: 0px;
-    overflow: hidden;
-    align-items: center;
-    border-radius: 10px;
-    background: #ffffff;
-    justify-content: space-around;
-    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-    border: 3px solid #0066ff;
-}
-
-.logoMuniColor {
-    width: auto;
-    height: 140px;
-    margin-left: -35px !important;
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-}
-
-.boletinText {
+  
+  /* Estilos para el DialogTitle */
+  .Titulo {
+    color: #fff;
+    padding-top: 40px;
+    margin-bottom: 30px;
+    font-weight: 600;
+  
+    
+  }
+  /* Estilos para los Button d
+  
+  /* Estilos específicos para el botón "Guardar" */
+  .btn_Norma {
+    background-color: #2197db !important;
+    width: fit-content !important;
+    margin-bottom: 10px;
     flex-direction: column;
-
-}
-
-.boletin h2 {
-    margin-left: -2px;
-    font-size: 160%;
-    font-weight: 400 !important;
-    color: #000000 !important
-}
-
-.contBtn {
-    display: flex;
     align-items: center;
-    padding: 0px;
-}
+    border-radius: 20px;
+  }
+  
 
-.btnPdf {
-    width: fit-content;
-    height: fit-content;
-    margin-right: 25px !important;
-    border-radius: 50px !important;
-    background-color: #2eb1ff !important;
-}
-
-.css-sghohy-MuiButtonBase-root-MuiButton-root:hover {
-    background-color: rgb(43, 169, 241) !important;
-}
-
-
-
-@media (max-width: 546px) {
-    .boletin {
-        height: auto;
-        padding: 5px;
+  
+  
+  /* Media queries para responsividad */
+  @media (max-width: 500px) {
+    .MuiDialog-paper {
+      width: 100%;
     }
-
-    .boletin h2 {
-
-        font-size: 120% !important;
+  
+    .MuiTextField-root {
+      width: 100%;
     }
-}
-
-@media (max-width: 500px) {
-
-    .btnPdf {
-        width: fit-content;
-        height: 30px;
-        margin-bottom: 15px !important;
-    }
-
-    .logoMuniColor {
-        width: 120px;
-        height: 100px;
-    }
-}
-
-@media (max-width: 412px) {
-
-    .boletinText h6 {
-
-        font-size: 14px;
-
-    }
-}
-
-@media (max-width: 390px) {
-
-    .boletinText h6 {
-
-        font-size: 13px;
-
-    }
-}
-
-@media (max-width: 360px) {
-
-    .boletinText h6 {
-
-        font-size: 12px;
-
-    }
-}
+  }
+  

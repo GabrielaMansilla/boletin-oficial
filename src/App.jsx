@@ -7,6 +7,7 @@ import Login from './components/Login/Login';
 import Buscador from './components/Buscador/Buscador';
 import ListadoBoletines from './components/ListadoBoletines/ListadoBoletines';
 import ListarNormas from './components/ListarNormas/ListarNormas';
+import ListadoContenido from './components/ListadoContenido/ListadoContenido';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/altaBoletines" element={<AltaBoletines />} />
           <Route path="/listadoBoletines" element={<ListadoBoletines />} />
           <Route path="/listarNormas" element={<ListarNormas />} />
+          <Route path="/ListadoContenido" element={<ListadoContenido/>}/>
         </Routes>
       </Layout>
     </Router>

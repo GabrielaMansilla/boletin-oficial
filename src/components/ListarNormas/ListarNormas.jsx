@@ -166,9 +166,9 @@ export default function ColumnGroupingTable() {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
 
-      <Dialog open={openDialog} onClose={handleCancel}>
-        <DialogTitle>Editar Normas</DialogTitle>
-        <DialogContent >
+      <Dialog  open={openDialog} onClose={handleCancel}>
+        <DialogTitle className='Titulo'>Editar Normas</DialogTitle>
+        <DialogContent className='modal_content' >
           {editingNorma && (
             <>
               <TextField 
@@ -196,10 +196,10 @@ export default function ColumnGroupingTable() {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSave} color="primary" variant="contained">
+          <Button className='btn_Norma' onClick={handleSave} color="primary" variant="contained">
             Guardar
           </Button>
-          <Button onClick={handleCancel} color="primary" variant="contained">
+          <Button  className='btn_Norma' onClick={handleCancel} color="primary" variant="contained">
             Cancelar
           </Button>
         </DialogActions>
