@@ -6,6 +6,7 @@ import AltaBoletinesNuevo from './components/AltaBoletines/AltaBoletinesNuevo';
 import Login from './components/Login/Login';
 import Tabla from "./components/Tabla/Tabla"
 import Buscador from './components/Buscador/Buscador';
+import ListadoBoletines from './components/ListadoBoletines/ListadoBoletines';
 
 
 const App = () => {
@@ -16,8 +17,9 @@ const App = () => {
           {/* <Route path="/*" element={<ListarBoletines />} /> */}
           <Route path="/*" element={<Buscador />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/altaBoletines" element={<AltaBoletinesNuevo />} />
           <Route path='/tabla' element={<Tabla />} />
+          <Route path="/altaBoletines" element={<AltaBoletinesNuevo />} />
+          <Route path="/listadoBoletines" element={<ListadoBoletines />} />
         </Routes>
       </Layout>
     </Router>
