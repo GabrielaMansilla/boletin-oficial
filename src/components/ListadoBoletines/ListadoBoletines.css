@@ -13,10 +13,12 @@
   justify-content: end;
   margin-bottom: 0;
 }
-.blur{
+
+.blur {
   /* filter: blur(2px); */
   pointer-events: none;
 }
+
 .modalEditar {
   z-index: 9999;
 }
@@ -69,17 +71,31 @@
   border-radius: 15px !important;
   background-color: #0066ff !important;
 }
+
 /* 
 .MuiDialog-container {
   box-shadow: 0px 2px 4px -1px rgba(165, 53, 53, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12) !important;
 } */
+
+.listadoNormasEditar {
+  display: ruby;
+  height: 300px;
+  overflow-y: scroll !important;
+  margin-right: -30px !important;
+  margin-bottom: 10px;
+  margin-top: 10px !important;
+  justify-self: left !important;
+  overflow-x: hidden !important;
+  
+}
 
 /* Estilos para los Button dentro del DialogActions */
 .MuiButton-root {
   color: #fff;
 
 }
-.iconEdit{
+
+.iconEdit {
   cursor: pointer;
 }
 

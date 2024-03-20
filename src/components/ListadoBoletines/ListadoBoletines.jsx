@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -32,12 +32,17 @@ import {
 import File from "@mui/icons-material/UploadFileRounded";
 import "../AltaBoletines/AltaBoletinesNuevo.css";
 import "./ListadoBoletines.css";
+import { ALTA_CONTENIDO_BOLETIN_VALUES } from "../../helpers/constantes";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function ColumnGroupingTable() {
   const [boletines, getboletin, setBoletines] = useGet(
     "/boletin/listado",
     axios
   );
+  const [contenidoBoletines, getContenidoBoletin, setContenidoBoletines] =
+    useGet("/boletin/listadoContenido", axios);
+  console.log(boletines, contenidoBoletines, "uwu");
   const [tiposOrigen, loadingOrigen, getTiposOrigen] = useGet(
     "/boletin/listarOrigen",
     axios
@@ -46,11 +51,17 @@ export default function ColumnGroupingTable() {
     "/norma/listar",
     axios
   );
+  const [valuesContenido, setValuesContenido] = useState(
+    ALTA_CONTENIDO_BOLETIN_VALUES
+  );
   const [loading, setLoading] = useState(true);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [editingBoletin, setEditingBoletin] = useState(null);
+  const [contenidoEditado, setContenidoEditado] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [normasAgregadasEditar, setNormasAgregadasEditar] = useState([]);
+  const [nroNormaExistente, setNroNormaExistente] = useState(false);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -62,23 +73,85 @@ export default function ColumnGroupingTable() {
   };
 
   const handleEdit = (boletin) => {
-    // Copia el boletín para evitar mutaciones no deseadas
     const editedBoletin = { ...boletin };
-    // Si la fecha de publicación existe y no está vacía, conviértela al formato deseado
     if (editedBoletin.fecha_publicacion) {
-      // Convierte la fecha al formato 'YYYY-MM-DD'
       editedBoletin.fecha_publicacion = editedBoletin.fecha_publicacion.slice(
         0,
         10
       );
     }
-
-    // Establece el boletín editado en el estado de edición
     setEditingBoletin(editedBoletin);
+
+    const contenidoEditado = contenidoBoletines.filter(
+      (contenido) => contenido.id_boletin === editedBoletin.id_boletin
+    );
+    if (contenidoEditado.length > 0) {
+      setContenidoEditado(contenidoEditado);
+      contenidoEditado.forEach((contenido) => {
+        const nombreNorma = tiposNorma.find(
+          (norma) => norma.id_norma === contenido.id_norma
+        );
+        const nombreOrigen = tiposOrigen.find(
+          (origen) => origen.id_origen === contenido.id_origen
+        );
+
+        console.log(nombreOrigen);
+        if (nombreNorma && nombreOrigen) {
+          const nuevaNorma = {
+            norma: contenido.id_norma,
+            tipo_norma: nombreNorma.tipo_norma,
+            numero: contenido.nro_norma,
+            nombre_origen: nombreOrigen.nombre_origen,
+            origen: contenido.id_origen,
+            año: contenido.fecha_norma,
+          };
+          setNormasAgregadasEditar((prevNormas) => [...prevNormas, nuevaNorma]);
+        }
+      });
+      console.log(contenidoEditado, "ewe");
+    } else {
+      console.error("No se encontró el contenido del boletin editado.");
+    }
+    setContenidoEditado(contenidoEditado);
     setOpenDialog(true);
   };
+  useEffect(() => {
+    console.log(normasAgregadasEditar, "105");
+  }, [normasAgregadasEditar]);
 
+  const validarNormasAgregadas = () => {
+    const normasRepetidas = normasAgregadasEditar.filter((norma, index) => {
+      return normasAgregadasEditar.some(
+        (otraNorma, otroIndex) =>
+          otraNorma.norma.id_norma === norma.norma.id_norma &&
+          otraNorma.numero === norma.numero &&
+          index !== otroIndex
+      );
+    });
+    console.log(normasRepetidas);
+    return normasRepetidas;
+  };
+  const handleAgregarNormaEditar = () => {
+    const nuevaNorma = {
+      norma: valuesContenido.norma.id_norma,
+      tipo_Norma: valuesContenido.norma.tipo_norma,
+      numero: valuesContenido.nroNorma,
+      nombre_origen: valuesContenido.origen.nombre_origen,
+      origen: valuesContenido.origen.id_origen,
+      año: valuesContenido.fechaNormaBoletin,
+    };
+    setNormasAgregadasEditar([...normasAgregadasEditar, nuevaNorma]);
+    setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
+  };
+
+  const handleEliminarNorma = (index) => {
+    const nuevasNormas = [...normasAgregadasEditar];
+    nuevasNormas.splice(index, 1);
+    setNormasAgregadasEditar(nuevasNormas);
+    setNroNormaExistente(false);
+  };
   const handleCancel = () => {
+    setNormasAgregadasEditar([]);
     setOpenDialog(false);
   };
 
@@ -91,7 +164,18 @@ export default function ColumnGroupingTable() {
         ...prevBoletin,
         [name]: value,
       }));
+      setValuesContenido({
+        ...valuesContenido,
+        [name]: value,
+      });
     }
+  };
+  const handleCheckboxChange = (e) => {
+    const isChecked = e.target.checked;
+    setEditingBoletin((prevValues) => ({
+      ...prevValues,
+      habilita: isChecked,
+    }));
   };
 
   const cargarBoletines = () => {
@@ -111,36 +195,34 @@ export default function ColumnGroupingTable() {
     try {
       console.log("Guardando cambios:", editingBoletin);
 
-      // Extraer las propiedades necesarias de editingBoletin
       const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
         editingBoletin;
-      console.log(id_boletin);
 
-      // Haces la llamada para guardar los cambios en la base de datos utilizando axios
+      console.log(normasAgregadasEditar, "envia");
+
       axios
         .put(`/boletin/editar`, {
           id_boletin,
           nro_boletin,
           fecha_publicacion,
           habilita,
+          normasAgregadasEditar,
         })
         .then((response) => {
           console.log("Cambios guardados correctamente:", response.data);
 
-          // Llamada a cargarBoletines después de que los cambios se guarden exitosamente
           cargarBoletines();
-
-          // Después de actualizar los boletines, resetea el estado de edición y cierra el diálogo
           setEditingBoletin(null);
           setOpenDialog(false);
-        })
-        .catch((error) => {
-          console.error("Error al guardar cambios:", error);
-          // Manejar el error según tus necesidades
         });
+      setNormasAgregadasEditar([]).catch((error) => {
+        setNormasAgregadasEditar([]);
+
+        console.error("Error al guardar cambios:", error);
+      });
     } catch (error) {
+      setNormasAgregadasEditar([]);
       console.error("Error al guardar cambios:", error);
-      // Manejar el error según tus necesidades
     }
   };
 
@@ -165,11 +247,6 @@ export default function ColumnGroupingTable() {
         <TableContainer sx={{ maxHeight: 452 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
-              {/* <TableRow>
-                <TableCell align="left" colSpan={6}>
-                  <h6>LISTADO DE BOLETINES</h6>
-                </TableCell>
-              </TableRow> */}
               <TableRow>
                 {columns.map(
                   (column) =>
@@ -241,14 +318,25 @@ export default function ColumnGroupingTable() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {console.log(boletines, "59")}
+      {console.log(boletines, contenidoBoletines, "59")}
       {/* Dialog for editing */}
-      <Dialog className="modalEditar" open={openDialog} onClose={handleCancel}>
+      <Dialog
+        className="modalEditar"
+        disableBackdropClick={true}
+        open={openDialog}
+        // onClose={handleCancel}
+      >
         {/* <DialogTitle>Editar Boletines</DialogTitle> */}
-        <DialogContent>
-          {editingBoletin && (
+        <DialogContent disableBackdropClick={true}>
+          {editingBoletin && contenidoEditado && (
             <>
-              {console.log(editingBoletin)}
+              {console.log(
+                contenidoEditado,
+                editingBoletin,
+                tiposNorma,
+                tiposOrigen,
+                "aña"
+              )}
               <Box
                 component="form"
                 id="form"
@@ -276,7 +364,7 @@ export default function ColumnGroupingTable() {
                                       },
                                     }}
                                     checked={editingBoletin.habilita}
-                                    // onChange={handleCheckboxChange}
+                                    onChange={handleCheckboxChange}
                                   />
                                 }
                                 label="Habilitado"
@@ -301,12 +389,13 @@ export default function ColumnGroupingTable() {
                                 type="date"
                                 className="inputAltaBoletin ms-3 pt-0"
                                 value={editingBoletin.fecha_publicacion}
-                                // onChange={handleChange}
+                                onChange={handleInputChange}
                                 InputLabelProps={{ shrink: true }}
                               />
                             </div>
                             <hr className="mt-3 mb-1" />
                           </div>
+
                           <div className="cuerpoBoletin mt-0">
                             <div className="d-flex flex-row mt-0">
                               <div className=" cuerpoBoletinForm ">
@@ -314,25 +403,20 @@ export default function ColumnGroupingTable() {
                                   sx={{ minWidth: 80 }}
                                   className="mb-3 "
                                 >
-                                  <InputLabel
-                                    id="demo-simple-select-autowidth-label
-                        "
-                                  >
+                                  <InputLabel id="demo-simple-select-autowidth-label">
                                     Norma
                                   </InputLabel>
                                   <Select
                                     labeld="demo-simple-select-autowidth-label"
                                     id="demo-simple-select-autowidth"
-                                    // value={valuesContenido.norma}
-                                    // onChange={handleChange}
+                                    value={valuesContenido.norma}
+                                    onChange={handleInputChange}
                                     autoWidth
                                     label="Norma"
                                     name="norma"
                                     //   disabled
                                   >
-                                    <MenuItem
-                                    //  value=""
-                                    >
+                                    <MenuItem value="">
                                       <em>--Seleccione--</em>
                                     </MenuItem>
                                     {tiposNorma.map((norma) => (
@@ -355,16 +439,14 @@ export default function ColumnGroupingTable() {
                                   <Select
                                     labeld="demo-simple-select-autowidth-label"
                                     id="demo-simple-select-autowidth"
-                                    // value={valuesContenido.origen}
-                                    // onChange={handleChange}
+                                    value={valuesContenido.origen}
+                                    onChange={handleInputChange}
                                     autoWidth
                                     label="Secretaría de Origen"
                                     name="origen"
                                     //   disabled
                                   >
-                                    <MenuItem
-                                    //  value=""
-                                    >
+                                    <MenuItem value="">
                                       <em>--Seleccione--</em>
                                     </MenuItem>
                                     {tiposOrigen.map((origen) => (
@@ -383,50 +465,59 @@ export default function ColumnGroupingTable() {
                                   name="fechaNormaBoletin"
                                   type="date"
                                   className="inputAltaBoletin mb-3"
-                                  // value={valuesContenido.fechaNormaBoletin}
-                                  // onChange={handleChange}
+                                  value={valuesContenido.fechaNormaBoletin}
+                                  onChange={handleInputChange}
                                   InputLabelProps={{ shrink: true }}
                                 />
                                 <TextField
                                   label="Nº de Norma"
                                   className="inputAltaBoletin mb-3"
                                   type="number"
-                                  // value={valuesContenido.nroNorma}
-                                  // onChange={handleChange}
+                                  value={valuesContenido.nroNorma}
+                                  onChange={handleInputChange}
                                   name="nroNorma"
                                 />
                                 <Button
                                   type="button"
                                   className="btnAgregar"
                                   variant="contained"
-                                  // onClick={handleAgregarNorma}
+                                  onClick={handleAgregarNormaEditar}
                                 >
                                   Agregar Norma
                                 </Button>
                               </div>
                               <div className="listadoPrueba container">
-                                <div className="listadoNormas">
-                                  {/* {normasAgregadas.map((norma, index) => (
-                          <div
-                            key={index}
-                            // className={`norma ${validarNormasAgregadas().some(n => n === norma) ? 'normaRepetida' : 'norma'}`}
-                          >
-                            {/* {norma.norma.tipo_norma} Nº {norma.numero}/
-                            {norma.origen.nombre_origen}/{norma.año.slice(0, 4)}{" "} */}
-                                  {/* <CloseIcon
-                              className="X"
-                              fontSize="small"
-                              // onClick={() => handleEliminarNorma(index)}
-                            /> */}
-                                  {/* </div> */}
-                                  {/* ))} */}
+                                <div className="listadoNormasEditar">
+                                  {normasAgregadasEditar.map((norma, index) => (
+                                    <div
+                                      key={index}
+                                      className={`norma ${
+                                        validarNormasAgregadas().some(
+                                          (n) => n === norma
+                                        )
+                                          ? "normaRepetida mt-2"
+                                          : "norma mt-2"
+                                      }`}
+                                    >
+                                      {norma.tipo_norma} Nº {norma.numero}/
+                                      {norma.nombre_origen}/
+                                      {norma.año.slice(0, 4)}{" "}
+                                      <CloseIcon
+                                        className="X"
+                                        fontSize="small"
+                                        onClick={() =>
+                                          handleEliminarNorma(index)
+                                        }
+                                      />
+                                    </div>
+                                  ))}
                                 </div>
                               </div>
                             </div>
                           </div>
                           <hr className="mt-4 mb-3" />
 
-                          <Box className="contInputFileBoletin col-2 ">
+                          <Box className="contInputFileBoletin">
                             <label className="fileNameDisplay flex-column">
                               {/* {selectedFileName} */}
                               <Input
