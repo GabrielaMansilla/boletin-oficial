@@ -95,15 +95,17 @@ export default function ColumnGroupingTable() {
           (origen) => origen.id_origen === contenido.id_origen
         );
 
-        console.log(nombreOrigen);
+        console.log(contenidoEditado, "contenido editado");
         if (nombreNorma && nombreOrigen) {
           const nuevaNorma = {
+            id_contenido_boletin: contenido.id_contenido_boletin,
             norma: contenido.id_norma,
             tipo_norma: nombreNorma.tipo_norma,
             numero: contenido.nro_norma,
             nombre_origen: nombreOrigen.nombre_origen,
             origen: contenido.id_origen,
             año: contenido.fecha_norma,
+            habilita: contenido.habilita,
           };
           setNormasAgregadasEditar((prevNormas) => [...prevNormas, nuevaNorma]);
         }
@@ -125,6 +127,7 @@ export default function ColumnGroupingTable() {
         (otraNorma, otroIndex) =>
           otraNorma.norma.id_norma === norma.norma.id_norma &&
           otraNorma.numero === norma.numero &&
+          otraNorma.habilita === norma.habilita &&
           index !== otroIndex
       );
     });
@@ -133,23 +136,39 @@ export default function ColumnGroupingTable() {
   };
   const handleAgregarNormaEditar = () => {
     const nuevaNorma = {
+      id_contenido_boletin: -1 * (normasAgregadasEditar.length + 1),
       norma: valuesContenido.norma.id_norma,
-      tipo_Norma: valuesContenido.norma.tipo_norma,
+      tipo_norma: valuesContenido.norma.tipo_norma,
       numero: valuesContenido.nroNorma,
       nombre_origen: valuesContenido.origen.nombre_origen,
       origen: valuesContenido.origen.id_origen,
       año: valuesContenido.fechaNormaBoletin,
+      habilita: 1,
     };
     setNormasAgregadasEditar([...normasAgregadasEditar, nuevaNorma]);
     setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
   };
 
-  const handleEliminarNorma = (index) => {
-    const nuevasNormas = [...normasAgregadasEditar];
-    nuevasNormas.splice(index, 1);
+  // const handleEliminarNorma = (index) => {
+  //   const nuevasNormas = [...normasAgregadasEditar];
+
+  //   const objetoAActualizar = nuevasNormas[index];
+  //   objetoAActualizar.habilita = 0;
+
+  //   // nuevasNormas.splice(index, objetoAActualizar);
+  //   setNormasAgregadasEditar(nuevasNormas);
+  //   setNroNormaExistente(false);
+  // };
+
+  const handleEliminarNorma = (id_contenido_boletin) => {
+    const nuevasNormas = normasAgregadasEditar.map((norma) =>
+      norma.id_contenido_boletin === id_contenido_boletin
+        ? { ...norma, habilita: 0 }
+        : norma
+    );
     setNormasAgregadasEditar(nuevasNormas);
-    setNroNormaExistente(false);
   };
+
   const handleCancel = () => {
     setNormasAgregadasEditar([]);
     setOpenDialog(false);
@@ -225,6 +244,15 @@ export default function ColumnGroupingTable() {
       console.error("Error al guardar cambios:", error);
     }
   };
+
+  useEffect(() => {
+    // getBoletines();
+    // getContenidoBoletin();
+    getTiposOrigen();
+    // getTiposNorma();
+    setLoading(false);
+    console.log(normasAgregadasEditar, "251");
+  }, []);
 
   const columns = [
     { id: "id_boletin", label: "ID de Boletin", minWidth: 170 },
@@ -341,7 +369,7 @@ export default function ColumnGroupingTable() {
                 component="form"
                 id="form"
                 noValidate
-                enctype="multipart/form-data"
+                encType="multipart/form-data"
                 autoComplete="on"
                 className="contBoxAltaBoletinesEditar pt-0 container"
               >
@@ -378,7 +406,7 @@ export default function ColumnGroupingTable() {
                                 className="inputAltaBoletin pt-0"
                                 type="number"
                                 value={editingBoletin.nro_boletin}
-                                // onChange={handleChange}
+                                onChange={handleInputChange}
                                 inputProps={{ min: "0" }}
                                 name="nroBoletin"
                               />
@@ -487,30 +515,38 @@ export default function ColumnGroupingTable() {
                                 </Button>
                               </div>
                               <div className="listadoPrueba container">
-                                <div className="listadoNormasEditar">
-                                  {normasAgregadasEditar.map((norma, index) => (
-                                    <div
-                                      key={index}
-                                      className={`norma ${
-                                        validarNormasAgregadas().some(
-                                          (n) => n === norma
-                                        )
-                                          ? "normaRepetida mt-2"
-                                          : "norma mt-2"
-                                      }`}
-                                    >
-                                      {norma.tipo_norma} Nº {norma.numero}/
-                                      {norma.nombre_origen}/
-                                      {norma.año.slice(0, 4)}{" "}
-                                      <CloseIcon
-                                        className="X"
-                                        fontSize="small"
-                                        onClick={() =>
-                                          handleEliminarNorma(index)
-                                        }
-                                      />
-                                    </div>
-                                  ))}
+                                <div className="listadoNormas">
+                                  {normasAgregadasEditar
+                                    .filter((norma) => norma.habilita === 1)
+                                    .map((norma, index) => (
+                                      <div
+                                        key={norma.id_contenido_boletin}
+                                        className={`norma ${
+                                          validarNormasAgregadas().some(
+                                            (n) => n === norma
+                                          )
+                                            ? "normaRepetida mt-2"
+                                            : "norma mt-2"
+                                        }`}
+                                      >
+                                        {norma.tipo_norma} Nº {norma.numero}/
+                                        {norma.nombre_origen}/
+                                        {norma.año.slice(0, 4)}{" "}
+                                        <CloseIcon
+                                          className="X"
+                                          fontSize="small"
+                                          onClick={() =>
+                                            handleEliminarNorma(
+                                              norma.id_contenido_boletin
+                                            )
+                                          }
+                                        />
+                                        {console.log(
+                                          norma.id_contenido_boletin,
+                                          "index"
+                                        )}{" "}
+                                      </div>
+                                    ))}
                                 </div>
                               </div>
                             </div>
