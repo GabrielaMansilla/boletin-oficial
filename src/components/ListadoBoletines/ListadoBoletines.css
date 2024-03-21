@@ -1,0 +1,64 @@
+/* Estilos para el Dialog */
+.MuiDialog-paper {
+  align-items: center;
+  justify-content: center;
+  display: flex !important;
+   align-self: center;
+   margin: auto;
+   width: 400px;
+   margin-top: 130px !important;
+   padding-bottom: 20px !important;
+  background-color: #0066ff !important;
+  padding: 0;
+  border-radius: 20px;
+  padding-bottom: 20px !important;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  
+}
+
+/* Estilos para el DialogTitle */
+.MuiDialogTitle-root {
+  color: #fff;
+  border-bottom: 1px solid #0066ff !important;
+
+  
+}
+/* Estilos para los Button dentro del DialogActions */
+.MuiButton-root {
+  color: #fff;
+}
+
+
+
+/* Estilos específicos para el botón "Guardar" */
+.MuiButton-root:nth-child(1) {
+  background-color: #2197db !important;
+    width: fit-content !important;
+    margin-bottom: 10px;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px; background-color: #2197db !important;
+}
+
+/* Estilos específicos para el botón "Cancelar" */
+.MuiButton-root:nth-child(2) {
+  background-color: #2197db !important;
+  width: fit-content !important;
+  margin-bottom: 10px;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
+  
+}
+
+
+/* Media queries para responsividad */
+@media (max-width: 500px) {
+  .MuiDialog-paper {
+    width: 100%;
+  }
+
+  .MuiTextField-root {
+    width: 100%;
+  }
+}
