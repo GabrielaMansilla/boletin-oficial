@@ -1,55 +1,83 @@
 /* Estilos para el Dialog */
 
-  .modal_content {
-    width: 100%;
-    overflow-x: hidden;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
-    height: auto;
-    width: 98%;
-    padding-bottom: 20px !important;
-    padding: 0;
-    border-radius: 20px;
-    border-top: solid 1px !important;
-    border-color: #0066ff !important;
-    background-color: #0066ff;
+.modal_content {
+  align-items: center;
+  width: 400px !important;
+  justify-content: center;
+  align-self: center;
+  padding-bottom: 10px !important;
+  border-radius: 15px;
+  border-top: solid 1px !important;
+  border-color: #0066ff !important;
+  background-color: #0066ff;
 
 }
 
-  
-  /* Estilos para el DialogTitle */
-  .Titulo {
-    color: #fff;
-    padding-top: 40px;
-    margin-bottom: 30px;
-    font-weight: 600;
-  
-    
-  }
-  /* Estilos para los Button d
+
+/* Estilos para el DialogTitle */
+.titulo {
+  color: #fff;
+  padding-bottom: 40px;
+  font-weight: 600;
+  text-align: center;
+
+}
+
+.inputNorma {
+  margin-left: 20px;
+  width: auto;
+}
+
+.contModal {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Estilos para los Button d
   
   /* Estilos específicos para el botón "Guardar" */
-  .btn_Norma {
+/* .btn_Norma {
     background-color: #2197db !important;
     width: fit-content !important;
     margin-bottom: 10px;
     flex-direction: column;
     align-items: center;
     border-radius: 20px;
-  }
-  
+  } */
 
-  
-  
-  /* Media queries para responsividad */
-  @media (max-width: 500px) {
-    .MuiDialog-paper {
-      width: 100%;
-    }
-  
-    .MuiTextField-root {
-      width: 100%;
-    }
+.btnEditarNorma {
+  display: flex;
+  width: auto;
+  align-items: center;
+  justify-content: space-around !important;
+  margin-top: 10px;
+}
+
+.checkBoxNorma {
+  color: #fff;
+  align-items: center !important;
+}
+
+/* Media queri.es para responsividad */
+@media (max-width: 500px) {
+
+  .MuiDialog-paper,
+  .MuiTextField-root {
+    width: 100%;
   }
-  
+
+  .modal_content {
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+
+  }
+}
+
+@media (max-width: 370px) {
+  .contModal {
+    flex-direction: column;
+  }
+}

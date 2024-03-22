@@ -126,7 +126,7 @@ export default function ColumnGroupingTable() {
     setOpenDialog(true);
   };
   useEffect(() => {
-    console.log(normasAgregadasEditar, "105");
+    // console.log(normasAgregadasEditar, "105");
   }, [normasAgregadasEditar]);
 
   const validarNormasAgregadas = () => {
@@ -160,7 +160,7 @@ export default function ColumnGroupingTable() {
     const numero = numeroBoletin.toString();
     const id = idBoletin;
 
-    console.log(numero, "nro", id, "id");
+    // console.log(numero, "nro", id, "id");
 
     const existe = boletines.some(
       (boletin) => boletin.nro_boletin === numero && boletin.id_boletin !== id
@@ -288,12 +288,12 @@ export default function ColumnGroupingTable() {
 
   const handleSave = () => {
     try {
-      console.log("Guardando cambios:", editingBoletin);
+      // console.log("Guardando cambios:", editingBoletin);
 
       const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
         editingBoletin;
 
-      console.log(normasAgregadasEditar, "envia");
+      // console.log(normasAgregadasEditar, "envia");
 
       axios
         .put(`/boletin/editar`, {
@@ -304,7 +304,7 @@ export default function ColumnGroupingTable() {
           normasAgregadasEditar,
         })
         .then((response) => {
-          console.log("Respuesta del servidor:", response.data);
+          // console.log("Respuesta del servidor:", response.data);
 
           // Después de guardar los cambios, cargar la lista actualizada de boletines
           cargarBoletines();
@@ -327,7 +327,7 @@ export default function ColumnGroupingTable() {
     getTiposOrigen();
     // getTiposNorma();
     setLoading(false);
-    console.log(normasAgregadasEditar, "251");
+    // console.log(normasAgregadasEditar, "251");
     cargarBoletines();
   }, []);
 
@@ -443,13 +443,13 @@ export default function ColumnGroupingTable() {
         <DialogContent disableBackdropClick={true}>
           {editingBoletin && contenidoEditado && (
             <>
-              {console.log(
+              {/* {console.log(
                 contenidoEditado,
                 editingBoletin,
                 tiposNorma,
                 tiposOrigen,
                 "aña"
-              )}
+              )} */}
               <Box
                 component="form"
                 id="form"
@@ -641,10 +641,10 @@ export default function ColumnGroupingTable() {
                                             )
                                           }
                                         />
-                                        {console.log(
+                                        {/* {console.log(
                                           norma.id_contenido_boletin,
                                           "index"
-                                        )}{" "}
+                                        )}{" "} */}
                                       </div>
                                     ))}
                                 </div>

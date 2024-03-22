@@ -72,7 +72,7 @@ const AltaBoletinesNuevo = () => {
   };
 
   useEffect(() => {
-    console.log(normasAgregadas);
+    // console.log(normasAgregadas);
   }, [normasAgregadas]);
 
   const handleEliminarNorma = (index) => {
@@ -140,7 +140,7 @@ const AltaBoletinesNuevo = () => {
           index !== otroIndex
       );
     });
-  console.log(normasRepetidas)
+  // console.log(normasRepetidas)
     return normasRepetidas;
   };
   
@@ -156,7 +156,7 @@ const AltaBoletinesNuevo = () => {
     let fileName = archivoSeleccionado?.name || "";
     if (validarNormasAgregadas().length > 0 ) {
       // console.log(10);
-      console.log(validarNormasAgregadas() === true);
+      // console.log(validarNormasAgregadas() === true);
       mensaje =
         "No puede estar la misma Norma con el mismo Nº de Norma repetido ";
       setError("warning");
@@ -529,7 +529,7 @@ const AltaBoletinesNuevo = () => {
             >
               Guardar Boletín
             </Button>
-            console.log(validarNormasAgregadas)
+            {/* console.log(validarNormasAgregadas) */}
           </>
         ) : (
           <>

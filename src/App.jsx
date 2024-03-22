@@ -22,7 +22,7 @@ const App = () => {
           <Route path="/altaBoletines" element={<AltaBoletinesNuevo />} />
           <Route path="/listadoBoletines" element={<ListadoBoletines />} />
           <Route path="/listarNormas" element={<ListarNormas />} />
-          <Route path="/ListadoContenido" element={<ListadoContenido/>}/>
+          {/* <Route path="/ListadoContenido" element={<ListadoContenido/>}/> */}
         </Routes>
       </Layout>
     </Router>
