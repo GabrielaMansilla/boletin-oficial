@@ -680,8 +680,10 @@ export default function ColumnGroupingTable() {
                   editingBoletin.fecha_publicacion !== "" &&
                   editingBoletin.nro_boletin !== "undefined" &&
                   editingBoletin.fecha_publicacion !== "undefined" &&
-                  numeroBoletinDisponible(editingBoletin.nro_boletin, editingBoletin.id_boletin) ===
-                    false ? (
+                  numeroBoletinDisponible(
+                    editingBoletin.nro_boletin,
+                    editingBoletin.id_boletin
+                  ) === false ? (
                     <>
                       <Button
                         onClick={handleGuardar}

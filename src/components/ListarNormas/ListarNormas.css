@@ -24,8 +24,7 @@
 }
 
 .inputNorma {
-  margin-left: 20px;
-  width: auto;
+  width: auto !important;
 }
 
 .contModal {
@@ -35,24 +34,31 @@
   justify-content: center !important;
 }
 
-/* Estilos para los Button d
-  
-  /* Estilos específicos para el botón "Guardar" */
-/* .btn_Norma {
-    background-color: #2197db !important;
-    width: fit-content !important;
-    margin-bottom: 10px;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 20px;
-  } */
-
 .btnEditarNorma {
   display: flex;
   width: auto;
   align-items: center;
   justify-content: space-around !important;
   margin-top: 10px;
+}
+
+.iconDelete {
+  cursor: pointer;
+  color: red;
+  margin-left: 15px;
+}
+
+.iconDelete :hover {
+  color: rgb(163, 15, 15);
+}
+
+.iconEdit :hover {
+  color: #0066ff;
+
+}
+
+.tabla {
+  background-color: red;
 }
 
 .checkBoxNorma {
