@@ -9,6 +9,7 @@ import Buscador from './components/Buscador/Buscador';
 import ListadoBoletines from './components/ListadoBoletines/ListadoBoletines';
 import ListarNormas from './components/ListarNormas/ListarNormas';
 import ListadoContenido from './components/ListadoContenido/ListadoContenido';
+import TablasEdicion from './components/TablasEdicion/TablasEdicion';
 
 const App = () => {
   return (
@@ -25,6 +26,8 @@ const App = () => {
           <Route path='/tabla' element={<Tabla />} />
           <Route path="/altaBoletines" element={<AltaBoletinesNuevo />} />
           <Route path="/listadoBoletines" element={<ListadoBoletines />} />
+          <Route path="/edicion" element={<TablasEdicion />} />
+          {/* <Route path="/ListadoContenido" element={<ListadoContenido/>}/> */}
         </Routes>
       </Layout>
     </Router>

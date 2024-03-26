@@ -42,7 +42,6 @@ export default function ColumnGroupingTable() {
   );
   const [contenidoBoletines, getContenidoBoletin, setContenidoBoletines] =
     useGet("/boletin/listadoContenido", axios);
-  console.log(boletines, contenidoBoletines, "uwu");
   const [tiposOrigen, loadingOrigen, getTiposOrigen] = useGet(
     "/boletin/listarOrigen",
     axios
@@ -62,6 +61,17 @@ export default function ColumnGroupingTable() {
   const [openDialog, setOpenDialog] = useState(false);
   const [normasAgregadasEditar, setNormasAgregadasEditar] = useState([]);
   const [nroNormaExistente, setNroNormaExistente] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState("error");
+  const [mensaje, setMensaje] = useState("Algo Explotó :/");
+  const [nroBoletinExistente, setNroBoletinExistente] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -95,20 +105,20 @@ export default function ColumnGroupingTable() {
           (origen) => origen.id_origen === contenido.id_origen
         );
 
-        console.log(nombreOrigen);
         if (nombreNorma && nombreOrigen) {
           const nuevaNorma = {
+            id_contenido_boletin: contenido.id_contenido_boletin,
             norma: contenido.id_norma,
             tipo_norma: nombreNorma.tipo_norma,
             numero: contenido.nro_norma,
             nombre_origen: nombreOrigen.nombre_origen,
             origen: contenido.id_origen,
             año: contenido.fecha_norma,
+            habilita: contenido.habilita,
           };
           setNormasAgregadasEditar((prevNormas) => [...prevNormas, nuevaNorma]);
         }
       });
-      console.log(contenidoEditado, "ewe");
     } else {
       console.error("No se encontró el contenido del boletin editado.");
     }
@@ -116,7 +126,7 @@ export default function ColumnGroupingTable() {
     setOpenDialog(true);
   };
   useEffect(() => {
-    console.log(normasAgregadasEditar, "105");
+    // console.log(normasAgregadasEditar, "105");
   }, [normasAgregadasEditar]);
 
   const validarNormasAgregadas = () => {
@@ -125,31 +135,101 @@ export default function ColumnGroupingTable() {
         (otraNorma, otroIndex) =>
           otraNorma.norma.id_norma === norma.norma.id_norma &&
           otraNorma.numero === norma.numero &&
+          otraNorma.habilita === norma.habilita &&
           index !== otroIndex
       );
     });
-    console.log(normasRepetidas);
     return normasRepetidas;
   };
   const handleAgregarNormaEditar = () => {
     const nuevaNorma = {
+      id_contenido_boletin: -1 * (normasAgregadasEditar.length + 1),
       norma: valuesContenido.norma.id_norma,
-      tipo_Norma: valuesContenido.norma.tipo_norma,
+      tipo_norma: valuesContenido.norma.tipo_norma,
       numero: valuesContenido.nroNorma,
       nombre_origen: valuesContenido.origen.nombre_origen,
       origen: valuesContenido.origen.id_origen,
       año: valuesContenido.fechaNormaBoletin,
+      habilita: 1,
     };
     setNormasAgregadasEditar([...normasAgregadasEditar, nuevaNorma]);
     setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
   };
 
-  const handleEliminarNorma = (index) => {
-    const nuevasNormas = [...normasAgregadasEditar];
-    nuevasNormas.splice(index, 1);
-    setNormasAgregadasEditar(nuevasNormas);
-    setNroNormaExistente(false);
+  const numeroBoletinDisponible = (numeroBoletin, idBoletin) => {
+    const numero = numeroBoletin.toString();
+    const id = idBoletin;
+
+    // console.log(numero, "nro", id, "id");
+
+    const existe = boletines.some(
+      (boletin) => boletin.nro_boletin === numero && boletin.id_boletin !== id
+    );
+    return existe;
   };
+
+  const handleMensajeEditar = () => {
+    let mensaje = "";
+    if (editingBoletin.nro_boletin === "") {
+      mensaje = "Debe ingresar el Nº de Boletín";
+      setError("error");
+    } else if (numeroBoletinDisponible(editingBoletin.nro_boletin)) {
+      mensaje = `El Nº de Boletín ${editingBoletin.nro_boletin} ya existe!`;
+      setError("error");
+    } else if (editingBoletin.fecha_publicacion === "") {
+      mensaje = "Debe ingresar la fecha del Boletín";
+      setError("warning");
+    } else {
+      mensaje = "Recarga la pagina";
+      setError("warning");
+      return;
+    }
+    setOpen(true);
+    setMensaje(mensaje);
+  };
+  const handleMensajeContenidoEditar = () => {
+    let mensaje = "";
+    // if (
+    //   !numeroNormaDisponible(
+    //     valuesContenido.nroNorma,
+    //     valuesContenido.norma.id_norma
+    //   )
+    // ) {
+    //   // console.log(10);
+    //   mensaje = `El Nº de Norma ${valuesContenido.nroNorma} ya existe para la norma ${valuesContenido.norma.tipo_norma}!`;
+    //   setError("error");
+    // } else
+    if (!valuesContenido.norma || valuesContenido.norma === "") {
+      mensaje = "Debe seleccionar la Norma";
+      setError("warning");
+    } else if (!valuesContenido.origen || valuesContenido.origen === "") {
+      mensaje = "Debe ingresar la Secretaría";
+    } else if (
+      !valuesContenido.fechaNormaBoletin ||
+      valuesContenido.fechaNormaBoletin === ""
+    ) {
+      mensaje = "Debe ingresar la fecha de Norma";
+      setError("warning");
+    } else if (!valuesContenido.nroNorma || valuesContenido.nroNorma === "") {
+      mensaje = "Debe ingresar el Nro de norma";
+      setError("warning");
+    } else {
+      mensaje = "Recarga la pagina";
+      return;
+    }
+    setOpen(true);
+    setMensaje(mensaje);
+  };
+
+  const handleEliminarNorma = (id_contenido_boletin) => {
+    const nuevasNormas = normasAgregadasEditar.map((norma) =>
+      norma.id_contenido_boletin === id_contenido_boletin
+        ? { ...norma, habilita: 0 }
+        : norma
+    );
+    setNormasAgregadasEditar(nuevasNormas);
+  };
+
   const handleCancel = () => {
     setNormasAgregadasEditar([]);
     setOpenDialog(false);
@@ -159,16 +239,16 @@ export default function ColumnGroupingTable() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     // Si el campo de entrada no es la ID de Boletín, actualiza el estado de edición
-    if (name !== "id_boletin") {
-      setEditingBoletin((prevBoletin) => ({
-        ...prevBoletin,
-        [name]: value,
-      }));
-      setValuesContenido({
-        ...valuesContenido,
-        [name]: value,
-      });
-    }
+    // if (name !== "id_boletin") {
+    setEditingBoletin((prevBoletin) => ({
+      ...prevBoletin,
+      [name]: value,
+    }));
+    setValuesContenido({
+      ...valuesContenido,
+      [name]: value,
+    });
+    // }
   };
   const handleCheckboxChange = (e) => {
     const isChecked = e.target.checked;
@@ -176,6 +256,11 @@ export default function ColumnGroupingTable() {
       ...prevValues,
       habilita: isChecked,
     }));
+  };
+
+  const handleGuardar = () => {
+    handleSave();
+    cargarBoletines();
   };
 
   const cargarBoletines = () => {
@@ -189,16 +274,26 @@ export default function ColumnGroupingTable() {
         console.error("Error al obtener boletines:", error);
         setLoading(false); // También se debe establecer loading en false en caso de error
       });
+    axios
+      .get("/boletin/listadoContenido")
+      .then((response) => {
+        setContenidoBoletines(response.data);
+        setLoading(false); // Establecer loading en false cuando se complete la carga
+      })
+      .catch((error) => {
+        console.error("Error al obtener contenido de boletines:", error);
+        setLoading(false); // También se debe establecer loading en false en caso de error
+      });
   };
 
   const handleSave = () => {
     try {
-      console.log("Guardando cambios:", editingBoletin);
+      // console.log("Guardando cambios:", editingBoletin);
 
       const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
         editingBoletin;
 
-      console.log(normasAgregadasEditar, "envia");
+      // console.log(normasAgregadasEditar, "envia");
 
       axios
         .put(`/boletin/editar`, {
@@ -209,22 +304,40 @@ export default function ColumnGroupingTable() {
           normasAgregadasEditar,
         })
         .then((response) => {
-          console.log("Cambios guardados correctamente:", response.data);
+          // console.log("Respuesta del servidor:", response.data);
 
+          // Después de guardar los cambios, cargar la lista actualizada de boletines
           cargarBoletines();
+
           setEditingBoletin(null);
           setOpenDialog(false);
+          setNormasAgregadasEditar([]);
+        })
+        .catch((error) => {
+          console.error("Error al guardar cambios:", error);
         });
-      setNormasAgregadasEditar([]).catch((error) => {
-        setNormasAgregadasEditar([]);
-
-        console.error("Error al guardar cambios:", error);
-      });
     } catch (error) {
       setNormasAgregadasEditar([]);
       console.error("Error al guardar cambios:", error);
     }
   };
+  useEffect(() => {
+    // getBoletines();
+    // getContenidoBoletin();
+    getTiposOrigen();
+    // getTiposNorma();
+    setLoading(false);
+    // console.log(normasAgregadasEditar, "251");
+    cargarBoletines();
+  }, []);
+
+  useEffect(() => {
+    if (openDialog === false) {
+      // Si el diálogo está cerrado (es decir, se han guardado los cambios),
+      // entonces cargar los boletines nuevamente
+      cargarBoletines();
+    }
+  }, [openDialog]);
 
   const columns = [
     { id: "id_boletin", label: "ID de Boletin", minWidth: 170 },
@@ -318,7 +431,7 @@ export default function ColumnGroupingTable() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {console.log(boletines, contenidoBoletines, "59")}
+      {/*console.log(boletines, contenidoBoletines, "59")*/}
       {/* Dialog for editing */}
       <Dialog
         className="modalEditar"
@@ -330,18 +443,18 @@ export default function ColumnGroupingTable() {
         <DialogContent disableBackdropClick={true}>
           {editingBoletin && contenidoEditado && (
             <>
-              {console.log(
+              {/* {console.log(
                 contenidoEditado,
                 editingBoletin,
                 tiposNorma,
                 tiposOrigen,
                 "aña"
-              )}
+              )} */}
               <Box
                 component="form"
                 id="form"
                 noValidate
-                enctype="multipart/form-data"
+                encType="multipart/form-data"
                 autoComplete="on"
                 className="contBoxAltaBoletinesEditar pt-0 container"
               >
@@ -373,19 +486,20 @@ export default function ColumnGroupingTable() {
                             </div>
                             <div className="d-flex flex-row pe-2 mt-0 ">
                               <TextField
+                                name="nro_boletin"
                                 label="Nro de Boletín"
                                 variant="outlined"
                                 className="inputAltaBoletin pt-0"
                                 type="number"
                                 value={editingBoletin.nro_boletin}
-                                // onChange={handleChange}
+                                onChange={handleInputChange}
                                 inputProps={{ min: "0" }}
-                                name="nroBoletin"
                               />
+
                               <TextField
                                 label="Fecha Publicación"
                                 variant="outlined"
-                                name="fechaPublicacion"
+                                name="fecha_publicacion"
                                 type="date"
                                 className="inputAltaBoletin ms-3 pt-0"
                                 value={editingBoletin.fecha_publicacion}
@@ -477,40 +591,62 @@ export default function ColumnGroupingTable() {
                                   onChange={handleInputChange}
                                   name="nroNorma"
                                 />
-                                <Button
-                                  type="button"
-                                  className="btnAgregar"
-                                  variant="contained"
-                                  onClick={handleAgregarNormaEditar}
-                                >
-                                  Agregar Norma
-                                </Button>
+                                {valuesContenido.nroNorma !== "" &&
+                                valuesContenido.origen !== "" &&
+                                valuesContenido.fechaNormaBoletin !== "" &&
+                                valuesContenido.norma !== "" ? (
+                                  <Button
+                                    type="button"
+                                    className="btnAgregar"
+                                    variant="contained"
+                                    onClick={handleAgregarNormaEditar}
+                                  >
+                                    Agregar Norma
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    type="button"
+                                    className="btnAgregar"
+                                    variant="contained"
+                                    onClick={handleMensajeContenidoEditar}
+                                  >
+                                    Agregar Norma
+                                  </Button>
+                                )}
                               </div>
                               <div className="listadoPrueba container">
-                                <div className="listadoNormasEditar">
-                                  {normasAgregadasEditar.map((norma, index) => (
-                                    <div
-                                      key={index}
-                                      className={`norma ${
-                                        validarNormasAgregadas().some(
-                                          (n) => n === norma
-                                        )
-                                          ? "normaRepetida mt-2"
-                                          : "norma mt-2"
-                                      }`}
-                                    >
-                                      {norma.tipo_norma} Nº {norma.numero}/
-                                      {norma.nombre_origen}/
-                                      {norma.año.slice(0, 4)}{" "}
-                                      <CloseIcon
-                                        className="X"
-                                        fontSize="small"
-                                        onClick={() =>
-                                          handleEliminarNorma(index)
-                                        }
-                                      />
-                                    </div>
-                                  ))}
+                                <div className="listadoNormas">
+                                  {normasAgregadasEditar
+                                    .filter((norma) => norma.habilita === 1)
+                                    .map((norma, index) => (
+                                      <div
+                                        key={norma.id_contenido_boletin}
+                                        className={`norma ${
+                                          validarNormasAgregadas().some(
+                                            (n) => n === norma
+                                          )
+                                            ? "normaRepetida mt-2"
+                                            : "norma mt-2"
+                                        }`}
+                                      >
+                                        {norma.tipo_norma} Nº {norma.numero}/
+                                        {norma.nombre_origen}/
+                                        {norma.año.slice(0, 4)}{" "}
+                                        <CloseIcon
+                                          className="X"
+                                          fontSize="small"
+                                          onClick={() =>
+                                            handleEliminarNorma(
+                                              norma.id_contenido_boletin
+                                            )
+                                          }
+                                        />
+                                        {/* {console.log(
+                                          norma.id_contenido_boletin,
+                                          "index"
+                                        )}{" "} */}
+                                      </div>
+                                    ))}
                                 </div>
                               </div>
                             </div>
@@ -540,13 +676,34 @@ export default function ColumnGroupingTable() {
                   </Box>
                 </div>
                 <DialogActions>
-                  <Button
-                    onClick={handleSave}
-                    color="primary"
-                    variant="contained"
-                  >
-                    Guardar
-                  </Button>
+                  {editingBoletin.nro_boletin !== "" &&
+                  editingBoletin.fecha_publicacion !== "" &&
+                  editingBoletin.nro_boletin !== "undefined" &&
+                  editingBoletin.fecha_publicacion !== "undefined" &&
+                  numeroBoletinDisponible(
+                    editingBoletin.nro_boletin,
+                    editingBoletin.id_boletin
+                  ) === false ? (
+                    <>
+                      <Button
+                        onClick={handleGuardar}
+                        color="primary"
+                        variant="contained"
+                      >
+                        Guardar
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        onClick={handleMensajeEditar}
+                        color="primary"
+                        variant="contained"
+                      >
+                        Guardar
+                      </Button>
+                    </>
+                  )}
                   <Button
                     onClick={handleCancel}
                     color="primary"
@@ -574,6 +731,20 @@ export default function ColumnGroupingTable() {
           )}
         </DialogContent>
       </Dialog>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={error}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {mensaje}
+        </Alert>
+      </Snackbar>
     </Paper>
   );
 }

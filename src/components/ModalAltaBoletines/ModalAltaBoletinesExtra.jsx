@@ -19,7 +19,7 @@ export const ModalAltaBoletines = ({ abrir, datosBoletin, onConfirm }) => {
   }, [abrir]);
   
   const handleAcept = () => {
-    console.log([datosBoletin]);
+    // console.log([datosBoletin]);
     setOpen(false);
     onConfirm(true);
     handleCloseModal(false);

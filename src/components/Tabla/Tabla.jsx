@@ -9,7 +9,10 @@ import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
 import useGet from '../../hook/useGet';
 import axios from '../../config/axios';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import ModalGenerica from '../ModalGenerico/ModalGenerico';
+import EditarNormaDialog from '../EditarNormaDialog/EditarNormaDialog';
 
 
 const Tabla = () => {
@@ -20,7 +23,18 @@ const Tabla = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [openModal, setOpenModal] = useState(false);
+  const [origenInput, setOrigenInput] = useState("");
+  const [checkboxValue, setCheckboxValue] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [nombreCampoEditado, setNombreCampoEditado] = useState("");
+  const handleOpenModal = () => {
+    setOpenModal(true)
+  }
+
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -30,14 +44,58 @@ const Tabla = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
+  function obtenerNombreCampoPorPosicion(objeto, posicion) {
+    var keys = Object.keys(objeto);
+    if (posicion >= 0 && posicion < keys.length) {
+      return keys[posicion];
+    } else {
+      return null; // Si la posición está fuera de rango, devolver null o algún indicador de error
+    }
+  }
   const handleEdit = (Origen) => {
     setEditOrigen((prevOrigen) => ({ ...prevOrigen, ...Origen }));
-    setOpenDialog(true);
+    setOpenModal(true);
+    setOpenDialog(true)
+    const nombreCampo = obtenerNombreCampoPorPosicion(Origen, 1);
+    setNombreCampoEditado(nombreCampo);
+  };
+
+  const handleCheckboxChange = (e) => {
+    const isChecked = e.target.checked;
+    setEditOrigen((prevValues) => ({
+      ...prevValues,
+      habilita: isChecked,
+    }));
   };
 
   const handleCancel = (event, reason) => {
         setOpenDialog(false);
+  };
+
+  // const handleCancel = (event, reason) => {
+  //       setOpenDialog(false);
+  // };
+
+  const handleAcceptModal = (nombre_origen, habilita) => {
+    // Aquí puedes realizar acciones como enviar la norma a la base de datos
+   
+    try {
+      // console.log("Guardando cambios:", updatedNormas);
+      // console.log(id_origen, "eliminado");
+      axios
+        .post(`/origen/editar`, {nombre_origen, habilita })
+        .then((response) => {
+          console.log("Origen deshabilitada correctamente:", response.data);
+          // cargarNormas();
+          // setEditingNorma(null);
+          // setOpenDialog(false);
+        });
+    } catch (error) {
+      console.error("Error al guardar Origen:", error);
+    }
+    console.log("Origen:", origenInput);
+    console.log("Checkbox:", checkboxValue);
+    handleCloseModal();
   };
 
   const handleInputChange = (e) => {
@@ -49,6 +107,15 @@ const Tabla = () => {
         }));
     }
 }
+
+const handleDelete = (origenId) => {
+  const updatedOrigen = origen.map((item) =>
+    item.id_origen === origenId ? { ...item, habilita: 0 } : item
+  );
+  setOrigen(updatedOrigen);
+  handleSave(updatedOrigen);
+};
+
 
   const cargarOrigen = () => {
     axios.get('/origen/listado')
@@ -62,7 +129,8 @@ const Tabla = () => {
       });
   };
 
-  const handleSave = () => {
+  const handleSave = (updatedOrigen) => {
+    if (editOrigen) {
     try {
         console.log('Guardando cambios:', editOrigen);
     
@@ -70,17 +138,33 @@ const Tabla = () => {
         const { id_origen, nombre_origen, habilita } = editOrigen;
         console.log(id_origen);
         // Haces la llamada para guardar los cambios en la base de datos utilizando axios
-    // axios.put(`/origen/editar`, { id_norma, tipo_norma,  habilita })
-    //   .then((response) => {
-    //     console.log('Cambios guardados correctamente:', response.data);
-    //     cargarOrigen();
-    //     setEditOrigen(null);
-    //     setOpenDialog(false);
-    //   })
+    axios.put(`/origen/editar`, { id_origen, nombre_origen,  habilita })
+      .then((response) => {
+        console.log('Cambios guardados correctamente:', response.data);
+        cargarOrigen();
+        setEditOrigen(null);
+        setOpenDialog(false);
+        setNombreCampoEditado("");
+      })
     } catch (error) {
         console.error('Error al guardar cambios:', error);
         // Manejar el error según tus necesidades
       }
+    } else {
+      try {
+        updatedOrigen.forEach((origen) => { 
+          const { id_origen, nombre_origen, habilita } = origen;
+          axios
+          .put(`/origen/editar`, { id_origen, nombre_origen, habilita })
+            .then((response) => {
+              console.log("Origen deshabilitada correctamente:", response.data);
+              cargarOrigen();
+        });
+          });
+      } catch (error) {
+        console.error("Error al guardar cambios:", error);
+      }
+    }
     };
  
   const columns = [
@@ -128,10 +212,23 @@ const Tabla = () => {
                     <TableCell key={column.id} align={column.align}>
                       
                      {column.id === "acciones" ? (  
+                        <>
                         <EditIcon
                          onClick={() => handleEdit(origen)}
-                        className="iconEdit"
-                      />
+                         className="iconEdit"
+                         />
+                      {origen.habilita === 1 ? (
+                        <DeleteIcon
+                        className="iconDelete"
+                        onClick={() => handleDelete(origen.id_origen)}
+                        />
+                        ) : (
+                          <DeleteIcon
+                          className="iconDelete"
+                          // onClick={() => handleDelete(norma.id_norma)}
+                          />
+                          )}
+                          </>
                     ):(origen[column.id])}
 
                     </TableCell>
@@ -144,46 +241,19 @@ const Tabla = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Dialog  open={openDialog} onClose={handleCancel}>
-        <DialogTitle className='Titulo'>Editar Normas</DialogTitle>
-        <DialogContent className='modal_content' >
-          {editOrigen && (
-            <>
-              <TextField 
-                name="id_origen"
-                label="ID origen"
-                value={editOrigen.id_origen}
-                onChange={handleInputChange}
-                fullWidth
-              />
-              <TextField 
-                name="nombre_origen"
-                label="Nombre Origen"
-                value={editOrigen.nombre_origen}
-                onChange={handleInputChange}
-                fullWidth
-              />
-              <TextField
-                name="habilita"
-                label="Habilita"
-                value={editOrigen.habilita}
-                onChange={handleInputChange}
-                fullWidth
-              />
-            </>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button className='btn_Norma' onClick={handleSave} color="primary" variant="contained">
-            Guardar
-          </Button>
-          <Button  className='btn_Norma' onClick={handleCancel} color="primary" variant="contained">
-            Cancelar
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <EditarNormaDialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        editingNorma={editOrigen}
+        handleCheckboxChange={handleCheckboxChange}
+        handleInputChange={handleInputChange}
+        handleSave={handleSave}
+        handleCancel={handleCancel}
+        nombreCampo={nombreCampoEditado}
+      />
         </Paper>   
   );
 }
+
 
 export default Tabla;

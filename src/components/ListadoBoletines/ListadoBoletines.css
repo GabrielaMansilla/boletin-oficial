@@ -3,14 +3,13 @@
   text-align: center;
   color: red;
   /* font-weight: bold; */
-  justify-content: end;
+  justify-content: center;
   margin-bottom: 0;
 }
-
 .habilitado {
   display: flex;
   text-align: center;
-  justify-content: end;
+  justify-content: center;
   margin-bottom: 0;
 }
 
