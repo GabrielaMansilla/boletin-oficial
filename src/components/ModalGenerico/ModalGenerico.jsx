@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import {
+  Alert,
   Button,
   Checkbox,
   Dialog,
@@ -7,9 +8,10 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
+  Snackbar,
   TextField,
 } from "@mui/material";
-import './ModalGenerico.css'
+import "./ModalGenerico.css";
 const ModalGenerica = ({
   open,
   onClose,
@@ -22,49 +24,96 @@ const ModalGenerica = ({
   checked,
   onCheckboxChange,
 }) => {
-  return (
-    <Dialog open={open} disableBackdropClick={true}>
-      <DialogContent className="modal_content">
-        <DialogTitle className="titulo">{title}</DialogTitle>
+  const [openAlert, setOpenAlert] = useState(false);
+  const [error, setError] = useState("error");
+  const [mensaje, setMensaje] = useState("Algo Explotó :/");
 
-        <div className="contModal">
-          <FormControlLabel
-            control={
-              <Checkbox
-                // checked={checked}
-                onChange={onCheckboxChange}
-                defaultChecked
-                sx={{
-                  color: "white",
-                  "&.Mui-checked": {
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenAlert(false);
+  };
+
+  const handleMensaje = () => {
+    let mensaje = "";
+    if (inputValue.length <= 0) {
+      mensaje = "Debe llenar el campo nombre";
+      setError("warning");
+    }
+    setOpenAlert(true);
+    setMensaje(mensaje);
+  };
+
+  return (
+    <>
+      <Dialog open={open} disableBackdropClick={true}>
+        <DialogContent className="modal_content">
+          <DialogTitle className="titulo">{title}</DialogTitle>
+
+          <div className="contModal">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  onChange={onCheckboxChange}
+                  defaultChecked
+                  sx={{
                     color: "white",
-                  },
-                }}
-              />
-            }
-            label="Habilitado"
-            className="checkBoxNorma"
-            labelPlacement="start"
-          />
-          <TextField
-            label={inputLabel}
-            value={inputValue}
-            onChange={onInputChange}
-            fullWidth
-            className="inputNorma"
-            margin="normal"
-          />
-        </div>
-        <DialogActions className="btnEditarNorma">
-          <Button onClick={onAccept} color="primary" variant="contained">
-            Aceptar
-          </Button>
-          <Button onClick={onClose} color="primary" variant="contained">
-            Cancelar
-          </Button>
-        </DialogActions>
-      </DialogContent>
-    </Dialog>
+                    "&.Mui-checked": {
+                      color: "white",
+                    },
+                  }}
+                />
+              }
+              label="Habilitado"
+              className="checkBoxNorma"
+              labelPlacement="start"
+            />
+            <TextField
+              label={inputLabel}
+              value={inputValue}
+              onChange={onInputChange}
+              fullWidth
+              className="inputNorma"
+              margin="normal"
+            />
+          </div>
+          <DialogActions className="btnEditarNorma">
+            {inputValue === "" || !inputValue ? (
+              <Button
+                onClick={handleMensaje}
+                color="primary"
+                variant="contained"
+              >
+                Aceptar
+              </Button>
+            ) : (
+              <Button onClick={onAccept} color="primary" variant="contained">
+                Aceptar
+              </Button>
+            )}
+
+            <Button onClick={onClose} color="primary" variant="contained">
+              Cancelar
+            </Button>
+          </DialogActions>
+        </DialogContent>
+      </Dialog>
+      <Snackbar
+        open={openAlert}
+        autoHideDuration={6000}
+        onClose={() => setOpenAlert(false)}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={error}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {mensaje}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

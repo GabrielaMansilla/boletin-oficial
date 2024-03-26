@@ -56,7 +56,16 @@
   color: #0066ff;
 
 }
+.pagination{
 
+  display: flex !important;
+  justify-content: end !important;
+}
+.css-pdct74-MuiTablePagination-selectLabel,.css-levciy-MuiTablePagination-displayedRows{
+  align-items: center;
+  padding: 0 !important;
+  margin: 0 !important;
+}
 .tabla {
   background-color: red;
 }
