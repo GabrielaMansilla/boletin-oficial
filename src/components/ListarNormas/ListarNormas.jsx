@@ -41,10 +41,7 @@ export default function ColumnGroupingTable() {
   };
 
   const handleCancel = (event, reason) => {
-    if(reason === "clickaway"){
-        return;
-    }
-    setOpenDialog(false);
+        setOpenDialog(false);
   };
 
   const handleInputChange = (e) => {

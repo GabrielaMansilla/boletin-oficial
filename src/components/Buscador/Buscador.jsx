@@ -166,8 +166,8 @@ const Buscador = () => {
       // console.log(boletin.id_boletin);
       const response = await axios.get(
         // `IP SERVIDOR DESARROLLO:PUERTO DEL BACK-END/boletin/listarDescarga/${boletin.id_boletin}`,
-        `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
-        // `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
+        // `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
+        `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         {
           responseType: "blob", // Especifica el tipo de respuesta como Blob
         }
