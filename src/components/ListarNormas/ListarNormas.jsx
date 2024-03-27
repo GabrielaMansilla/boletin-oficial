@@ -28,6 +28,7 @@ export default function ColumnGroupingTable() {
   const [openModal, setOpenModal] = useState(false);
   const [normaInput, setNormaInput] = useState("");
   const [checkboxValue, setCheckboxValue] = useState(true);
+  const [nombreCampoEditado, setNombreCampoEditado] = useState("");
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -63,10 +64,19 @@ export default function ColumnGroupingTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
+  function obtenerNombreCampoPorPosicion(objeto, posicion) {
+    var keys = Object.keys(objeto);
+    if (posicion >= 0 && posicion < keys.length) {
+      return keys[posicion];
+    } else {
+      return null; // Si la posición está fuera de rango, devolver null o algún indicador de error
+    }
+  }
   const handleEdit = (norma) => {
     setEditingNorma({ ...norma });
     setOpenDialog(true);
+    const nombreCampo = obtenerNombreCampoPorPosicion(norma, 1);
+    setNombreCampoEditado(nombreCampo);
   };
   const handleDelete = (normaId) => {
     const updatedNormas = normas.map((item) =>
@@ -123,13 +133,14 @@ export default function ColumnGroupingTable() {
             cargarNormas();
             setEditingNorma(null);
             setOpenDialog(false);
+            setNombreCampoEditado("");
           });
       } catch (error) {
         console.error("Error al guardar cambios:", error);
       }
     } else {
       try {
-        console.log("Guardando cambios:", updatedNormas);
+        // console.log("Guardando cambios:", updatedNormas);
         updatedNormas.forEach((norma) => {
           const { id_norma, tipo_norma, habilita } = norma;
           // console.log(id_norma, "eliminado");
@@ -281,6 +292,7 @@ export default function ColumnGroupingTable() {
             handleInputChange={handleInputChange}
             handleSave={handleSave}
             handleCancel={handleCancel}
+            nombreCampo={nombreCampoEditado}
           />
           <ModalGenerica
             open={openModal}

@@ -20,6 +20,7 @@ const EditarNormaDialog = ({
   handleInputChange,
   handleSave,
   handleCancel,
+  nombreCampo,
 }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [error, setError] = useState("error");
@@ -42,9 +43,9 @@ const EditarNormaDialog = ({
     setMensaje(mensaje);
   };
 
-  return (
+  return nombreCampo !== "" ? (
     <>
-      <Dialog open={open} disableBackdropClick={true}>
+      <Dialog open={open} onClose={onClose} disableBackdropClick={true}>
         <DialogContent className="modal_content">
           <DialogTitle className="titulo">Editar Norma</DialogTitle>
           {editingNorma && (
@@ -69,9 +70,9 @@ const EditarNormaDialog = ({
                   labelPlacement="start"
                 />
                 <TextField
-                  name="tipo_norma"
-                  label="Tipo de Norma"
-                  value={editingNorma.tipo_norma}
+                  name={nombreCampo}
+                  label="Nombre"
+                  value={editingNorma[nombreCampo]}
                   onChange={handleInputChange}
                   className="inputNorma"
                   fullWidth
@@ -80,7 +81,7 @@ const EditarNormaDialog = ({
             </>
           )}
           <DialogActions className="btnEditarNorma">
-            {editingNorma?.tipo_norma === "" || !editingNorma?.tipo_norma ? (
+            {editingNorma[nombreCampo] === "" || !editingNorma[nombreCampo] ? (
               <Button
                 onClick={handleMensaje}
                 color="primary"
@@ -114,6 +115,8 @@ const EditarNormaDialog = ({
         </Alert>
       </Snackbar>
     </>
+  ) : (
+    <></>
   );
 };
 
