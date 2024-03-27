@@ -2,10 +2,10 @@
   display: flex;
   text-align: center;
   color: red;
-  /* font-weight: bold; */
   justify-content: center;
   margin-bottom: 0;
 }
+
 .habilitado {
   display: flex;
   text-align: center;
@@ -14,7 +14,6 @@
 }
 
 .blur {
-  /* filter: blur(2px); */
   pointer-events: none;
 }
 
@@ -22,7 +21,6 @@
   z-index: 9999;
 }
 
-/* Estilos para el Dialog */
 .MuiDialog-paper {
   align-items: center;
   justify-content: center;
@@ -33,7 +31,6 @@
   margin: 0 !important;
   background-color: transparent !important;
   border-radius: 15px !important;
-  /* padding-bottom: 20px !important; */
 }
 
 
@@ -43,8 +40,6 @@
 }
 
 .contRangoEditar div {
-  /* display: flex; */
-  /* flex-direction: row; */
   margin-top: 5px;
 
 }
@@ -53,28 +48,17 @@
   display: flex;
   padding: 10px !important;
   border-radius: 15px;
-  /* width: 70% !important; */
   align-items: center;
   flex-direction: column;
   background-color: #0066ff;
-  /* box-Shadow: 0 5px 8px rgba(0, 0, 0, 0.5) */
 }
 
-/* Estilos para el DialogTitle */
-/* .MuiDialogTitle-root {
-  color: #fff;
-  border-bottom: 1px solid #0066ff !important;
-} */
 .MuiDialogContent-root {
   padding: 0 !important;
   border-radius: 15px !important;
   background-color: #0066ff !important;
 }
 
-/* 
-.MuiDialog-container {
-  box-shadow: 0px 2px 4px -1px rgba(165, 53, 53, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12) !important;
-} */
 
 .listadoNormasEditar {
   display: ruby;
@@ -85,10 +69,9 @@
   margin-top: 10px !important;
   justify-self: left !important;
   overflow-x: hidden !important;
-  
+
 }
 
-/* Estilos para los Button dentro del DialogActions */
 .MuiButton-root {
   color: #fff;
 
@@ -98,30 +81,6 @@
   cursor: pointer;
 }
 
-
-/* Estilos específicos para el botón "Guardar" */
-/* .MuiButton-root:nth-child(1) {
-  background-color: #2197db !important;
-    width: fit-content !important;
-    margin-bottom: 10px;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 20px; background-color: #2197db !important;
-} */
-
-/* Estilos específicos para el botón "Cancelar" */
-/* .MuiButton-root:nth-child(2) {
-  background-color: #2197db !important;
-  width: fit-content !important;
-  margin-bottom: 10px;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 20px;
-  
-} */
-
-
-/* Media queries para responsividad */
 @media (max-width: 500px) {
   .MuiDialog-paper {
     width: 100%;

@@ -14,16 +14,16 @@ import {
   Snackbar,
   TextField,
 } from "@mui/material";
-import { ALTA_CABECERA_BOLETIN_VALUES } from "../../helpers/constantes";
-import { ALTA_CONTENIDO_BOLETIN_VALUES } from "../../helpers/constantes";
+import { ALTA_CABECERA_BOLETIN_VALUES } from "../../helpers/constantes.js";
+import { ALTA_CONTENIDO_BOLETIN_VALUES } from "../../helpers/constantes.js";
 import FileUp from "@mui/icons-material/FileUpload";
 import File from "@mui/icons-material/UploadFileRounded";
-import axios from "../../config/axios";
+import axios from "../../config/axios.js";
 import { ModalAltaBoletin } from "../ModalAltaBoletines/ModalAltaBoletin.jsx";
-import useGet from "../../hook/useGet";
+import useGet from "../../hook/useGet.js";
 import CloseIcon from "@mui/icons-material/Close";
 
-const AltaBoletinesNuevo = () => {
+const AltaBoletines = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
   const [valuesCabecera, setValuesCabecera] = useState(
@@ -510,4 +510,4 @@ const AltaBoletinesNuevo = () => {
     </Box>
   );
 };
-export default AltaBoletinesNuevo;
+export default AltaBoletines;

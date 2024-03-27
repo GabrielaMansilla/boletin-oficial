@@ -34,7 +34,7 @@ import "./ListadoBoletines.css";
 import { ALTA_CONTENIDO_BOLETIN_VALUES } from "../../helpers/constantes";
 import CloseIcon from "@mui/icons-material/Close";
 
-export default function ColumnGroupingTable() {
+const TablaBoletines = () => {
   const [boletines, getboletin, setBoletines] = useGet(
     "/boletin/listado",
     axios
@@ -59,11 +59,9 @@ export default function ColumnGroupingTable() {
   const [contenidoEditado, setContenidoEditado] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [normasAgregadasEditar, setNormasAgregadasEditar] = useState([]);
-  const [nroNormaExistente, setNroNormaExistente] = useState(false);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
-  const [nroBoletinExistente, setNroBoletinExistente] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -306,11 +304,26 @@ export default function ColumnGroupingTable() {
   }, [openDialog]);
 
   const columns = [
-    { id: "id_boletin", label: "ID de Boletin", minWidth: 170 },
-    { id: "nro_boletin", label: "Nro de Boletin", minWidth: 170 },
-    { id: "fecha_publicacion", label: "Fecha de Publicacion", minWidth: 100 },
-    { id: "habilita", label: "Habilita", minWidth: 170, align: "right" },
-    { id: "acciones", label: "Acciones", minWidth: 100, align: "right" },
+    {
+      id: "id_boletin",
+      label: "ID de Boletin",
+      width: "auto",
+      align: "center",
+    },
+    {
+      id: "nro_boletin",
+      label: "Nro de Boletin",
+      width: "auto",
+      align: "center",
+    },
+    {
+      id: "fecha_publicacion",
+      label: "Fecha de Publicacion",
+      minWidth: 100,
+      align: "center",
+    },
+    { id: "habilita", label: "Habilita", width: "auto", align: "center" },
+    { id: "acciones", label: "Acciones", width: "auto", align: "center" },
   ];
 
   return (
@@ -683,4 +696,5 @@ export default function ColumnGroupingTable() {
       </Snackbar>
     </Paper>
   );
-}
+};
+export default TablaBoletines;

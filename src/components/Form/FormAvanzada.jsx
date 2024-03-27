@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Alert,
   Box,
@@ -25,15 +25,12 @@ export default function FormAvanzada({ busquedaAvanzada }) {
     setOpenModal(false);
     setValues(BUSCADOR_AVANZADA_VALUES);
   };
-  // const [resultados, callback] = useState([]);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   // eslint-disable-next-line
-  const [loading, setLoading] = useState(true);
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Verificar si el valor es nulo o indefinido y establecer un valor vacío en su lugar
     const updatedValue = value === null || value === "" ? undefined : value;
     setValues({ ...values, [name]: updatedValue });
   };
@@ -92,7 +89,6 @@ export default function FormAvanzada({ busquedaAvanzada }) {
       ) {
         callback([]);
         nroDeNorma = "undefined";
-        // console.log(tipoDeNorma.id_norma);
         const response = await axios.get(
           `/boletin/buscarPorTipo/${tipoDeNorma.id_norma}/${nroDeNorma}`
         );
@@ -390,8 +386,6 @@ export default function FormAvanzada({ busquedaAvanzada }) {
                     {tipo.tipo_norma}
                   </MenuItem>
                 ))}
-                {/* <MenuItem value={"Ordenanza"}>Ordenanza</MenuItem>
-                <MenuItem value={"Resolucion"}>Resolución</MenuItem> */}
               </Select>
             </FormControl>
             <TextField

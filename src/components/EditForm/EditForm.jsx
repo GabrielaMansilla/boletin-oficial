@@ -25,7 +25,6 @@ const EditForm = ({ boletin, onSave, onCancel }) => {
         value={editedBoletin.habilita}
         onChange={handleInputChange}
       />
-      {/* Otros campos del formulario */}
       <button onClick={handleSave}>Guardar</button>
       <button onClick={onCancel}>Cancelar</button>
     </div>

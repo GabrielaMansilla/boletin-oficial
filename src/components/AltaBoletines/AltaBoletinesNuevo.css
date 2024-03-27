@@ -137,16 +137,10 @@
 }
 
 
-/* {
-    width: 95%;
-    padding-right:0px !important
-} */
+
 .contRango div {
     width: 100%;
-    /* display: flex; */
-    /* flex-direction: row; */
     margin-top: 5px;
-
 }
 
 label {
@@ -167,17 +161,6 @@ label {
 
 }
 
-/* .textAreaBoletines {
-    width: 80%;
-    resize: none;
-    height: 100vh;
-    padding-top: 7px;
-    padding-left: 10px;
-    border-radius: 25px;
-    margin-bottom: 30px;
-} */
-
-
 ::-webkit-file-upload-button {
     cursor: pointer !important;
 
@@ -188,8 +171,6 @@ label {
     position: absolute;
     cursor: pointer !important;
     height: 60px !important;
-    /* color: red !important;
-    background-color: red !important; */
 }
 
 .fileNameDisplay {
@@ -240,7 +221,6 @@ label {
     }
 
     .contInputFileBoletin {
-        /* width: 80vw !important; */
         height: 15vh !important;
 
     }
@@ -248,7 +228,6 @@ label {
 
 @media (max-width: 767px) {
     .css-1x51dt5-MuiInputBase-input-MuiInput-input {
-        /* height: 25vh !important; */
         margin-bottom: 2px !important;
     }
 
@@ -284,14 +263,9 @@ label {
     }
 
     .css-qiwgdb,
-    /* .css-1v4ccyo, */
     .css-1x5jdmq {
         width: 85% !important;
     }
-
-    /* .css-1x5jdmq {
-        width: 90% !important;
-    } */
 
     .formGroup {
         padding-left: 35px;

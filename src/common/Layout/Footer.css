@@ -31,12 +31,11 @@
   justify-content: center;
 }
 
-.logoFooter img{
-  
-  width: 65%;
- 
-}
+.logoFooter img {
 
+  width: 65%;
+
+}
 
 .logoRedesFooter {
   height: 20px;
@@ -78,9 +77,11 @@
   .logoFooter h4 {
     font-size: 100% !important;
   }
-.logoFooter{
-  width: 100% !important;
-}
+
+  .logoFooter {
+    width: 100% !important;
+  }
+
   .logoFooter h1 {
     font-size: 30px !important;
   }

@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import AltaBoletinesNuevo from "./components/AltaBoletines/AltaBoletinesNuevo";
+import AltaBoletines from "./components/AltaBoletines/AltaBoletines";
 import Buscador from "./components/Buscador/Buscador";
-import ListadoBoletines from "./components/ListadoBoletines/ListadoBoletines";
+import TablaBoletines from "./components/TablaBoletines/TablaBoletines";
 import TablasEdicion from "./components/TablasEdicion/TablasEdicion";
 
 const App = () => {
@@ -12,9 +12,8 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path="/*" element={<Buscador />} />
-          <Route path="/listadoBoletines" element={<ListadoBoletines />} />
-          <Route path="/altaBoletines" element={<AltaBoletinesNuevo />} />
-          <Route path="/listadoBoletines" element={<ListadoBoletines />} />
+          <Route path="/altaBoletines" element={<AltaBoletines />} />
+          <Route path="/tablaBoletines" element={<TablaBoletines />} />
           <Route path="/tablas" element={<TablasEdicion />} />
         </Routes>
       </Layout>
