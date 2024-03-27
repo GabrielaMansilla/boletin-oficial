@@ -1,24 +1,21 @@
 .buscador {
     padding: 0;
-    width: 98%;
+    width: 100%;
     height: auto;
     align-self: center;
     align-items: center;
-    border-radius: 20px;
     justify-content: center;
-    background-color: #0066ff;
-    /* background-color: #ffff; */
+    background-color: #1789f6;
     padding-bottom: 20px !important;
-    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-
 }
 
 .tituloBuscador {
     color: #fff;
     font-weight: 600;
-    margin-left: 50px;
-    padding-top: 40px;
-    margin-bottom: 30px;
+    font-size: 22px;
+    margin-left: 138px;
+    padding-top: 0px;
+    margin-bottom: 10px;
 }
 
 .inputCont {
@@ -27,6 +24,8 @@
     width: 100% !important;
     flex-direction: row !important;
 }
+
+
 
 .inputsBuscadores {
     display: flex;
@@ -47,17 +46,23 @@
     width: 50% !important;
     align-items: center;
     flex: end;
-    /* justify-content: end; */
 }
 
 .MuiOutlinedInput-notchedOutline {
-    border-color: #ffff !important;
+    border-color: #ffffff !important;
+
 }
 
-.MuiInputLabel-root.Mui-focused,
-.MuiInputLabel-root,
+.MuiInputLabel-root.Mui-focused {
+    color: #ffffff !important
+}
+
+.MuiInputLabel-root {
+    color: #ffffff !important
+}
+
 .MuiOutlinedInput-input {
-    color: #ffff !important
+    color: #ffffff !important;
 }
 
 .btnBuscador,
@@ -66,6 +71,12 @@
     margin-left: 15px !important;
     width: 50% !important;
     background-color: #2eb1ff !important;
+}
+
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root {
+    margin-left: -19px !important;
+    width: fit-content !important;
+
 }
 
 .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
@@ -83,20 +94,25 @@
 
 }
 
+
 @media (max-width: 775px) {
-    .inputCont{
+    .inputCont {
         width: 100% !important;
         flex-direction: column !important;
     }
-    .inputsBuscadores, .botonesBuscadores{
+
+    .inputsBuscadores,
+    .botonesBuscadores {
         width: 100% !important;
 
     }
-    .btnBuscador, .btnBuscadorAvanzada {
+
+    .btnBuscador,
+    .btnBuscadorAvanzada {
         width: 50% !important;
-        
+
     }
-    
+
 }
 
 
@@ -125,28 +141,57 @@
     .buscador {
         height: auto;
         align-items: center !important;
+
     }
 
     .inputCont {
         padding-bottom: 15px;
-        width: 100% !important ;
+        width: 100% !important;
         flex-direction: column !important;
+    }
+
+}
+
+@media (max-width: 1352px) {
+    .tituloBuscador {
+
+        margin-left: 134px !important;
+
+    }
+}
+
+@media (max-width: 1209px) {
+    .tituloBuscador {
+
+        margin-left: 60px !important;
+
+    }
+}
+
+@media (max-width: 500px) {
+    .tituloBuscador {
+
+        margin-left: 26px !important;
+
+    }
+}
+
+@media (max-width: 767px) {
+
+    .inputBuscador {
+
+        margin-bottom: 10px !important;
+
     }
 
 }
 
 @media (max-width: 500px) {
 
-    .logoNav {
-        height: 90px !important;
+    .inputBuscador {
+
+        margin-bottom: 10px !important;
+
     }
 
-    .contLogo h4 {
-        height: fit-content;
-        font-size: 90% !important;
-    }
-
-    .contLogo h1 {
-        font-size: 150% !important;
-    }
 }

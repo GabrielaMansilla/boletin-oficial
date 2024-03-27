@@ -13,15 +13,37 @@ export const BUSCADOR_AVANZADA_VALUES = {
   tipoBusquedaAvanzada: "",
 };
 
-export const ALTA_BOLETIN_VALUES = {
+// export const ALTA_BOLETIN_VALUES = {
+//   nroBoletin: "",
+//   fechaPublicacion: "",
+//   archivoBoletin: "", 
+//   nroDecretoInicial: "",
+//   // nroDecretoInicial: "",
+//   // nroDecretoFinal: "",
+//   // nroOrdenanzaInicial: "",
+//   // nroOrdenanzaFinal: "",
+//   // nroResolucion: "",
+//   // nroDecreto: "",
+//   // nroOrdenanza: "",
+// };
+export const ALTA_CABECERA_BOLETIN_VALUES = {
   nroBoletin: "",
-  fechaBoletin: "",
-  archivoBoletin: "",
-  nroDecretoInicial: "",
-  nroDecretoFinal: "",
-  nroOrdenanzaInicial: "",
-  nroOrdenanzaFinal: "",
-  nroResolucion: "",
-  nroDecreto: "",
-  nroOrdenanza: "",
+  fechaPublicacion: "",
+  archivoBoletin: "", 
+  habilita:true,
+  // nroDecretoInicial: "",
+  // nroDecretoInicial: "",
+  // nroDecretoFinal: "",
+  // nroOrdenanzaInicial: "",
+  // nroOrdenanzaFinal: "",
+  // nroResolucion: "",
+  // nroDecreto: "",
+  // nroOrdenanza: "",
+};
+
+export const ALTA_CONTENIDO_BOLETIN_VALUES = {
+  norma: "",
+  origen: "",
+  fechaNormaBoletin: "",
+  nroNorma: "",
 };
