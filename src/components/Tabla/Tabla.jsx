@@ -10,6 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import useGet from "../../hook/useGet";
 import axios from "../../config/axios";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import {
   Button,
   Dialog,
@@ -32,7 +33,7 @@ const Tabla = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openModal, setOpenModal] = useState(false);
   const [origenInput, setOrigenInput] = useState("");
-  const [checkboxValue, setCheckboxValue] = useState(false);
+  const [checkboxValue, setCheckboxValue] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [nombreCampoEditado, setNombreCampoEditado] = useState("");
   const handleOpenModal = () => {
@@ -84,18 +85,18 @@ const Tabla = () => {
   // };
 
   const handleAcceptModal = (nombre_origen, habilita) => {
-    // Aquí puedes realizar acciones como enviar la norma a la base de datos
+   
 
     try {
       // console.log("Guardando cambios:", updatedNormas);
       // console.log(id_origen, "eliminado");
       axios
-        .post(`/origen/editar`, { nombre_origen, habilita })
+        .post(`/origen/alta`, { nombre_origen, habilita })
         .then((response) => {
           console.log("Origen deshabilitada correctamente:", response.data);
-          // cargarNormas();
-          // setEditingNorma(null);
-          // setOpenDialog(false);
+          cargarOrigen();
+          setEditOrigen(null);
+          setOpenDialog(false);
         });
     } catch (error) {
       console.error("Error al guardar Origen:", error);
@@ -176,7 +177,7 @@ const Tabla = () => {
   };
 
   const columns = [
-    { id: "id_origen", label: "ID", minWidth: "auto", align: "center" },
+    { id: "id_origen", label: "ID Origen", minWidth: "auto", align: "center" },
     { id: "nombre_origen", label: "Nombre", minWidth: "auto", align: "center" },
     { id: "habilita", label: "Habilita", minWidth: "auto", align: "center" },
   ];
@@ -313,8 +314,26 @@ const Tabla = () => {
             handleCancel={handleCancel}
             nombreCampo={nombreCampoEditado}
           />
+           <ModalGenerica
+            open={openModal}
+            onClose={handleCloseModal}
+            onAccept={() => handleAcceptModal(origenInput, checkboxValue)}
+            title="Agregar Origen"
+            inputLabel="Nombre del Origen"
+            inputValue={origenInput}
+            onInputChange={(e) => setOrigenInput(e.target.value)}
+            checkboxLabel="Habilitada"
+            checked={checkboxValue}
+            onCheckboxChange={(e) => setCheckboxValue(e.target.checked)}
+          />
         </div>
       </Paper>
+      <AddCircleIcon
+        className="btnAddNorma"
+        color="primary"
+        variant="contained"
+        onClick={handleOpenModal}
+      />
     </div>
   );
 };
