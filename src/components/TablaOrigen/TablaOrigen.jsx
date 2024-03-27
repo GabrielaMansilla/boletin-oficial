@@ -1,30 +1,24 @@
 import React, { useEffect, useState } from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TablePagination,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import useGet from "../../hook/useGet";
 import axios from "../../config/axios";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TablePagination,
-  TextField,
-} from "@mui/material";
 import ModalGenerica from "../ModalGenerico/ModalGenerico";
 import EditarNormaDialog from "../EditarNormaDialog/EditarNormaDialog";
 import "../ListarNormas/ListarNormas.css";
 
-const Tabla = () => {
+const TablaOrigen = () => {
   const [origen, getOrigen, setOrigen] = useGet("/origen/listado", axios);
   const [editOrigen, setEditOrigen] = useState("");
 
@@ -57,7 +51,7 @@ const Tabla = () => {
     if (posicion >= 0 && posicion < keys.length) {
       return keys[posicion];
     } else {
-      return null; // Si la posición está fuera de rango, devolver null o algún indicador de error
+      return null;
     }
   }
   const handleEdit = (Origen) => {
@@ -80,20 +74,11 @@ const Tabla = () => {
     setOpenDialog(false);
   };
 
-  // const handleCancel = (event, reason) => {
-  //       setOpenDialog(false);
-  // };
-
   const handleAcceptModal = (nombre_origen, habilita) => {
-   
-
     try {
-      // console.log("Guardando cambios:", updatedNormas);
-      // console.log(id_origen, "eliminado");
       axios
         .post(`/origen/alta`, { nombre_origen, habilita })
         .then((response) => {
-          console.log("Origen deshabilitada correctamente:", response.data);
           cargarOrigen();
           setEditOrigen(null);
           setOpenDialog(false);
@@ -101,8 +86,6 @@ const Tabla = () => {
     } catch (error) {
       console.error("Error al guardar Origen:", error);
     }
-    console.log("Origen:", origenInput);
-    console.log("Checkbox:", checkboxValue);
     handleCloseModal();
   };
 
@@ -132,7 +115,6 @@ const Tabla = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error al obtener normas:", error);
         setLoading(false);
       });
   };
@@ -140,16 +122,10 @@ const Tabla = () => {
   const handleSave = (updatedOrigen) => {
     if (editOrigen) {
       try {
-        console.log("Guardando cambios:", editOrigen);
-
-        // Extraer las propiedades necesarias de editingNorma
         const { id_origen, nombre_origen, habilita } = editOrigen;
-        console.log(id_origen);
-        // Haces la llamada para guardar los cambios en la base de datos utilizando axios
         axios
           .put(`/origen/editar`, { id_origen, nombre_origen, habilita })
           .then((response) => {
-            console.log("Cambios guardados correctamente:", response.data);
             cargarOrigen();
             setEditOrigen(null);
             setOpenDialog(false);
@@ -157,7 +133,6 @@ const Tabla = () => {
           });
       } catch (error) {
         console.error("Error al guardar cambios:", error);
-        // Manejar el error según tus necesidades
       }
     } else {
       try {
@@ -166,7 +141,6 @@ const Tabla = () => {
           axios
             .put(`/origen/editar`, { id_origen, nombre_origen, habilita })
             .then((response) => {
-              console.log("Origen deshabilitada correctamente:", response.data);
               cargarOrigen();
             });
         });
@@ -182,13 +156,7 @@ const Tabla = () => {
     { id: "habilita", label: "Habilita", minWidth: "auto", align: "center" },
   ];
 
-  // const handleEdit = (Origen) => {
-  //   setEditOrigen((prevOrigen) => ({ ...prevOrigen, ...Origen }));
-
-  // };
-  useEffect(() => {
-    console.log(editOrigen);
-  }, [editOrigen]);
+  useEffect(() => {}, [editOrigen]);
 
   return (
     <div className="tablaNormas">
@@ -205,24 +173,25 @@ const Tabla = () => {
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
-                  {columns.map((column) =>
-                  column.id !== "acciones" &&  (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                      className="tableCellHeader"
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                   <TableCell align="center" colSpan={4}>
+                  {columns.map(
+                    (column) =>
+                      column.id !== "acciones" && (
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={{ minWidth: column.minWidth }}
+                          className="tableCellHeader"
+                        >
+                          {column.label}
+                        </TableCell>
+                      )
+                  )}
+                  <TableCell align="center" colSpan={4}>
                     Acciones
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {console.log(origen)}
                 {!getOrigen ? (
                   origen
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -314,11 +283,11 @@ const Tabla = () => {
             handleCancel={handleCancel}
             nombreCampo={nombreCampoEditado}
           />
-           <ModalGenerica
+          <ModalGenerica
             open={openModal}
             onClose={handleCloseModal}
             onAccept={() => handleAcceptModal(origenInput, checkboxValue)}
-            title="Agregar Origen"
+            title="AGREGAR ORIGEN"
             inputLabel="Nombre del Origen"
             inputValue={origenInput}
             onInputChange={(e) => setOrigenInput(e.target.value)}
@@ -338,4 +307,4 @@ const Tabla = () => {
   );
 };
 
-export default Tabla;
+export default TablaOrigen;

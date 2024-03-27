@@ -9,7 +9,7 @@
 .btnAddNorma {
     height: 40px !important;
     width: 40px !important;
-    margin-left: 25px;
+    margin-right: 25px;
 }
 .btnAddNorma :hover{
     color: #0066ff;

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./ModalGenerico.css";
 import {
   Alert,
   Button,
@@ -11,7 +12,6 @@ import {
   Snackbar,
   TextField,
 } from "@mui/material";
-import "./ModalGenerico.css";
 const ModalGenerica = ({
   open,
   onClose,
@@ -20,8 +20,6 @@ const ModalGenerica = ({
   inputLabel,
   inputValue,
   onInputChange,
-  checkboxLabel,
-  checked,
   onCheckboxChange,
 }) => {
   const [openAlert, setOpenAlert] = useState(false);
@@ -50,7 +48,6 @@ const ModalGenerica = ({
       <Dialog open={open} disableBackdropClick={true}>
         <DialogContent className="modal_content">
           <DialogTitle className="titulo">{title}</DialogTitle>
-
           <div className="contModal">
             <FormControlLabel
               control={

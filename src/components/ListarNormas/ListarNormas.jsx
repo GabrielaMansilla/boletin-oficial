@@ -18,7 +18,7 @@ import EditarNormaDialog from "../EditarNormaDialog/EditarNormaDialog";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ModalGenerica from "../ModalGenerico/ModalGenerico";
 
-export default function ColumnGroupingTable() {
+const TablaNormas = () => {
   const [normas, getNorma, setNormas] = useGet("/norma/listado", axios);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -40,9 +40,7 @@ export default function ColumnGroupingTable() {
 
   const handleAcceptModal = (norma, habilita) => {
     try {
-      console.log("Guardando cambios:", norma, habilita);
       axios.post(`/norma/alta`, { norma, habilita }).then((response) => {
-        console.log("Norma agregada correctamente:", response.data);
         cargarNormas();
         setNormaInput("");
         setOpenModal(false);
@@ -51,8 +49,6 @@ export default function ColumnGroupingTable() {
     } catch (error) {
       console.error("Error al guardar Norma:", error);
     }
-    console.log("Norma:", normaInput);
-    console.log("Checkbox:", checkboxValue);
     handleCloseModal();
   };
 
@@ -69,7 +65,7 @@ export default function ColumnGroupingTable() {
     if (posicion >= 0 && posicion < keys.length) {
       return keys[posicion];
     } else {
-      return null; // Si la posición está fuera de rango, devolver null o algún indicador de error
+      return null;
     }
   }
   const handleEdit = (norma) => {
@@ -129,7 +125,6 @@ export default function ColumnGroupingTable() {
         axios
           .put(`/norma/editar`, { id_norma, tipo_norma, habilita })
           .then((response) => {
-            console.log("Cambios guardados correctamente:", response.data);
             cargarNormas();
             setEditingNorma(null);
             setOpenDialog(false);
@@ -140,14 +135,11 @@ export default function ColumnGroupingTable() {
       }
     } else {
       try {
-        // console.log("Guardando cambios:", updatedNormas);
         updatedNormas.forEach((norma) => {
           const { id_norma, tipo_norma, habilita } = norma;
-          // console.log(id_norma, "eliminado");
           axios
             .put(`/norma/editar`, { id_norma, tipo_norma, habilita })
             .then((response) => {
-              console.log("Norma deshabilitada correctamente:", response.data);
               cargarNormas();
             });
         });
@@ -298,7 +290,7 @@ export default function ColumnGroupingTable() {
             open={openModal}
             onClose={handleCloseModal}
             onAccept={() => handleAcceptModal(normaInput, checkboxValue)}
-            title="Agregar Norma"
+            title="AGREGAR NORMA"
             inputLabel="Nombre de la Norma"
             inputValue={normaInput}
             onInputChange={(e) => setNormaInput(e.target.value)}
@@ -316,4 +308,5 @@ export default function ColumnGroupingTable() {
       />
     </div>
   );
-}
+};
+export default TablaNormas;

@@ -22,7 +22,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   FormControl,
   InputLabel,
   MenuItem,
@@ -43,7 +42,7 @@ export default function ColumnGroupingTable() {
   const [contenidoBoletines, getContenidoBoletin, setContenidoBoletines] =
     useGet("/boletin/listadoContenido", axios);
   const [tiposOrigen, loadingOrigen, getTiposOrigen] = useGet(
-    "/boletin/listarOrigen",
+    "/origen/listar",
     axios
   );
   const [tiposNorma, loadingNorma, getTiposNoma] = useGet(
@@ -125,9 +124,7 @@ export default function ColumnGroupingTable() {
     setContenidoEditado(contenidoEditado);
     setOpenDialog(true);
   };
-  useEffect(() => {
-    // console.log(normasAgregadasEditar, "105");
-  }, [normasAgregadasEditar]);
+  useEffect(() => {}, [normasAgregadasEditar]);
 
   const validarNormasAgregadas = () => {
     const normasRepetidas = normasAgregadasEditar.filter((norma, index) => {
@@ -159,9 +156,6 @@ export default function ColumnGroupingTable() {
   const numeroBoletinDisponible = (numeroBoletin, idBoletin) => {
     const numero = numeroBoletin.toString();
     const id = idBoletin;
-
-    // console.log(numero, "nro", id, "id");
-
     const existe = boletines.some(
       (boletin) => boletin.nro_boletin === numero && boletin.id_boletin !== id
     );
@@ -189,16 +183,6 @@ export default function ColumnGroupingTable() {
   };
   const handleMensajeContenidoEditar = () => {
     let mensaje = "";
-    // if (
-    //   !numeroNormaDisponible(
-    //     valuesContenido.nroNorma,
-    //     valuesContenido.norma.id_norma
-    //   )
-    // ) {
-    //   // console.log(10);
-    //   mensaje = `El Nº de Norma ${valuesContenido.nroNorma} ya existe para la norma ${valuesContenido.norma.tipo_norma}!`;
-    //   setError("error");
-    // } else
     if (!valuesContenido.norma || valuesContenido.norma === "") {
       mensaje = "Debe seleccionar la Norma";
       setError("warning");
@@ -235,11 +219,8 @@ export default function ColumnGroupingTable() {
     setOpenDialog(false);
   };
 
-  // Modifica la función handleInputChange para que no actualice la ID de Boletín
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    // Si el campo de entrada no es la ID de Boletín, actualiza el estado de edición
-    // if (name !== "id_boletin") {
     setEditingBoletin((prevBoletin) => ({
       ...prevBoletin,
       [name]: value,
@@ -268,33 +249,28 @@ export default function ColumnGroupingTable() {
       .get("/boletin/listado")
       .then((response) => {
         setBoletines(response.data);
-        setLoading(false); // Establecer loading en false cuando se complete la carga
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error al obtener boletines:", error);
-        setLoading(false); // También se debe establecer loading en false en caso de error
+        setLoading(false);
       });
     axios
       .get("/boletin/listadoContenido")
       .then((response) => {
         setContenidoBoletines(response.data);
-        setLoading(false); // Establecer loading en false cuando se complete la carga
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error al obtener contenido de boletines:", error);
-        setLoading(false); // También se debe establecer loading en false en caso de error
+        setLoading(false);
       });
   };
 
   const handleSave = () => {
     try {
-      // console.log("Guardando cambios:", editingBoletin);
-
       const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
         editingBoletin;
-
-      // console.log(normasAgregadasEditar, "envia");
-
       axios
         .put(`/boletin/editar`, {
           id_boletin,
@@ -304,11 +280,7 @@ export default function ColumnGroupingTable() {
           normasAgregadasEditar,
         })
         .then((response) => {
-          // console.log("Respuesta del servidor:", response.data);
-
-          // Después de guardar los cambios, cargar la lista actualizada de boletines
           cargarBoletines();
-
           setEditingBoletin(null);
           setOpenDialog(false);
           setNormasAgregadasEditar([]);
@@ -322,19 +294,13 @@ export default function ColumnGroupingTable() {
     }
   };
   useEffect(() => {
-    // getBoletines();
-    // getContenidoBoletin();
     getTiposOrigen();
-    // getTiposNorma();
     setLoading(false);
-    // console.log(normasAgregadasEditar, "251");
     cargarBoletines();
   }, []);
 
   useEffect(() => {
     if (openDialog === false) {
-      // Si el diálogo está cerrado (es decir, se han guardado los cambios),
-      // entonces cargar los boletines nuevamente
       cargarBoletines();
     }
   }, [openDialog]);
@@ -431,25 +397,14 @@ export default function ColumnGroupingTable() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {/*console.log(boletines, contenidoBoletines, "59")*/}
-      {/* Dialog for editing */}
       <Dialog
         className="modalEditar"
         disableBackdropClick={true}
         open={openDialog}
-        // onClose={handleCancel}
       >
-        {/* <DialogTitle>Editar Boletines</DialogTitle> */}
         <DialogContent disableBackdropClick={true}>
           {editingBoletin && contenidoEditado && (
             <>
-              {/* {console.log(
-                contenidoEditado,
-                editingBoletin,
-                tiposNorma,
-                tiposOrigen,
-                "aña"
-              )} */}
               <Box
                 component="form"
                 id="form"
@@ -528,7 +483,6 @@ export default function ColumnGroupingTable() {
                                     autoWidth
                                     label="Norma"
                                     name="norma"
-                                    //   disabled
                                   >
                                     <MenuItem value="">
                                       <em>--Seleccione--</em>
@@ -558,7 +512,6 @@ export default function ColumnGroupingTable() {
                                     autoWidth
                                     label="Secretaría de Origen"
                                     name="origen"
-                                    //   disabled
                                   >
                                     <MenuItem value="">
                                       <em>--Seleccione--</em>
@@ -641,10 +594,7 @@ export default function ColumnGroupingTable() {
                                             )
                                           }
                                         />
-                                        {/* {console.log(
-                                          norma.id_contenido_boletin,
-                                          "index"
-                                        )}{" "} */}
+                                        s{" "}
                                       </div>
                                     ))}
                                 </div>
@@ -655,14 +605,11 @@ export default function ColumnGroupingTable() {
 
                           <Box className="contInputFileBoletin">
                             <label className="fileNameDisplay flex-column">
-                              {/* {selectedFileName} */}
                               <Input
                                 className="inputFileAltaBoletin"
                                 type="file"
                                 id="fileBoletin"
                                 name="archivoBoletin"
-                                // value={valuesCabecera.archivoBoletin}
-                                // onChange={handleChangeFile}
                                 accept="application/pdf"
                                 required
                               />
@@ -712,19 +659,8 @@ export default function ColumnGroupingTable() {
                     Cancelar
                   </Button>
                 </DialogActions>
-                <Snackbar
-                  // open={open}
-                  autoHideDuration={6000}
-                  // onClose={() => setOpen(false)}
-                >
-                  <Alert
-                    // onClose={handleClose}
-                    // severity={error}
-                    variant="filled"
-                    sx={{ width: "100%" }}
-                  >
-                    {/* {mensaje} */}
-                  </Alert>
+                <Snackbar autoHideDuration={6000}>
+                  <Alert variant="filled" sx={{ width: "100%" }}></Alert>
                 </Snackbar>
               </Box>
             </>

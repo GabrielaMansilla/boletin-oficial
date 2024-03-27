@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import "./TablasEdicion.css";
-import ListarNormas from "../ListarNormas/ListarNormas";
-import Tabla from "../Tabla/Tabla";
+import TablaOrigen from "../TablaOrigen/TablaOrigen";
+import TablaNormas from "../ListarNormas/ListarNormas";
 
 const TablasEdicion = () => {
-    return (
+  return (
     <>
-      <div>
-        <ListarNormas />
-        <Tabla/>
-      </div>
+        <TablaNormas />
+        <TablaOrigen />
     </>
   );
 };
