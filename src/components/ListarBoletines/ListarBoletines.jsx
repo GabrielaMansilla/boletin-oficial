@@ -27,10 +27,17 @@ const ListarBoletines = () => {
     try {
       const response = await axios.get(
         // `IP SERVIDOR DESARROLLO:PUERTO DEL BACK-END/boletin/listarDescarga/${boletin.id_boletin}`,
+<<<<<<< HEAD
+        `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
+        // `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
+        {
+          responseType: "blob",
+=======
         // `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         {
           responseType: "blob", // Especifica el tipo de respuesta como Blob
+>>>>>>> origin/main
         }
       );
       const blob = response.data;
@@ -129,4 +136,8 @@ const ListarBoletines = () => {
   );
 };
 
+<<<<<<< HEAD
 export default ListarBoletines;
+=======
+export default ListarBoletines;
+>>>>>>> origin/main

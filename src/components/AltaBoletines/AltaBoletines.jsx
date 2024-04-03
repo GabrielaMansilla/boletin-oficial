@@ -20,7 +20,7 @@ import FileUp from "@mui/icons-material/FileUpload";
 import File from "@mui/icons-material/UploadFileRounded";
 import axios from "../../config/axios.js";
 import { ModalAltaBoletin } from "../ModalAltaBoletines/ModalAltaBoletin.jsx";
-import useGet from "../../hook/useGet.js";
+import useGet from "../../hook/useGet.jsx";
 import CloseIcon from "@mui/icons-material/Close";
 
 const AltaBoletines = () => {
